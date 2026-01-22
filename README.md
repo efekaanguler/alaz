@@ -1,4 +1,4 @@
-# NETU ALAZ Autonomous
+# METU ALAZ Autonomous
 
 ## Setup
 
