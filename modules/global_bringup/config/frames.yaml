@@ -1,0 +1,8 @@
+# TF frame configuration
+# TODO: Frame ID'leri değiştirmek gerektiğinde bu dosyayı kullanın
+
+frames:
+  # Örnek:
+  # map_frame: "map"
+  # base_link_frame: "base_link"
+  # sensor_frame: "velodyne"

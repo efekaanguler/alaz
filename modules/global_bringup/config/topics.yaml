@@ -1,0 +1,7 @@
+# Topic remapping configuration
+# TODO: Topic remapping gerektiğinde bu dosyayı doldurun
+
+topics:
+  # Örnek:
+  # input_pointcloud: "/sensing/lidar/concatenated/pointcloud"
+  # output_odometry: "/localization/kinematic_state"

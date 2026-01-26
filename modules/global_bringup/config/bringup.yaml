@@ -1,0 +1,16 @@
+# Global bringup configuration
+# Hangi paketlerin başlatılacağını belirler
+
+packages:
+  # TODO: Yeni paket eklemek için:
+  # 1. Buraya paket adını ve parametrelerini ekleyin
+  # 2. launch/includes/ altında ilgili .launch.py dosyasını oluşturun
+  # 3. global.launch.py'deki PACKAGES bölümünde yeni paketi include edin
+  
+  # Örnek paket yapısı:
+  # my_package:
+  #   enabled: true
+  #   launch_file: "my_package.launch.py"
+  #   arguments:
+  #     param1: "value1"
+  #     param2: "value2"
