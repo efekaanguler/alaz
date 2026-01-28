@@ -1,0 +1,56 @@
+# ============================================================
+# LOCALIZATION CONFIGURATION - YabLoc için Merkezi Ayarlar
+# ============================================================
+# Bu dosya, lokalizasyon modülünün temel yapılandırmasını içerir.
+# global_bringup tarafından okunur ve Autoware'e iletilir.
+#
+# Düzenlenebilir Parametreler:
+#   - pose_source: Hangi lokalizasyon algoritması kullanılacak (yabloc, gnss, vb.)
+#   - topics: Sensor giriş topic'leri (kamera, odometri)
+#   - frames: TF frame isimleri
+# ============================================================
+
+localization:
+  # ------------------------------------------------------------
+  # POSE KAYNAĞI (Autoware'e pose_source:=yabloc olarak iletilir)
+  # ------------------------------------------------------------
+  # YabLoc: Görsel harita eşleştirme ile lokalizasyon
+  # Değiştirilebilir: "yabloc", "gnss", "ndt", vb.
+  pose_source: yabloc
+
+  # ------------------------------------------------------------
+  # SENSOR TOPIC'LERİ - YabLoc Girdileri
+  # ------------------------------------------------------------
+  # Bu topic'ler YabLoc tarafından kullanılır.
+  # Eğer farklı topic isimleri kullanıyorsanız buradan düzenleyin.
+  topics:
+    # Kamera görüntüsü (YabLoc'un ana girdisi)
+    # Tip: sensor_msgs/Image
+    # Örnek: /sensing/camera/traffic_light/image_raw
+    camera: /sensing/camera/image
+    
+    # Tekerlek odometrisi (YabLoc'un hız/yön bilgisi için kullandığı)
+    # Tip: nav_msgs/Odometry
+    # Örnek: /vehicle/status/velocity_status veya /localization/kinematic_state
+    wheel_odom: /vehicle/odometry
+    
+    # YabLoc'un çıktı topic'i (Autoware içinde otomatik oluşturulur)
+    # Sadece referans için burada, değiştirmeyin.
+    yabloc_pose: /localization/pose_estimator/pose
+
+  # ------------------------------------------------------------
+  # TF FRAME İSİMLERİ
+  # ------------------------------------------------------------
+  # global_bringup/config/frames.yaml ile uyumlu olmalı
+  frames:
+    map: map           # Harita koordinat sistemi
+    odom: odom         # Odometri koordinat sistemi  
+    base_link: base_link  # Araç gövde merkezi
+
+# ============================================================
+# GELECEK GELİŞTİRMELER İÇİN NOTLAR
+# ============================================================
+# - EKF füzyonu eklenirse: enable_ekf: true
+# - VSLAM eklenirse: enable_vslam: true
+# - İlave sensörler: lidar_topic, imu_topic vb.
+# ============================================================
