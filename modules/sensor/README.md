@@ -4,6 +4,7 @@ Bu paket, Go-Kart üzerindeki sensörlerin (Lidar, Kamera) **konumlarını (Extr
 
 Otonom sürüş yığınının (stack), Haritalama (Mapping) ve Algılama (Perception) modüllerinin doğru çalışması için, sensörlerin araca göre nerede durduğunun (x, y, z, roll, pitch, yaw) **milimetrik hassasiyetle** bilinmesi gerekir.
 
+---
 
 ## Paket İçeriği ve Kritik Dosyalar
 
@@ -11,6 +12,7 @@ Otonom sürüş yığınının (stack), Haritalama (Mapping) ve Algılama (Perce
 * **`my_sensor_kit_description/urdf/sensors.xacro`**: Sensörlerin 3D modellerini ve parent-child ilişkilerini (Hangi sensör nereye bağlı?) tanımlar.
 * **`my_sensor_kit_description/launch/sensors.launch.xml`**: Sensörleri başlatan ana dosya.
 
+---
 
 ## Sensör Envanteri
 
@@ -23,6 +25,7 @@ Bu kitte aşağıdaki sensörler tanımlanmıştır:
 | **Kamera 2** | `camera_right_link` | Sağ (Right) | Çevre algılama |
 | **Kamera 3** | `camera_left_link` | Sol (Left) | Çevre algılama |
 
+---
 
 ## Sensör Değişikliği Rehberi (Calibration)
 
@@ -43,6 +46,7 @@ Hem model hem de kalibrasyon dosyası güncellenmelidir.
 1. **Model:** `my_sensor_kit_description/urdf/sensors.xacro` içine yeni sensörün `<xacro:include>` ve `<joint>` tanımlarını ekleyin.
 2. **Kalibrasyon:** `my_sensor_kit_description/config/sensors_calibration.yaml` dosyasına yeni sensör için x,y,z değerlerini ekleyin.
 
+---
 
 ## Kritik Uyarı: Haritalama (Mapping) Etkisi
 
@@ -55,6 +59,7 @@ Mapping ekibi harita çıkarırken (`ros2 bag record`), buradaki `sensors_calibr
 
 Bu yüzden harita toplamaya çıkmadan önce **mezura ile ölçüm yapıp** bu dosyayı doğrulayın.
 
+---
 
 ## Görsel Kontrol (Debug)
 
