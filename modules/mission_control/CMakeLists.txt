@@ -8,9 +8,26 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
+
+add_executable(mission_control_launch 
+  src/mission_control_launch.cpp
+  src/mode_start.cpp
+  src/mode_run.cpp
+  src/mode_pause.cpp
+  src/mode_park.cpp
+  src/mode_emergency.cpp
+)
+target_include_directories(mission_control_launch PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+ament_target_dependencies(mission_control_launch rclcpp std_msgs)
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -23,5 +40,10 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+install(TARGETS
+  mission_control_launch
+  DESTINATION lib/${PROJECT_NAME}  
+)
 
 ament_package()
