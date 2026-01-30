@@ -27,7 +27,7 @@ class MissionController: public rclcpp::Node {
         modes[MODE_RUN] = std::make_shared<RunMode>(shared_this);
         modes[MODE_PAUSE] = std::make_shared<PauseMode>(shared_this);
         modes[MODE_PARK] = std::make_shared<ParkMode>();
-        modes[MODE_EMERGENCY] = std::make_shared<EmergencyMode>();
+        modes[MODE_EMERGENCY] = std::make_shared<EmergencyMode>(shared_this);
 
         CURRENT_MODE = MODE_START;
         last_mode_=CURRENT_MODE;
@@ -54,8 +54,14 @@ class MissionController: public rclcpp::Node {
             RCLCPP_INFO(this->get_logger(), "Vehicle Mode Set to %u", CURRENT_MODE);
             last_mode_=CURRENT_MODE;
         }
+
         last_mode_=CURRENT_MODE;
         CURRENT_MODE = modes[CURRENT_MODE]->execute();
+        
+        if(CURRENT_MODE != MODE_EMERGENCY && CURRENT_MODE != MODE_START && modes[MODE_EMERGENCY]->execute() == MODE_EMERGENCY) {
+            last_mode_ = CURRENT_MODE;
+            CURRENT_MODE = MODE_EMERGENCY;
+        }
     }
 };
 

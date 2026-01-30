@@ -23,59 +23,70 @@ StartMode::StartMode(rclcpp::Node::SharedPtr node) : node_(node) {
 
 
 unsigned int StartMode::execute() {
+
+    bool returnStart=false;
     
     if(!LIDAR_TOPIC.empty() && !lidar_read) {
-        RCLCPP_INFO(node_->get_logger(), "No Lidar Data");
-        return MODE_START;
+        RCLCPP_ERROR(node_->get_logger(), "No Lidar Data");
+        returnStart = true;
     }
     if(!GNSS_TOPIC.empty() && !gnss_read) {
-        RCLCPP_INFO(node_->get_logger(), "No GNSS Data");
-        return MODE_START;
+        RCLCPP_ERROR(node_->get_logger(), "No GNSS Data");
+        returnStart = true;
+
     }
     if(!IMU_TOPIC.empty() && !imu_read) {
-        RCLCPP_INFO(node_->get_logger(), "No IMU Data");
-        return MODE_START;
+        RCLCPP_ERROR(node_->get_logger(), "No IMU Data");
+        returnStart = true;
     }
     if(!CAMERA_TOPIC.empty() && !camera_read) {
-        RCLCPP_INFO(node_->get_logger(), "No Camera Data");
-        return MODE_START;
+        RCLCPP_ERROR(node_->get_logger(), "No Camera Data");
+        returnStart = true;
+
     }
     if(!ODOM_TOPIC.empty() && !odom_read) {
-        RCLCPP_INFO(node_->get_logger(), "No Odometry Data");
-        return MODE_START;
+        RCLCPP_ERROR(node_->get_logger(), "No Odometry Data");
+        returnStart = true;
     }
 
-    RCLCPP_INFO(node_->get_logger(), "All Sensors Checked");
+    if(!returnStart) RCLCPP_DEBUG(node_->get_logger(), "All Sensors Checked");
 
     if(!localized) {
-        RCLCPP_INFO(node_->get_logger(), "Localization Failed");
-        return MODE_START;
+        RCLCPP_ERROR(node_->get_logger(), "Localization Failed");
+        returnStart=true;
+    } else {
+        RCLCPP_DEBUG(node_->get_logger(), "Localization Successfull");
     }
 
-    RCLCPP_INFO(node_->get_logger(), "Localization Successfull");
-    RCLCPP_INFO(node_->get_logger(), "Vehicle Started, Entering Pause Mode");
+    if(returnStart) return MODE_START;
 
+    RCLCPP_INFO(node_->get_logger(), "Vehicle Started, Entering Pause Mode");
     return MODE_PAUSE;
 }
 
 
 void StartMode::lidar_callback(sensor_msgs::msg::PointCloud2::SharedPtr msg) {
+    (void)msg;
     lidar_read=true;
 }
 
 void StartMode::gnss_callback(sensor_msgs::msg::NavSatFix::SharedPtr msg) {
+    (void)msg;
     gnss_read=true;
 }
 
 void StartMode::imu_callback(sensor_msgs::msg::Imu::SharedPtr msg) {
+    (void)msg;
     imu_read=true;
 }
 
 void StartMode::camera_callback(sensor_msgs::msg::Image::SharedPtr msg) {
+    (void)msg;
     camera_read=true;
 }
 
 void StartMode::odom_callback(nav_msgs::msg::Odometry::SharedPtr msg) {
+    (void)msg;
     odom_read=true;
 }
 
