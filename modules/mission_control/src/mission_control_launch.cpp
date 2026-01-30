@@ -6,6 +6,7 @@
 #include <mission_control/mode_pause.hpp>
 #include <mission_control/mode_park.hpp>
 #include <mission_control/mode_emergency.hpp>
+#include <string>
 
 using namespace std::chrono_literals;
 
@@ -19,7 +20,7 @@ class MissionController: public rclcpp::Node {
         loop_timer_ = create_wall_timer(500ms, std::bind(&MissionController::control_loop, this));
 
         auto shared_this = shared_from_this();
-        modes[MODE_START] = std::make_shared<StartMode>();
+        modes[MODE_START] = std::make_shared<StartMode>(shared_this);
         modes[MODE_RUN] = std::make_shared<RunMode>(shared_this);
         modes[MODE_PAUSE] = std::make_shared<PauseMode>(shared_this);
         modes[MODE_PARK] = std::make_shared<ParkMode>();
