@@ -18,9 +18,10 @@ class MissionController: public rclcpp::Node {
         publisher_timer_ = create_wall_timer(500ms, std::bind(&MissionController::publish_mode, this));
         loop_timer_ = create_wall_timer(500ms, std::bind(&MissionController::control_loop, this));
 
+        auto shared_this = shared_from_this();
         modes[MODE_START] = std::make_shared<StartMode>();
-        modes[MODE_RUN] = std::make_shared<RunMode>();
-        modes[MODE_PAUSE] = std::make_shared<PauseMode>();
+        modes[MODE_RUN] = std::make_shared<RunMode>(shared_this);
+        modes[MODE_PAUSE] = std::make_shared<PauseMode>(shared_this);
         modes[MODE_PARK] = std::make_shared<ParkMode>();
         modes[MODE_EMERGENCY] = std::make_shared<EmergencyMode>();
 
