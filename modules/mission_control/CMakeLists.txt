@@ -9,15 +9,6 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
-find_package(sensor_msgs REQUIRED)
-find_package(nav_msgs REQUIRED)
-find_package(geometry_msgs REQUIRED)
-find_package(autoware_adapi_v1_msgs REQUIRED)
-find_package(autoware_planning_msgs REQUIRED)
-find_package(autoware_vehicle_msgs REQUIRED)
-find_package(autoware_control_msgs REQUIRED)
-
-
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -35,7 +26,7 @@ target_include_directories(mission_control_launch PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
-ament_target_dependencies(mission_control_launch rclcpp std_msgs sensor_msgs nav_msgs autoware_adapi_v1_msgs geometry_msgs autoware_planning_msgs autoware_control_msgs autoware_vehicle_msgs)
+ament_target_dependencies(mission_control_launch rclcpp std_msgs)
 
 
 if(BUILD_TESTING)
