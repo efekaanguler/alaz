@@ -19,6 +19,9 @@ class MissionController: public rclcpp::Node {
         publisher_timer_ = create_wall_timer(500ms, std::bind(&MissionController::publish_mode, this));
         loop_timer_ = create_wall_timer(500ms, std::bind(&MissionController::control_loop, this));
 
+    }
+
+    void init() {
         auto shared_this = shared_from_this();
         modes[MODE_START] = std::make_shared<StartMode>(shared_this);
         modes[MODE_RUN] = std::make_shared<RunMode>(shared_this);
@@ -30,7 +33,6 @@ class MissionController: public rclcpp::Node {
         last_mode_=CURRENT_MODE;
         RCLCPP_INFO(this->get_logger(), "Vehicle Mode Set to %u", CURRENT_MODE);
     }
-
 
     private:
     uint8_t CURRENT_MODE=MODE_START;
@@ -61,6 +63,7 @@ class MissionController: public rclcpp::Node {
 int main(int argc, char **argv) {
     rclcpp::init(argc, argv);
     auto node = std::make_shared<MissionController>();
+    node->init();
     rclcpp::spin(node);
     rclcpp::shutdown();
     return 0;

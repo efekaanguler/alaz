@@ -2,7 +2,7 @@
 
 StartMode::StartMode(rclcpp::Node::SharedPtr node) : node_(node) {
     
-    if(LIDAR_TOPIC.empty())
+    if(!LIDAR_TOPIC.empty())
         lidar_subscriber = node_->create_subscription<sensor_msgs::msg::PointCloud2>(LIDAR_TOPIC, 10, std::bind(&StartMode::lidar_callback, this, std::placeholders::_1));
     
     if(!GNSS_TOPIC.empty())
