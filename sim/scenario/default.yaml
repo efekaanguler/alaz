@@ -1,0 +1,62 @@
+version: 1
+
+world:
+  map: "Town03"
+  synchronous_mode: true
+  fixed_delta_seconds: 0.05
+
+  physics:
+    max_substeps: 10
+    max_substep_delta_time: 0.01
+
+  weather:
+    enabled: true
+    preset: "ClearNoon"
+
+traffic:
+  enabled: false
+  vehicles: 0
+  pedestrians: 0
+  seed: 42
+
+ego_vehicle:
+  blueprint: "vehicle.tesla.model3"
+
+  # IMPORTANT: Carla ROS Bridge docs often assume this role name.
+  # It affects topics like /carla/<role_name>/...
+  role_name: "ego_vehicle"
+
+  autopilot: false
+
+  spawn:
+    strategy: "fixed_index"
+    fixed_index: 0
+    retry_policy:
+      enabled: true
+      max_retries: 20
+      fallback: "next_indices"
+
+  spectator:
+    enabled: true
+    mode: "follow_chase"
+    chase:
+      distance: 8.0
+      height: 3.0
+      pitch: -10.0
+
+sensors:
+  profile_file: "scenario/sensors/sensor_profile.yaml"
+
+ros:
+  enabled: true
+  use_sim_time: true
+  ros_domain_id: 0
+
+  naming:
+    base_namespace: "carla"
+    ego_name: "ego_vehicle"
+
+  control:
+    mode: "ackermann"
+    # NOTE: actual control topics are defined by carla_ackermann_control / bridge conventions.
+    # We'll validate with `ros2 topic list` once bridge is running.

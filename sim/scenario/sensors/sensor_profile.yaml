@@ -1,0 +1,77 @@
+version: 1
+profile_name: "ego_vehicle_default"
+
+imports:
+  camera_presets: "camera_rgb.yaml"
+  lidar_presets: "lidar_2d.yaml"
+  virtual: "virtual_sensors.yaml"
+
+# All sensors share the same mount point (as requested)
+shared_mount:
+  x: 1.5
+  y: 0.0
+  z: 1.6
+  roll: 0.0
+  pitch: 0.0
+
+physical_sensors:
+  # ---------- Cameras (same position, different yaw) ----------
+  - id: "front_camera"
+    from_preset: "camera_presets.presets.rgb_720p_20hz_fov90"
+    role_name: "front_camera"
+    attach:
+      x: 1.5
+      y: 0.0
+      z: 1.6
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    expected_ros_topics:
+      image: "/carla/ego_vehicle/front_camera/image"
+      camera_info: "/carla/ego_vehicle/front_camera/camera_info"
+
+  - id: "front_left_camera"
+    from_preset: "camera_presets.presets.rgb_720p_20hz_fov90"
+    role_name: "front_left_camera"
+    attach:
+      x: 1.5
+      y: 0.0
+      z: 1.6
+      roll: 0.0
+      pitch: 0.0
+      yaw: -45.0
+    expected_ros_topics:
+      image: "/carla/ego_vehicle/front_left_camera/image"
+      camera_info: "/carla/ego_vehicle/front_left_camera/camera_info"
+
+  - id: "front_right_camera"
+    from_preset: "camera_presets.presets.rgb_720p_20hz_fov90"
+    role_name: "front_right_camera"
+    attach:
+      x: 1.5
+      y: 0.0
+      z: 1.6
+      roll: 0.0
+      pitch: 0.0
+      yaw: 45.0
+    expected_ros_topics:
+      image: "/carla/ego_vehicle/front_right_camera/image"
+      camera_info: "/carla/ego_vehicle/front_right_camera/camera_info"
+
+  # ---------- 2D LiDAR (same position) ----------
+  - id: "lidar_2d"
+    from_preset: "lidar_presets.presets.lidar_2d_10hz_medium"
+    role_name: "lidar_2d"
+    attach:
+      x: 1.5
+      y: 0.0
+      z: 1.6
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    expected_ros_topics:
+      pointcloud: "/carla/ego_vehicle/lidar_2d/pointcloud"
+
+virtual_sensors:
+  - id: "speed"
+    from_virtual: "virtual.virtual_sensors.speed"
