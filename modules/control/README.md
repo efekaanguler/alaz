@@ -26,4 +26,4 @@ ros2 launch control control.launch.py
 
 ## References
 
-- [Autoware Documentation](https://autowarefoundation.org)
+- [Autoware Documentation](https://autowarefoundation.github.io/autoware-documentation/main/tutorials/)
