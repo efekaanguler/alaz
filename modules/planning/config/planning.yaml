@@ -1,0 +1,12 @@
+# Behavior Path Planner Parameters
+behavior_path_planner:
+  ros__parameters:
+    max_drivable_area_expansion_width: 0.0
+    smooth_path_with_approx_spline: true
+
+# Motion Velocity Smoother Parameters
+motion_velocity_smoother:
+  ros__parameters:
+    algorithm_type: "jerk_filtered"
+    enable_large_acceleration_trajectory: false
+    enable_slope_limit: true

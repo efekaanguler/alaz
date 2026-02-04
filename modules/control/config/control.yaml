@@ -1,0 +1,20 @@
+# Trajectory Follower Parameters
+trajectory_follower:
+  ros__parameters:
+    vehicle_model_type: "kinematic"
+    nominal_dt: 0.03
+
+# MPC Lateral Controller Parameters  
+mpc_lateral_controller:
+  ros__parameters:
+    enable_path_smoothing: true
+    enable_yaw_rate_limit: true
+    max_yaw_rate: 0.5
+    use_steer_prediction: true
+
+# Adaptive Cruise Control Parameters
+adaptive_cruise_control:
+  ros__parameters:
+    target_distance: 10.0
+    emergency_deceleration: -1.0
+    emergency_acceleration: 0.5
