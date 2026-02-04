@@ -3,6 +3,8 @@
 
 class PauseMode : public ModeBase {
 public:
+    double PAUSE_DURATION_SECONDS = 5.0;
+    
     PauseMode(rclcpp::Node::SharedPtr node);
     unsigned int execute() override;
 

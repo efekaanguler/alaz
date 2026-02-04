@@ -4,28 +4,28 @@ RunMode::RunMode(rclcpp::Node::SharedPtr node) : node_(node) {
     
     // Publishers to command autoware
     goal_publisher_ = node_->create_publisher<geometry_msgs::msg::PoseStamped>(
-        "/planning/mission_planning/goal", 10);
+        GOAL_PUBLISHER_TOPIC, 10);
     
     engage_publisher_ = node_->create_publisher<std_msgs::msg::Bool>(
-        "/autoware/engage", 10);
+        ENGAGE_PUBLISHER_TOPIC, 10);
     
     // Subscribe to goal array
     goal_array_subscriber_ = node_->create_subscription<geometry_msgs::msg::PoseArray>(
-        "/mission_control/goal_array", 10,
+        GOAL_ARRAY_SUBSCRIBER_TOPIC, 10,
         std::bind(&RunMode::goal_array_callback, this, std::placeholders::_1));
     
     // Subscribe to route and planned trajectory
     route_subscriber_ = node_->create_subscription<autoware_planning_msgs::msg::LaneletRoute>(
-        "/api/routing/route", 10,
+        ROUTE_SUBSCRIBER_TOPIC, 10,
         std::bind(&RunMode::route_callback, this, std::placeholders::_1));
     
     trajectory_subscriber_ = node_->create_subscription<autoware_planning_msgs::msg::Trajectory>(
-        "/planning/scenario_planning/lane_driving/trajectory", 10,
+        TRAJECTORY_SUBSCRIBER_TOPIC, 10,
         std::bind(&RunMode::trajectory_callback, this, std::placeholders::_1));
     
     // Subscribe to vehicle kinematics
     kinematics_subscriber_ = node_->create_subscription<geometry_msgs::msg::Twist>(
-        "/api/vehicle/kinematics", 10,
+        KINEMATICS_SUBSCRIBER_TOPIC, 10,
         std::bind(&RunMode::kinematics_callback, this, std::placeholders::_1));
     
     // TODO: Subscribe to velocity and steering topics when proper control message types are available
@@ -39,7 +39,7 @@ RunMode::RunMode(rclcpp::Node::SharedPtr node) : node_(node) {
     
     // Subscribe to emergency topic
     emergency_subscriber_ = node_->create_subscription<std_msgs::msg::Bool>(
-        "/api/autoware/get/emergency", 10,
+        EMERGENCY_SUBSCRIBER_TOPIC, 10,
         std::bind(&RunMode::emergency_callback, this, std::placeholders::_1));
     
     // TODO: Subscribe to routing state to check if goal reached

@@ -11,6 +11,14 @@
 
 class RunMode : public ModeBase {
 public:
+    std::string GOAL_PUBLISHER_TOPIC="/planning/mission_planning/goal";
+    std::string ENGAGE_PUBLISHER_TOPIC="/autoware/engage";
+    std::string GOAL_ARRAY_SUBSCRIBER_TOPIC="/mission_control/goal_array";
+    std::string ROUTE_SUBSCRIBER_TOPIC="/api/routing/route";
+    std::string TRAJECTORY_SUBSCRIBER_TOPIC="/planning/scenario_planning/lane_driving/trajectory";
+    std::string KINEMATICS_SUBSCRIBER_TOPIC="/api/vehicle/kinematics";
+    std::string EMERGENCY_SUBSCRIBER_TOPIC="/api/autoware/get/emergency";
+    
     RunMode(rclcpp::Node::SharedPtr node);
     unsigned int execute() override;
 
