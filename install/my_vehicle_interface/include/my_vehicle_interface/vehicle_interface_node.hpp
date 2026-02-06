@@ -1,1 +1,0 @@
-/workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp

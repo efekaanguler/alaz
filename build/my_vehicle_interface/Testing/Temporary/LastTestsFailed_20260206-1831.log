@@ -1,0 +1,3 @@
+3:cpplint
+6:pep257
+7:uncrustify

@@ -1,2 +1,4 @@
 maps/
-testing/
+testing/build/
+install/
+log/

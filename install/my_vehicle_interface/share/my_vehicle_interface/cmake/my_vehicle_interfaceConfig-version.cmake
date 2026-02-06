@@ -1,1 +1,0 @@
-/workspace/build/my_vehicle_interface/ament_cmake_core/my_vehicle_interfaceConfig-version.cmake
