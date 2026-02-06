@@ -2,3 +2,4 @@ maps/
 testing/build/
 install/
 log/
+*.log

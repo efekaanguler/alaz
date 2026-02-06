@@ -1,9 +1,0 @@
-+ set -e
-+++ dirname ./dev_run.sh
-++ cd .
-++ pwd
-+ SCRIPT_DIR=/Users/zuhalkoksal/alaz
-+ AUTOWARE_RUN=/Users/zuhalkoksal/alaz/../autoware/docker/run.sh
-+ WORKSPACE_PATH=/Users/zuhalkoksal/alaz
-+ [[ 1 == \0 ]]
-+ exec /Users/zuhalkoksal/alaz/../autoware/docker/run.sh --devel --workspace /Users/zuhalkoksal/alaz /bin/bash
