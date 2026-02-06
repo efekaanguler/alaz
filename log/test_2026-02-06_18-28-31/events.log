@@ -1,0 +1,856 @@
+[0.000000] (-) TimerEvent: {}
+[0.000207] (my_vehicle_interface) JobQueued: {'identifier': 'my_vehicle_interface', 'dependencies': OrderedDict([('my_vehicle_interface', '/workspace/install/my_vehicle_interface')])}
+[0.000289] (my_vehicle_interface) JobStarted: {'identifier': 'my_vehicle_interface'}
+[0.026605] (my_vehicle_interface) Command: {'cmd': ['/usr/bin/ctest', '-C', 'Release', '-D', 'ExperimentalTest', '--no-compress-output', '-V', '--force-new-ctest-process'], 'cwd': '/workspace/build/my_vehicle_interface', 'env': OrderedDict([('CCACHE_DIR', '/home/zuhalkoksal/.ccache'), ('HOSTNAME', 'docker-desktop'), ('LOCAL_GROUP', 'staff'), ('LOCAL_USER', 'zuhalkoksal'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/workspace/install/my_vehicle_interface/lib:/opt/autoware/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zuhalkoksal'), ('OLDPWD', '/workspace/src'), ('ROS_PYTHON_VERSION', '3'), ('COLCON_PREFIX_PATH', '/workspace/install:/opt/autoware'), ('LOCAL_GID', '20'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('NVIDIA_DRIVER_CAPABILITIES', 'all'), ('TERM', 'xterm'), ('GAZEBO_MODEL_PATH', '/opt/autoware/share/'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'), ('XDG_RUNTIME_DIR', ''), ('LANG', 'C.UTF-8'), ('RMW_IMPLEMENTATION', 'rmw_cyclonedds_cpp'), ('XAUTHORITY', ''), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/workspace/install/my_vehicle_interface:/opt/autoware:/opt/ros/humble'), ('LOCAL_UID', '501'), ('PWD', '/workspace/build/my_vehicle_interface'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/opt/autoware/lib/python3.10/site-packages:/opt/autoware/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('TZ', ''), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/workspace/install/my_vehicle_interface:/opt/autoware')]), 'shell': False}
+[0.033565] (my_vehicle_interface) StdoutLine: {'line': b'UpdateCTestConfiguration  from :/workspace/build/my_vehicle_interface/CTestConfiguration.ini\n'}
+[0.033846] (my_vehicle_interface) StdoutLine: {'line': b'Parse Config file:/workspace/build/my_vehicle_interface/CTestConfiguration.ini\n'}
+[0.034039] (my_vehicle_interface) StdoutLine: {'line': b'   Site: docker-desktop\n'}
+[0.034296] (my_vehicle_interface) StdoutLine: {'line': b'   Build name: (empty)\n'}
+[0.034518] (my_vehicle_interface) StdoutLine: {'line': b' Add coverage exclude regular expressions.\n'}
+[0.034772] (my_vehicle_interface) StdoutLine: {'line': b'Create new tag: 20260206-1828 - Experimental\n'}
+[0.035224] (my_vehicle_interface) StdoutLine: {'line': b'UpdateCTestConfiguration  from :/workspace/build/my_vehicle_interface/CTestConfiguration.ini\n'}
+[0.035381] (my_vehicle_interface) StdoutLine: {'line': b'Parse Config file:/workspace/build/my_vehicle_interface/CTestConfiguration.ini\n'}
+[0.035649] (my_vehicle_interface) StdoutLine: {'line': b'Test project /workspace/build/my_vehicle_interface\n'}
+[0.036126] (my_vehicle_interface) StdoutLine: {'line': b'Constructing a list of tests\n'}
+[0.036665] (my_vehicle_interface) StdoutLine: {'line': b'Done constructing a list of tests\n'}
+[0.036934] (my_vehicle_interface) StdoutLine: {'line': b'Updating test list for fixtures\n'}
+[0.037148] (my_vehicle_interface) StdoutLine: {'line': b'Added 0 tests to meet fixture requirements\n'}
+[0.037364] (my_vehicle_interface) StdoutLine: {'line': b'Checking test dependency graph...\n'}
+[0.037601] (my_vehicle_interface) StdoutLine: {'line': b'Checking test dependency graph end\n'}
+[0.037845] (my_vehicle_interface) StdoutLine: {'line': b'test 1\n'}
+[0.038078] (my_vehicle_interface) StdoutLine: {'line': b'    Start 1: copyright\n'}
+[0.038251] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[0.038451] (my_vehicle_interface) StdoutLine: {'line': b'1: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/copyright.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_copyright/copyright.txt" "--command" "/opt/ros/humble/bin/ament_copyright" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/copyright.xunit.xml"\n'}
+[0.038619] (my_vehicle_interface) StdoutLine: {'line': b'1: Test timeout computed to be: 200\n'}
+[0.069558] (my_vehicle_interface) StdoutLine: {'line': b"1: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[0.069795] (my_vehicle_interface) StdoutLine: {'line': b'1:  - /opt/ros/humble/bin/ament_copyright --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/copyright.xunit.xml\n'}
+[0.099693] (-) TimerEvent: {}
+[0.181579] (my_vehicle_interface) StdoutLine: {'line': b'1: include/my_vehicle_interface/can_utils.hpp: copyright=SDC Team (2026), license=<unknown>\n'}
+[0.182072] (my_vehicle_interface) StdoutLine: {'line': b'1: include/my_vehicle_interface/vehicle_interface_node.hpp: copyright=SDC Team (2026), license=<unknown>\n'}
+[0.182296] (my_vehicle_interface) StdoutLine: {'line': b'1: src/can_utils.cpp: copyright=SDC Team (2026), license=<unknown>\n'}
+[0.182481] (my_vehicle_interface) StdoutLine: {'line': b'1: src/main.cpp: copyright=SDC Team (2026), license=<unknown>\n'}
+[0.182666] (my_vehicle_interface) StdoutLine: {'line': b'1: src/vehicle_interface_node.cpp: copyright=SDC Team (2026), license=<unknown>\n'}
+[0.182855] (my_vehicle_interface) StdoutLine: {'line': b'1: test/test_can_simulation.py: copyright=SDC Team (2026), license=<unknown>\n'}
+[0.183042] (my_vehicle_interface) StdoutLine: {'line': b'1: 6 errors, checked 6 files\n'}
+[0.187180] (my_vehicle_interface) StdoutLine: {'line': b'1: -- run_test.py: return code 1\n'}
+[0.187443] (my_vehicle_interface) StdoutLine: {'line': b"1: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/copyright.xunit.xml'\n"}
+[0.192435] (my_vehicle_interface) StdoutLine: {'line': b'1/8 Test #1: copyright ........................***Failed    0.16 sec\n'}
+[0.193116] (my_vehicle_interface) StdoutLine: {'line': b'test 2\n'}
+[0.193468] (my_vehicle_interface) StdoutLine: {'line': b'    Start 2: cppcheck\n'}
+[0.193692] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[0.193846] (my_vehicle_interface) StdoutLine: {'line': b'2: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cppcheck.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_cppcheck/cppcheck.txt" "--command" "/opt/ros/humble/bin/ament_cppcheck" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cppcheck.xunit.xml" "--include_dirs" "/workspace/src/vehicle/external/my_vehicle_interface/include"\n'}
+[0.193996] (my_vehicle_interface) StdoutLine: {'line': b'2: Test timeout computed to be: 300\n'}
+[0.201334] (-) TimerEvent: {}
+[0.222779] (my_vehicle_interface) StdoutLine: {'line': b"2: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[0.222993] (my_vehicle_interface) StdoutLine: {'line': b'2:  - /opt/ros/humble/bin/ament_cppcheck --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cppcheck.xunit.xml --include_dirs /workspace/src/vehicle/external/my_vehicle_interface/include\n'}
+[0.266071] (my_vehicle_interface) StdoutLine: {'line': b'2: cppcheck 2.7 has known performance issues and therefore will not be used, set the AMENT_CPPCHECK_ALLOW_SLOW_VERSIONS environment variable to override this.\n'}
+[0.272204] (my_vehicle_interface) StdoutLine: {'line': b'2: -- run_test.py: return code 0\n'}
+[0.272532] (my_vehicle_interface) StdoutLine: {'line': b"2: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cppcheck.xunit.xml'\n"}
+[0.277505] (my_vehicle_interface) StdoutLine: {'line': b'2/8 Test #2: cppcheck .........................   Passed    0.08 sec\n'}
+[0.278007] (my_vehicle_interface) StdoutLine: {'line': b'test 3\n'}
+[0.278123] (my_vehicle_interface) StdoutLine: {'line': b'    Start 3: cpplint\n'}
+[0.278323] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[0.278506] (my_vehicle_interface) StdoutLine: {'line': b'3: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cpplint.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_cpplint/cpplint.txt" "--command" "/opt/ros/humble/bin/ament_cpplint" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cpplint.xunit.xml"\n'}
+[0.278720] (my_vehicle_interface) StdoutLine: {'line': b'3: Test timeout computed to be: 120\n'}
+[0.302530] (-) TimerEvent: {}
+[0.307023] (my_vehicle_interface) StdoutLine: {'line': b"3: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[0.307359] (my_vehicle_interface) StdoutLine: {'line': b'3:  - /opt/ros/humble/bin/ament_cpplint --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cpplint.xunit.xml\n'}
+[0.366093] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:8:  Found C++ system header after other header. Should be: can_utils.h, c system, c++ system, other.  [build/include_order] [4]\n'}
+[0.372330] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:9:  Found C++ system header after other header. Should be: can_utils.h, c system, c++ system, other.  [build/include_order] [4]\n'}
+[0.381778] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:19:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.381971] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:19:  Missing username in TODO; it should look like "// TODO(my_username): Stuff."  [readability/todo] [2]\n'}
+[0.382806] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:20:  Missing username in TODO; it should look like "// TODO(my_username): Stuff."  [readability/todo] [2]\n'}
+[0.383803] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:21:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.384029] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:21:  Missing username in TODO; it should look like "// TODO(my_username): Stuff."  [readability/todo] [2]\n'}
+[0.386606] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:24:  Missing username in TODO; it should look like "// TODO(my_username): Stuff."  [readability/todo] [2]\n'}
+[0.387634] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:25:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.387829] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:25:  Missing username in TODO; it should look like "// TODO(my_username): Stuff."  [readability/todo] [2]\n'}
+[0.403290] (-) TimerEvent: {}
+[0.463995] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:110:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.465059] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:111:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.466866] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:113:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.504292] (-) TimerEvent: {}
+[0.571065] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp:27:  Found C++ system header after other header. Should be: vehicle_interface_node.h, c system, c++ system, other.  [build/include_order] [4]\n'}
+[0.605297] (-) TimerEvent: {}
+[0.667411] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp:132:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.669228] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp:134:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.696583] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp:30:  Missing username in TODO; it should look like "// TODO(my_username): Stuff."  [readability/todo] [2]\n'}
+[0.698162] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp:58:  Missing username in TODO; it should look like "// TODO(my_username): Stuff."  [readability/todo] [2]\n'}
+[0.699620] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp:85:  Missing username in TODO; it should look like "// TODO(my_username): Stuff."  [readability/todo] [2]\n'}
+[0.700587] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp:106:  Missing username in TODO; it should look like "// TODO(my_username): Stuff."  [readability/todo] [2]\n'}
+[0.701482] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp:121:  Missing username in TODO; it should look like "// TODO(my_username): Stuff."  [readability/todo] [2]\n'}
+[0.702193] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp:134:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.702375] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp:135:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.706297] (-) TimerEvent: {}
+[0.719623] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/main.cpp:6:  Found C++ system header after other header. Should be: main.h, c system, c++ system, other.  [build/include_order] [4]\n'}
+[0.757433] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/vehicle_interface_node.cpp:214:  Missing username in TODO; it should look like "// TODO(my_username): Stuff."  [readability/todo] [2]\n'}
+[0.757810] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/vehicle_interface_node.cpp:220:  Missing username in TODO; it should look like "// TODO(my_username): Stuff."  [readability/todo] [2]\n'}
+[0.759432] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/vehicle_interface_node.cpp:244:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.762217] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/vehicle_interface_node.cpp:291:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.777033] (my_vehicle_interface) StdoutLine: {'line': b"3: Category 'build/include_order' errors found: 4\n"}
+[0.777346] (my_vehicle_interface) StdoutLine: {'line': b"3: Category 'readability/todo' errors found: 12\n"}
+[0.777703] (my_vehicle_interface) StdoutLine: {'line': b"3: Category 'whitespace/comments' errors found: 12\n"}
+[0.777857] (my_vehicle_interface) StdoutLine: {'line': b'3: Total errors found: 28\n'}
+[0.778149] (my_vehicle_interface) StdoutLine: {'line': b"3: Using '--root=/workspace/src/vehicle/external/my_vehicle_interface/include' argument\n"}
+[0.778386] (my_vehicle_interface) StdoutLine: {'line': b'3: \n'}
+[0.778580] (my_vehicle_interface) StdoutLine: {'line': b'3: Done processing /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp\n'}
+[0.778769] (my_vehicle_interface) StdoutLine: {'line': b'3: \n'}
+[0.778952] (my_vehicle_interface) StdoutLine: {'line': b'3: Done processing /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp\n'}
+[0.779089] (my_vehicle_interface) StdoutLine: {'line': b'3: \n'}
+[0.779187] (my_vehicle_interface) StdoutLine: {'line': b"3: Using '--root=/workspace/src/vehicle/external/my_vehicle_interface/src' argument\n"}
+[0.779311] (my_vehicle_interface) StdoutLine: {'line': b'3: \n'}
+[0.779409] (my_vehicle_interface) StdoutLine: {'line': b'3: Done processing /workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp\n'}
+[0.779507] (my_vehicle_interface) StdoutLine: {'line': b'3: \n'}
+[0.779622] (my_vehicle_interface) StdoutLine: {'line': b'3: Done processing /workspace/src/vehicle/external/my_vehicle_interface/src/main.cpp\n'}
+[0.779718] (my_vehicle_interface) StdoutLine: {'line': b'3: \n'}
+[0.779812] (my_vehicle_interface) StdoutLine: {'line': b'3: Done processing /workspace/src/vehicle/external/my_vehicle_interface/src/vehicle_interface_node.cpp\n'}
+[0.779907] (my_vehicle_interface) StdoutLine: {'line': b'3: \n'}
+[0.783488] (my_vehicle_interface) StdoutLine: {'line': b'3: -- run_test.py: return code 1\n'}
+[0.783743] (my_vehicle_interface) StdoutLine: {'line': b"3: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cpplint.xunit.xml'\n"}
+[0.789396] (my_vehicle_interface) StdoutLine: {'line': b'3/8 Test #3: cpplint ..........................***Failed    0.51 sec\n'}
+[0.789948] (my_vehicle_interface) StdoutLine: {'line': b'test 4\n'}
+[0.790060] (my_vehicle_interface) StdoutLine: {'line': b'    Start 4: flake8\n'}
+[0.790246] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[0.790397] (my_vehicle_interface) StdoutLine: {'line': b'4: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/flake8.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_flake8/flake8.txt" "--command" "/opt/ros/humble/bin/ament_flake8" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/flake8.xunit.xml"\n'}
+[0.790578] (my_vehicle_interface) StdoutLine: {'line': b'4: Test timeout computed to be: 60\n'}
+[0.807327] (-) TimerEvent: {}
+[0.818650] (my_vehicle_interface) StdoutLine: {'line': b"4: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[0.818875] (my_vehicle_interface) StdoutLine: {'line': b'4:  - /opt/ros/humble/bin/ament_flake8 --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/flake8.xunit.xml\n'}
+[0.908675] (-) TimerEvent: {}
+[0.994444] (my_vehicle_interface) StdoutLine: {'line': b'4: """\n'}
+[0.995181] (my_vehicle_interface) StdoutLine: {'line': b'4: SDC 2026 Kart CAN Simulator\n'}
+[0.995371] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[0.995846] (my_vehicle_interface) StdoutLine: {'line': b"4: This script simulates the kart's CAN responses for testing without real hardware.\n"}
+[0.996089] (my_vehicle_interface) StdoutLine: {'line': b'4: It can be used with virtual CAN (vcan) on Linux to test the vehicle interface.\n'}
+[0.996265] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[0.996571] (my_vehicle_interface) StdoutLine: {'line': b'4: Usage:\n'}
+[0.996823] (my_vehicle_interface) StdoutLine: {'line': b'4:   1. Set up virtual CAN:\n'}
+[0.996980] (my_vehicle_interface) StdoutLine: {'line': b'4:      sudo modprobe vcan\n'}
+[0.997256] (my_vehicle_interface) StdoutLine: {'line': b'4:      sudo ip link add dev vcan0 type vcan\n'}
+[0.997527] (my_vehicle_interface) StdoutLine: {'line': b'4:      sudo ip link set up vcan0\n'}
+[0.997725] (my_vehicle_interface) StdoutLine: {'line': b'4:   \n'}
+[0.997967] (my_vehicle_interface) StdoutLine: {'line': b'4:   2. Run ros2_socketcan with vcan0:\n'}
+[0.998171] (my_vehicle_interface) StdoutLine: {'line': b'4:      ros2 launch ros2_socketcan socket_can_bridge.launch.xml interface:=vcan0\n'}
+[0.998415] (my_vehicle_interface) StdoutLine: {'line': b'4:   \n'}
+[0.998628] (my_vehicle_interface) StdoutLine: {'line': b'4:   3. Run this simulator:\n'}
+[0.998897] (my_vehicle_interface) StdoutLine: {'line': b'4:      python3 test_can_simulation.py\n'}
+[0.999099] (my_vehicle_interface) StdoutLine: {'line': b'4:   \n'}
+[0.999315] (my_vehicle_interface) StdoutLine: {'line': b'4:   4. Run your vehicle interface:\n'}
+[0.999575] (my_vehicle_interface) StdoutLine: {'line': b'4:      ros2 launch my_vehicle_interface vehicle_interface.launch.xml\n'}
+[0.999847] (my_vehicle_interface) StdoutLine: {'line': b'4: """\n'}
+[1.000059] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.000292] (my_vehicle_interface) StdoutLine: {'line': b'4: """\n'}
+[1.000435] (my_vehicle_interface) StdoutLine: {'line': b'4: SDC 2026 Kart CAN Simulator\n'}
+[1.000629] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.000821] (my_vehicle_interface) StdoutLine: {'line': b"4: This script simulates the kart's CAN responses for testing without real hardware.\n"}
+[1.001027] (my_vehicle_interface) StdoutLine: {'line': b'4: It can be used with virtual CAN (vcan) on Linux to test the vehicle interface.\n'}
+[1.001228] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.001491] (my_vehicle_interface) StdoutLine: {'line': b'4: Usage:\n'}
+[1.001823] (my_vehicle_interface) StdoutLine: {'line': b'4:   1. Set up virtual CAN:\n'}
+[1.002014] (my_vehicle_interface) StdoutLine: {'line': b'4:      sudo modprobe vcan\n'}
+[1.002173] (my_vehicle_interface) StdoutLine: {'line': b'4:      sudo ip link add dev vcan0 type vcan\n'}
+[1.002382] (my_vehicle_interface) StdoutLine: {'line': b'4:      sudo ip link set up vcan0\n'}
+[1.002672] (my_vehicle_interface) StdoutLine: {'line': b'4:   \n'}
+[1.002906] (my_vehicle_interface) StdoutLine: {'line': b'4:   2. Run ros2_socketcan with vcan0:\n'}
+[1.003107] (my_vehicle_interface) StdoutLine: {'line': b'4:      ros2 launch ros2_socketcan socket_can_bridge.launch.xml interface:=vcan0\n'}
+[1.003522] (my_vehicle_interface) StdoutLine: {'line': b'4:   \n'}
+[1.003791] (my_vehicle_interface) StdoutLine: {'line': b'4:   3. Run this simulator:\n'}
+[1.004000] (my_vehicle_interface) StdoutLine: {'line': b'4:      python3 test_can_simulation.py\n'}
+[1.004188] (my_vehicle_interface) StdoutLine: {'line': b'4:   \n'}
+[1.004468] (my_vehicle_interface) StdoutLine: {'line': b'4:   4. Run your vehicle interface:\n'}
+[1.004700] (my_vehicle_interface) StdoutLine: {'line': b'4:      ros2 launch my_vehicle_interface vehicle_interface.launch.xml\n'}
+[1.004918] (my_vehicle_interface) StdoutLine: {'line': b'4: """\n'}
+[1.005150] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.005452] (my_vehicle_interface) StdoutLine: {'line': b'4: """\n'}
+[1.005724] (my_vehicle_interface) StdoutLine: {'line': b'4: SDC 2026 Kart CAN Simulator\n'}
+[1.005955] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.006112] (my_vehicle_interface) StdoutLine: {'line': b"4: This script simulates the kart's CAN responses for testing without real hardware.\n"}
+[1.006303] (my_vehicle_interface) StdoutLine: {'line': b'4: It can be used with virtual CAN (vcan) on Linux to test the vehicle interface.\n'}
+[1.006535] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.006765] (my_vehicle_interface) StdoutLine: {'line': b'4: Usage:\n'}
+[1.006988] (my_vehicle_interface) StdoutLine: {'line': b'4:   1. Set up virtual CAN:\n'}
+[1.007280] (my_vehicle_interface) StdoutLine: {'line': b'4:      sudo modprobe vcan\n'}
+[1.007462] (my_vehicle_interface) StdoutLine: {'line': b'4:      sudo ip link add dev vcan0 type vcan\n'}
+[1.007776] (my_vehicle_interface) StdoutLine: {'line': b'4:      sudo ip link set up vcan0\n'}
+[1.007984] (my_vehicle_interface) StdoutLine: {'line': b'4:   \n'}
+[1.008185] (my_vehicle_interface) StdoutLine: {'line': b'4:   2. Run ros2_socketcan with vcan0:\n'}
+[1.008378] (my_vehicle_interface) StdoutLine: {'line': b'4:      ros2 launch ros2_socketcan socket_can_bridge.launch.xml interface:=vcan0\n'}
+[1.008593] (my_vehicle_interface) StdoutLine: {'line': b'4:   \n'}
+[1.008819] (-) TimerEvent: {}
+[1.008900] (my_vehicle_interface) StdoutLine: {'line': b'4:   3. Run this simulator:\n'}
+[1.009227] (my_vehicle_interface) StdoutLine: {'line': b'4:      python3 test_can_simulation.py\n'}
+[1.009514] (my_vehicle_interface) StdoutLine: {'line': b'4:   \n'}
+[1.009702] (my_vehicle_interface) StdoutLine: {'line': b'4:   4. Run your vehicle interface:\n'}
+[1.009916] (my_vehicle_interface) StdoutLine: {'line': b'4:      ros2 launch my_vehicle_interface vehicle_interface.launch.xml\n'}
+[1.010104] (my_vehicle_interface) StdoutLine: {'line': b'4: """\n'}
+[1.010291] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.010467] (my_vehicle_interface) StdoutLine: {'line': b'4: """\n'}
+[1.010631] (my_vehicle_interface) StdoutLine: {'line': b'4: SDC 2026 Kart CAN Simulator\n'}
+[1.010774] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.010914] (my_vehicle_interface) StdoutLine: {'line': b"4: This script simulates the kart's CAN responses for testing without real hardware.\n"}
+[1.011055] (my_vehicle_interface) StdoutLine: {'line': b'4: It can be used with virtual CAN (vcan) on Linux to test the vehicle interface.\n'}
+[1.011214] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.011380] (my_vehicle_interface) StdoutLine: {'line': b'4: Usage:\n'}
+[1.011617] (my_vehicle_interface) StdoutLine: {'line': b'4:   1. Set up virtual CAN:\n'}
+[1.011789] (my_vehicle_interface) StdoutLine: {'line': b'4:      sudo modprobe vcan\n'}
+[1.011971] (my_vehicle_interface) StdoutLine: {'line': b'4:      sudo ip link add dev vcan0 type vcan\n'}
+[1.012141] (my_vehicle_interface) StdoutLine: {'line': b'4:      sudo ip link set up vcan0\n'}
+[1.012301] (my_vehicle_interface) StdoutLine: {'line': b'4:   \n'}
+[1.012449] (my_vehicle_interface) StdoutLine: {'line': b'4:   2. Run ros2_socketcan with vcan0:\n'}
+[1.012602] (my_vehicle_interface) StdoutLine: {'line': b'4:      ros2 launch ros2_socketcan socket_can_bridge.launch.xml interface:=vcan0\n'}
+[1.012739] (my_vehicle_interface) StdoutLine: {'line': b'4:   \n'}
+[1.012887] (my_vehicle_interface) StdoutLine: {'line': b'4:   3. Run this simulator:\n'}
+[1.013026] (my_vehicle_interface) StdoutLine: {'line': b'4:      python3 test_can_simulation.py\n'}
+[1.013183] (my_vehicle_interface) StdoutLine: {'line': b'4:   \n'}
+[1.013341] (my_vehicle_interface) StdoutLine: {'line': b'4:   4. Run your vehicle interface:\n'}
+[1.013510] (my_vehicle_interface) StdoutLine: {'line': b'4:      ros2 launch my_vehicle_interface vehicle_interface.launch.xml\n'}
+[1.013691] (my_vehicle_interface) StdoutLine: {'line': b'4: """\n'}
+[1.013846] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.013980] (my_vehicle_interface) StdoutLine: {'line': b'4: import struct\n'}
+[1.014127] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.014300] (my_vehicle_interface) StdoutLine: {'line': b'4: import argparse\n'}
+[1.014549] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.014730] (my_vehicle_interface) StdoutLine: {'line': b'4:     print("Error: python-can not installed. Install with: pip install python-can")\n'}
+[1.014909] (my_vehicle_interface) StdoutLine: {'line': b'4:           ^\n'}
+[1.015159] (my_vehicle_interface) StdoutLine: {'line': b'4:     def __init__(self, interface: str = "vcan0"):\n'}
+[1.015477] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.015697] (my_vehicle_interface) StdoutLine: {'line': b'4:     def __init__(self, interface: str = "vcan0"):\n'}
+[1.016026] (my_vehicle_interface) StdoutLine: {'line': b'4:                                         ^\n'}
+[1.019292] (my_vehicle_interface) StdoutLine: {'line': b'4:         \n'}
+[1.019410] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.019504] (my_vehicle_interface) StdoutLine: {'line': b'4:         \n'}
+[1.019593] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.021148] (my_vehicle_interface) StdoutLine: {'line': b'4:         \n'}
+[1.021309] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.021406] (my_vehicle_interface) StdoutLine: {'line': b'4:         print(f"Kart Simulator started on {interface}")\n'}
+[1.021529] (my_vehicle_interface) StdoutLine: {'line': b'4:               ^\n'}
+[1.021642] (my_vehicle_interface) StdoutLine: {'line': b'4:         print(f"  Speed sensor CAN ID: 0x{self.SPEED_SENSOR_ID:X}")\n'}
+[1.021806] (my_vehicle_interface) StdoutLine: {'line': b'4:               ^\n'}
+[1.022140] (my_vehicle_interface) StdoutLine: {'line': b'4:         print(f"  Steering feedback CAN ID: 0x{self.STEERING_FEEDBACK_ID:X}")\n'}
+[1.022253] (my_vehicle_interface) StdoutLine: {'line': b'4:               ^\n'}
+[1.022438] (my_vehicle_interface) StdoutLine: {'line': b'4:     \n'}
+[1.022537] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.022640] (my_vehicle_interface) StdoutLine: {'line': b'4:         print(f"Sent speed: {speed_hmh} hm/h ({speed_hmh * 0.0278:.2f} m/s)")\n'}
+[1.022743] (my_vehicle_interface) StdoutLine: {'line': b'4:               ^\n'}
+[1.022838] (my_vehicle_interface) StdoutLine: {'line': b'4:     \n'}
+[1.022942] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.023046] (my_vehicle_interface) StdoutLine: {'line': b'4:         print(f"Sent steering: {steering_deg:.1f} deg")\n'}
+[1.023145] (my_vehicle_interface) StdoutLine: {'line': b'4:               ^\n'}
+[1.023242] (my_vehicle_interface) StdoutLine: {'line': b'4:     \n'}
+[1.023366] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.023461] (my_vehicle_interface) StdoutLine: {'line': b'4:         \n'}
+[1.023557] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.023654] (my_vehicle_interface) StdoutLine: {'line': b'4:                 print(f"Received steering command: {steering_deg:.1f} deg")\n'}
+[1.023783] (my_vehicle_interface) StdoutLine: {'line': b'4:                       ^\n'}
+[1.023902] (my_vehicle_interface) StdoutLine: {'line': b'4:                 print(f"Received brake command: {brake_percent}%")\n'}
+[1.024008] (my_vehicle_interface) StdoutLine: {'line': b'4:                       ^\n'}
+[1.024103] (my_vehicle_interface) StdoutLine: {'line': b'4:                 print(f"Received throttle command: {throttle_percent}%")\n'}
+[1.024208] (my_vehicle_interface) StdoutLine: {'line': b'4:                       ^\n'}
+[1.024303] (my_vehicle_interface) StdoutLine: {'line': b'4:     \n'}
+[1.024399] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.024490] (my_vehicle_interface) StdoutLine: {'line': b'4:         print("\\nSimulator running. Press Ctrl+C to stop.")\n'}
+[1.024585] (my_vehicle_interface) StdoutLine: {'line': b'4:               ^\n'}
+[1.024678] (my_vehicle_interface) StdoutLine: {'line': b'4:         print("Sending periodic speed and steering feedback...")\n'}
+[1.024767] (my_vehicle_interface) StdoutLine: {'line': b'4:               ^\n'}
+[1.024857] (my_vehicle_interface) StdoutLine: {'line': b'4:         \n'}
+[1.024946] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.025052] (my_vehicle_interface) StdoutLine: {'line': b'4:         \n'}
+[1.025149] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.025255] (my_vehicle_interface) StdoutLine: {'line': b'4:                 \n'}
+[1.025403] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.025518] (my_vehicle_interface) StdoutLine: {'line': b'4:                 \n'}
+[1.025624] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.025716] (my_vehicle_interface) StdoutLine: {'line': b'4:                 \n'}
+[1.025822] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.025914] (my_vehicle_interface) StdoutLine: {'line': b'4:             print("\\nSimulator stopped.")\n'}
+[1.026010] (my_vehicle_interface) StdoutLine: {'line': b'4:                   ^\n'}
+[1.026105] (my_vehicle_interface) StdoutLine: {'line': b'4:     parser = argparse.ArgumentParser(description="SDC 2026 Kart CAN Simulator")\n'}
+[1.026196] (my_vehicle_interface) StdoutLine: {'line': b'4:                                                  ^\n'}
+[1.026292] (my_vehicle_interface) StdoutLine: {'line': b'4:         "--interface", "-i",\n'}
+[1.026385] (my_vehicle_interface) StdoutLine: {'line': b'4:         ^\n'}
+[1.026474] (my_vehicle_interface) StdoutLine: {'line': b'4:         "--interface", "-i",\n'}
+[1.026566] (my_vehicle_interface) StdoutLine: {'line': b'4:                        ^\n'}
+[1.026664] (my_vehicle_interface) StdoutLine: {'line': b'4:         default="vcan0",\n'}
+[1.026755] (my_vehicle_interface) StdoutLine: {'line': b'4:                 ^\n'}
+[1.026847] (my_vehicle_interface) StdoutLine: {'line': b'4:         help="CAN interface (default: vcan0)"\n'}
+[1.026940] (my_vehicle_interface) StdoutLine: {'line': b'4:              ^\n'}
+[1.027032] (my_vehicle_interface) StdoutLine: {'line': b'4:         "--rate", "-r",\n'}
+[1.027123] (my_vehicle_interface) StdoutLine: {'line': b'4:         ^\n'}
+[1.027218] (my_vehicle_interface) StdoutLine: {'line': b'4:         "--rate", "-r",\n'}
+[1.027324] (my_vehicle_interface) StdoutLine: {'line': b'4:                   ^\n'}
+[1.027417] (my_vehicle_interface) StdoutLine: {'line': b'4:         help="Update rate in Hz (default: 50)"\n'}
+[1.027611] (my_vehicle_interface) StdoutLine: {'line': b'4:              ^\n'}
+[1.027807] (my_vehicle_interface) StdoutLine: {'line': b'4:     \n'}
+[1.027909] (my_vehicle_interface) StdoutLine: {'line': b'4: ^\n'}
+[1.028003] (my_vehicle_interface) StdoutLine: {'line': b'4: if __name__ == "__main__":\n'}
+[1.028107] (my_vehicle_interface) StdoutLine: {'line': b'4:                ^\n'}
+[1.028241] (my_vehicle_interface) StdoutLine: {'line': b'4: 1     CNL100 Class definition does not have a new line.\n'}
+[1.028417] (my_vehicle_interface) StdoutLine: {'line': b'4: 1     D400 First line should end with a period\n'}
+[1.028793] (my_vehicle_interface) StdoutLine: {'line': b"4: 2     I100 Import statements are in the wrong order. 'import struct' should be before 'import time'\n"}
+[1.028964] (my_vehicle_interface) StdoutLine: {'line': b'4: 22    Q000 Double quotes found but single quotes preferred\n'}
+[1.029065] (my_vehicle_interface) StdoutLine: {'line': b'4: 17    W293 blank line contains whitespace\n'}
+[1.029158] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.029298] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:4:1: D400 First line should end with a period\n'}
+[1.029445] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.029547] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:15:1: W293 blank line contains whitespace\n'}
+[1.029645] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.029738] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:18:1: W293 blank line contains whitespace\n'}
+[1.029857] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.029953] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:21:1: W293 blank line contains whitespace\n'}
+[1.030047] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.030144] (my_vehicle_interface) StdoutLine: {'line': b"4: ./test/test_can_simulation.py:27:1: I100 Import statements are in the wrong order. 'import struct' should be before 'import time'\n"}
+[1.030239] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.030333] (my_vehicle_interface) StdoutLine: {'line': b"4: ./test/test_can_simulation.py:28:1: I100 Import statements are in the wrong order. 'import argparse' should be before 'import struct'\n"}
+[1.030422] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.030512] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:33:11: Q000 Double quotes found but single quotes preferred\n'}
+[1.030610] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.030703] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:38:1: CNL100 Class definition does not have a new line.\n'}
+[1.030795] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.030891] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:38:41: Q000 Double quotes found but single quotes preferred\n'}
+[1.031023] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.031126] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:40:1: W293 blank line contains whitespace\n'}
+[1.031228] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.031332] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:44:1: W293 blank line contains whitespace\n'}
+[1.031443] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.031554] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:48:1: W293 blank line contains whitespace\n'}
+[1.031657] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.031750] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:49:15: Q000 Double quotes found but single quotes preferred\n'}
+[1.031850] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.031953] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:50:15: Q000 Double quotes found but single quotes preferred\n'}
+[1.032062] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.032158] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:51:15: Q000 Double quotes found but single quotes preferred\n'}
+[1.032248] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.032351] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:52:1: W293 blank line contains whitespace\n'}
+[1.032466] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.032566] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:59:15: Q000 Double quotes found but single quotes preferred\n'}
+[1.032662] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.032757] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:60:1: W293 blank line contains whitespace\n'}
+[1.032853] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.032947] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:68:15: Q000 Double quotes found but single quotes preferred\n'}
+[1.033051] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.033145] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:69:1: W293 blank line contains whitespace\n'}
+[1.033240] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.033357] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:75:1: W293 blank line contains whitespace\n'}
+[1.033457] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.033568] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:82:23: Q000 Double quotes found but single quotes preferred\n'}
+[1.033677] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.033769] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:85:23: Q000 Double quotes found but single quotes preferred\n'}
+[1.033859] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.033957] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:88:23: Q000 Double quotes found but single quotes preferred\n'}
+[1.034056] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.034156] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:94:1: W293 blank line contains whitespace\n'}
+[1.034250] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.034358] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:97:15: Q000 Double quotes found but single quotes preferred\n'}
+[1.034455] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.034559] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:98:15: Q000 Double quotes found but single quotes preferred\n'}
+[1.034662] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.034765] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:99:1: W293 blank line contains whitespace\n'}
+[1.034866] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.034963] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:102:1: W293 blank line contains whitespace\n'}
+[1.035111] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.035254] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:107:1: W293 blank line contains whitespace\n'}
+[1.035399] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.035539] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:112:1: W293 blank line contains whitespace\n'}
+[1.035710] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.035869] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:115:1: W293 blank line contains whitespace\n'}
+[1.036023] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.036158] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:117:19: Q000 Double quotes found but single quotes preferred\n'}
+[1.036296] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.036429] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:123:50: Q000 Double quotes found but single quotes preferred\n'}
+[1.036592] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.036740] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:125:9: Q000 Double quotes found but single quotes preferred\n'}
+[1.036872] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.037012] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:125:24: Q000 Double quotes found but single quotes preferred\n'}
+[1.037206] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.037361] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:126:17: Q000 Double quotes found but single quotes preferred\n'}
+[1.037497] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.037645] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:127:14: Q000 Double quotes found but single quotes preferred\n'}
+[1.037798] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.037933] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:130:9: Q000 Double quotes found but single quotes preferred\n'}
+[1.038068] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.038200] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:130:19: Q000 Double quotes found but single quotes preferred\n'}
+[1.038414] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.038576] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:133:14: Q000 Double quotes found but single quotes preferred\n'}
+[1.038732] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.038871] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:136:1: W293 blank line contains whitespace\n'}
+[1.039023] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.039183] (my_vehicle_interface) StdoutLine: {'line': b'4: ./test/test_can_simulation.py:141:16: Q000 Double quotes found but single quotes preferred\n'}
+[1.039352] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.039511] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.039656] (my_vehicle_interface) StdoutLine: {'line': b'4: 1 files checked\n'}
+[1.039816] (my_vehicle_interface) StdoutLine: {'line': b'4: 43 errors\n'}
+[1.039977] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.040144] (my_vehicle_interface) StdoutLine: {'line': b"4: 'C'-type errors: 1\n"}
+[1.040286] (my_vehicle_interface) StdoutLine: {'line': b"4: 'D'-type errors: 1\n"}
+[1.040459] (my_vehicle_interface) StdoutLine: {'line': b"4: 'I'-type errors: 2\n"}
+[1.040599] (my_vehicle_interface) StdoutLine: {'line': b"4: 'Q'-type errors: 22\n"}
+[1.040730] (my_vehicle_interface) StdoutLine: {'line': b"4: 'W'-type errors: 17\n"}
+[1.040859] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.040994] (my_vehicle_interface) StdoutLine: {'line': b'4: Checked files:\n'}
+[1.041146] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[1.041301] (my_vehicle_interface) StdoutLine: {'line': b'4: * ./test/test_can_simulation.py\n'}
+[1.041483] (my_vehicle_interface) StdoutLine: {'line': b'4: -- run_test.py: return code 1\n'}
+[1.041671] (my_vehicle_interface) StdoutLine: {'line': b"4: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/flake8.xunit.xml'\n"}
+[1.041849] (my_vehicle_interface) StdoutLine: {'line': b'4/8 Test #4: flake8 ...........................***Failed    0.23 sec\n'}
+[1.042017] (my_vehicle_interface) StdoutLine: {'line': b'test 5\n'}
+[1.042154] (my_vehicle_interface) StdoutLine: {'line': b'    Start 5: lint_cmake\n'}
+[1.042289] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[1.042424] (my_vehicle_interface) StdoutLine: {'line': b'5: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/lint_cmake.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_lint_cmake/lint_cmake.txt" "--command" "/opt/ros/humble/bin/ament_lint_cmake" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/lint_cmake.xunit.xml"\n'}
+[1.042561] (my_vehicle_interface) StdoutLine: {'line': b'5: Test timeout computed to be: 60\n'}
+[1.052801] (my_vehicle_interface) StdoutLine: {'line': b"5: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[1.053152] (my_vehicle_interface) StdoutLine: {'line': b'5:  - /opt/ros/humble/bin/ament_lint_cmake --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/lint_cmake.xunit.xml\n'}
+[1.086332] (my_vehicle_interface) StdoutLine: {'line': b'5: \n'}
+[1.086469] (my_vehicle_interface) StdoutLine: {'line': b'5: No problems found\n'}
+[1.090786] (my_vehicle_interface) StdoutLine: {'line': b'5: -- run_test.py: return code 0\n'}
+[1.091066] (my_vehicle_interface) StdoutLine: {'line': b"5: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/lint_cmake.xunit.xml'\n"}
+[1.095914] (my_vehicle_interface) StdoutLine: {'line': b'5/8 Test #5: lint_cmake .......................   Passed    0.07 sec\n'}
+[1.096472] (my_vehicle_interface) StdoutLine: {'line': b'test 6\n'}
+[1.096581] (my_vehicle_interface) StdoutLine: {'line': b'    Start 6: pep257\n'}
+[1.096758] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[1.096879] (my_vehicle_interface) StdoutLine: {'line': b'6: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/pep257.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_pep257/pep257.txt" "--command" "/opt/ros/humble/bin/ament_pep257" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/pep257.xunit.xml"\n'}
+[1.096992] (my_vehicle_interface) StdoutLine: {'line': b'6: Test timeout computed to be: 60\n'}
+[1.110484] (-) TimerEvent: {}
+[1.124064] (my_vehicle_interface) StdoutLine: {'line': b"6: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[1.124353] (my_vehicle_interface) StdoutLine: {'line': b'6:  - /opt/ros/humble/bin/ament_pep257 --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/pep257.xunit.xml\n'}
+[1.185226] (my_vehicle_interface) StdoutLine: {'line': b'6: checking ./test/test_can_simulation.py\n'}
+[1.192142] (my_vehicle_interface) StdoutLine: {'line': b"6: ./test/test_can_simulation.py:4 at module level: D400: First line should end with a period (not 'r')\n"}
+[1.193014] (my_vehicle_interface) StdoutLine: {'line': b"6: ./test/test_can_simulation.py:4 at module level: D415: First line should end with a period, question mark, or exclamation point (not 'r')\n"}
+[1.193251] (my_vehicle_interface) StdoutLine: {'line': b'6: 2 errors\n'}
+[1.193512] (my_vehicle_interface) StdoutLine: {'line': b'6: -- run_test.py: return code 1\n'}
+[1.197487] (my_vehicle_interface) StdoutLine: {'line': b"6: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/pep257.xunit.xml'\n"}
+[1.198675] (my_vehicle_interface) StdoutLine: {'line': b'6/8 Test #6: pep257 ...........................***Failed    0.10 sec\n'}
+[1.199165] (my_vehicle_interface) StdoutLine: {'line': b'test 7\n'}
+[1.199317] (my_vehicle_interface) StdoutLine: {'line': b'    Start 7: uncrustify\n'}
+[1.199502] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[1.199637] (my_vehicle_interface) StdoutLine: {'line': b'7: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/uncrustify.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_uncrustify/uncrustify.txt" "--command" "/opt/ros/humble/bin/ament_uncrustify" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/uncrustify.xunit.xml"\n'}
+[1.199785] (my_vehicle_interface) StdoutLine: {'line': b'7: Test timeout computed to be: 60\n'}
+[1.211476] (-) TimerEvent: {}
+[1.228478] (my_vehicle_interface) StdoutLine: {'line': b"7: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[1.228753] (my_vehicle_interface) StdoutLine: {'line': b'7:  - /opt/ros/humble/bin/ament_uncrustify --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/uncrustify.xunit.xml\n'}
+[1.282949] (my_vehicle_interface) StdoutLine: {'line': b"7: Code style divergence in file 'include/my_vehicle_interface/can_utils.hpp':\n"}
+[1.283538] (my_vehicle_interface) StdoutLine: {'line': b'7: \n'}
+[1.283918] (my_vehicle_interface) StdoutLine: {'line': b'7: --- include/my_vehicle_interface/can_utils.hpp\n'}
+[1.284237] (my_vehicle_interface) StdoutLine: {'line': b'7: +++ include/my_vehicle_interface/can_utils.hpp.uncrustify\n'}
+[1.284638] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -11,2 +11,4 @@\n'}
+[1.284828] (my_vehicle_interface) StdoutLine: {'line': b'7: -namespace my_vehicle_interface {\n'}
+[1.285047] (my_vehicle_interface) StdoutLine: {'line': b'7: -namespace can_utils {\n'}
+[1.285258] (my_vehicle_interface) StdoutLine: {'line': b'7: +namespace my_vehicle_interface\n'}
+[1.285618] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.285893] (my_vehicle_interface) StdoutLine: {'line': b'7: +namespace can_utils\n'}
+[1.286174] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.286366] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -17 +19,2 @@\n'}
+[1.286562] (my_vehicle_interface) StdoutLine: {'line': b'7: -struct CanIds {\n'}
+[1.286769] (my_vehicle_interface) StdoutLine: {'line': b'7: +struct CanIds\n'}
+[1.287025] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.287289] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -40,2 +43,3 @@\n'}
+[1.287629] (my_vehicle_interface) StdoutLine: {'line': b'7: -can_msgs::msg::Frame encodeSteeringCommand(double steering_angle_rad,\n'}
+[1.287891] (my_vehicle_interface) StdoutLine: {'line': b'7: -                                           const CanIds &can_ids);\n'}
+[1.288179] (my_vehicle_interface) StdoutLine: {'line': b'7: +can_msgs::msg::Frame encodeSteeringCommand(\n'}
+[1.288453] (my_vehicle_interface) StdoutLine: {'line': b'7: +  double steering_angle_rad,\n'}
+[1.288664] (my_vehicle_interface) StdoutLine: {'line': b'7: +  const CanIds & can_ids);\n'}
+[1.288862] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -51,2 +55,3 @@\n'}
+[1.289091] (my_vehicle_interface) StdoutLine: {'line': b'7: -can_msgs::msg::Frame encodeBrakeCommand(double brake_value,\n'}
+[1.289278] (my_vehicle_interface) StdoutLine: {'line': b'7: -                                        const CanIds &can_ids);\n'}
+[1.289493] (my_vehicle_interface) StdoutLine: {'line': b'7: +can_msgs::msg::Frame encodeBrakeCommand(\n'}
+[1.289659] (my_vehicle_interface) StdoutLine: {'line': b'7: +  double brake_value,\n'}
+[1.289783] (my_vehicle_interface) StdoutLine: {'line': b'7: +  const CanIds & can_ids);\n'}
+[1.289978] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -62,2 +67,3 @@\n'}
+[1.290172] (my_vehicle_interface) StdoutLine: {'line': b'7: -can_msgs::msg::Frame encodeThrottleCommand(double throttle_value,\n'}
+[1.290355] (my_vehicle_interface) StdoutLine: {'line': b'7: -                                           const CanIds &can_ids);\n'}
+[1.290548] (my_vehicle_interface) StdoutLine: {'line': b'7: +can_msgs::msg::Frame encodeThrottleCommand(\n'}
+[1.290714] (my_vehicle_interface) StdoutLine: {'line': b'7: +  double throttle_value,\n'}
+[1.290843] (my_vehicle_interface) StdoutLine: {'line': b'7: +  const CanIds & can_ids);\n'}
+[1.291081] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -77 +83 @@\n'}
+[1.291349] (my_vehicle_interface) StdoutLine: {'line': b'7: -double decodeSpeedSensor(const can_msgs::msg::Frame &frame);\n'}
+[1.291544] (my_vehicle_interface) StdoutLine: {'line': b'7: +double decodeSpeedSensor(const can_msgs::msg::Frame & frame);\n'}
+[1.291714] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -84 +90 @@\n'}
+[1.291903] (my_vehicle_interface) StdoutLine: {'line': b'7: -double decodeSteeringFeedback(const can_msgs::msg::Frame &frame);\n'}
+[1.292102] (my_vehicle_interface) StdoutLine: {'line': b'7: +double decodeSteeringFeedback(const can_msgs::msg::Frame & frame);\n'}
+[1.292450] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -93 +99 @@\n'}
+[1.292620] (my_vehicle_interface) StdoutLine: {'line': b'7: -inline double degToRad(double deg) { return deg * 0.017453292519943295; }\n'}
+[1.292808] (my_vehicle_interface) StdoutLine: {'line': b'7: +inline double degToRad(double deg) {return deg * 0.017453292519943295;}\n'}
+[1.293035] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -98 +104 @@\n'}
+[1.293226] (my_vehicle_interface) StdoutLine: {'line': b'7: -inline double radToDeg(double rad) { return rad * 57.29577951308232; }\n'}
+[1.293517] (my_vehicle_interface) StdoutLine: {'line': b'7: +inline double radToDeg(double rad) {return rad * 57.29577951308232;}\n'}
+[1.293761] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -103 +109 @@\n'}
+[1.293951] (my_vehicle_interface) StdoutLine: {'line': b'7: -inline double hmhToMs(double hmh) { return hmh * 0.027777777777777776; }\n'}
+[1.294162] (my_vehicle_interface) StdoutLine: {'line': b'7: +inline double hmhToMs(double hmh) {return hmh * 0.027777777777777776;}\n'}
+[1.294361] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -108 +114 @@\n'}
+[1.294604] (my_vehicle_interface) StdoutLine: {'line': b'7: -inline double msToHmh(double ms) { return ms * 36.0; }\n'}
+[1.294771] (my_vehicle_interface) StdoutLine: {'line': b'7: +inline double msToHmh(double ms) {return ms * 36.0;}\n'}
+[1.294953] (my_vehicle_interface) StdoutLine: {'line': b'7: \n'}
+[1.295097] (my_vehicle_interface) StdoutLine: {'line': b"7: Code style divergence in file 'include/my_vehicle_interface/vehicle_interface_node.hpp':\n"}
+[1.295260] (my_vehicle_interface) StdoutLine: {'line': b'7: \n'}
+[1.295485] (my_vehicle_interface) StdoutLine: {'line': b'7: --- include/my_vehicle_interface/vehicle_interface_node.hpp\n'}
+[1.295690] (my_vehicle_interface) StdoutLine: {'line': b'7: +++ include/my_vehicle_interface/vehicle_interface_node.hpp.uncrustify\n'}
+[1.295866] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -29 +29,2 @@\n'}
+[1.296050] (my_vehicle_interface) StdoutLine: {'line': b'7: -namespace my_vehicle_interface {\n'}
+[1.296215] (my_vehicle_interface) StdoutLine: {'line': b'7: +namespace my_vehicle_interface\n'}
+[1.296410] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.296610] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -31 +32,2 @@\n'}
+[1.296822] (my_vehicle_interface) StdoutLine: {'line': b'7: -class VehicleInterfaceNode : public rclcpp::Node {\n'}
+[1.297019] (my_vehicle_interface) StdoutLine: {'line': b'7: +class VehicleInterfaceNode : public rclcpp::Node\n'}
+[1.297246] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.297447] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -33 +35 @@\n'}
+[1.297714] (my_vehicle_interface) StdoutLine: {'line': b'7: -  explicit VehicleInterfaceNode(const rclcpp::NodeOptions &options);\n'}
+[1.297896] (my_vehicle_interface) StdoutLine: {'line': b'7: +  explicit VehicleInterfaceNode(const rclcpp::NodeOptions & options);\n'}
+[1.298096] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -44,2 +46,2 @@\n'}
+[1.298330] (my_vehicle_interface) StdoutLine: {'line': b'7: -      const autoware_vehicle_msgs::msg::TurnIndicatorsCommand::ConstSharedPtr\n'}
+[1.298512] (my_vehicle_interface) StdoutLine: {'line': b'7: -          msg);\n'}
+[1.298715] (my_vehicle_interface) StdoutLine: {'line': b'7: +    const autoware_vehicle_msgs::msg::TurnIndicatorsCommand::ConstSharedPtr\n'}
+[1.298944] (my_vehicle_interface) StdoutLine: {'line': b'7: +    msg);\n'}
+[1.299177] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -47,2 +49,2 @@\n'}
+[1.299449] (my_vehicle_interface) StdoutLine: {'line': b'7: -      const autoware_vehicle_msgs::msg::HazardLightsCommand::ConstSharedPtr\n'}
+[1.299627] (my_vehicle_interface) StdoutLine: {'line': b'7: -          msg);\n'}
+[1.299825] (my_vehicle_interface) StdoutLine: {'line': b'7: +    const autoware_vehicle_msgs::msg::HazardLightsCommand::ConstSharedPtr\n'}
+[1.300052] (my_vehicle_interface) StdoutLine: {'line': b'7: +    msg);\n'}
+[1.300210] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -70 +72 @@\n'}
+[1.300497] (my_vehicle_interface) StdoutLine: {'line': b'7: -      control_cmd_sub_;\n'}
+[1.300690] (my_vehicle_interface) StdoutLine: {'line': b'7: +    control_cmd_sub_;\n'}
+[1.300885] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -72 +74 @@\n'}
+[1.301162] (my_vehicle_interface) StdoutLine: {'line': b'7: -      gear_cmd_sub_;\n'}
+[1.301428] (my_vehicle_interface) StdoutLine: {'line': b'7: +    gear_cmd_sub_;\n'}
+[1.301649] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -74 +76 @@\n'}
+[1.304319] (my_vehicle_interface) StdoutLine: {'line': b'7: -      SharedPtr turn_indicators_cmd_sub_;\n'}
+[1.305802] (my_vehicle_interface) StdoutLine: {'line': b'7: +  SharedPtr turn_indicators_cmd_sub_;\n'}
+[1.305963] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -76 +78 @@\n'}
+[1.306093] (my_vehicle_interface) StdoutLine: {'line': b'7: -      SharedPtr hazard_lights_cmd_sub_;\n'}
+[1.306201] (my_vehicle_interface) StdoutLine: {'line': b'7: +  SharedPtr hazard_lights_cmd_sub_;\n'}
+[1.306304] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -85 +87 @@\n'}
+[1.306402] (my_vehicle_interface) StdoutLine: {'line': b'7: -      velocity_report_pub_;\n'}
+[1.306536] (my_vehicle_interface) StdoutLine: {'line': b'7: +    velocity_report_pub_;\n'}
+[1.306653] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -87 +89 @@\n'}
+[1.306804] (my_vehicle_interface) StdoutLine: {'line': b'7: -      steering_report_pub_;\n'}
+[1.306908] (my_vehicle_interface) StdoutLine: {'line': b'7: +    steering_report_pub_;\n'}
+[1.307007] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -89 +91 @@\n'}
+[1.307117] (my_vehicle_interface) StdoutLine: {'line': b'7: -      gear_report_pub_;\n'}
+[1.307236] (my_vehicle_interface) StdoutLine: {'line': b'7: +    gear_report_pub_;\n'}
+[1.307352] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -91 +93 @@\n'}
+[1.307506] (my_vehicle_interface) StdoutLine: {'line': b'7: -      control_mode_report_pub_;\n'}
+[1.307632] (my_vehicle_interface) StdoutLine: {'line': b'7: +    control_mode_report_pub_;\n'}
+[1.307796] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -93 +95 @@\n'}
+[1.308103] (my_vehicle_interface) StdoutLine: {'line': b'7: -      turn_indicators_report_pub_;\n'}
+[1.308200] (my_vehicle_interface) StdoutLine: {'line': b'7: +    turn_indicators_report_pub_;\n'}
+[1.308369] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -95 +97 @@\n'}
+[1.308466] (my_vehicle_interface) StdoutLine: {'line': b'7: -      hazard_lights_report_pub_;\n'}
+[1.308596] (my_vehicle_interface) StdoutLine: {'line': b'7: +    hazard_lights_report_pub_;\n'}
+[1.308710] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -111 +113 @@\n'}
+[1.308812] (my_vehicle_interface) StdoutLine: {'line': b'7: -      turn_indicators_cmd_ptr_;\n'}
+[1.308946] (my_vehicle_interface) StdoutLine: {'line': b'7: +    turn_indicators_cmd_ptr_;\n'}
+[1.309064] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -113 +115 @@\n'}
+[1.309169] (my_vehicle_interface) StdoutLine: {'line': b'7: -      hazard_lights_cmd_ptr_;\n'}
+[1.309282] (my_vehicle_interface) StdoutLine: {'line': b'7: +    hazard_lights_cmd_ptr_;\n'}
+[1.309385] (my_vehicle_interface) StdoutLine: {'line': b'7: \n'}
+[1.309492] (my_vehicle_interface) StdoutLine: {'line': b"7: Code style divergence in file 'src/can_utils.cpp':\n"}
+[1.309658] (my_vehicle_interface) StdoutLine: {'line': b'7: \n'}
+[1.309758] (my_vehicle_interface) StdoutLine: {'line': b'7: --- src/can_utils.cpp\n'}
+[1.309882] (my_vehicle_interface) StdoutLine: {'line': b'7: +++ src/can_utils.cpp.uncrustify\n'}
+[1.309991] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -9,2 +9,4 @@\n'}
+[1.310091] (my_vehicle_interface) StdoutLine: {'line': b'7: -namespace my_vehicle_interface {\n'}
+[1.310192] (my_vehicle_interface) StdoutLine: {'line': b'7: -namespace can_utils {\n'}
+[1.310291] (my_vehicle_interface) StdoutLine: {'line': b'7: +namespace my_vehicle_interface\n'}
+[1.310387] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.310483] (my_vehicle_interface) StdoutLine: {'line': b'7: +namespace can_utils\n'}
+[1.310583] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.310715] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -16,2 +18,4 @@\n'}
+[1.310809] (my_vehicle_interface) StdoutLine: {'line': b'7: -can_msgs::msg::Frame encodeSteeringCommand(double steering_angle_rad,\n'}
+[1.310922] (my_vehicle_interface) StdoutLine: {'line': b'7: -                                           const CanIds &can_ids) {\n'}
+[1.311019] (my_vehicle_interface) StdoutLine: {'line': b'7: +can_msgs::msg::Frame encodeSteeringCommand(\n'}
+[1.311119] (my_vehicle_interface) StdoutLine: {'line': b'7: +  double steering_angle_rad,\n'}
+[1.311218] (my_vehicle_interface) StdoutLine: {'line': b'7: +  const CanIds & can_ids)\n'}
+[1.311324] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.311431] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -47,2 +51,4 @@\n'}
+[1.311535] (-) TimerEvent: {}
+[1.311597] (my_vehicle_interface) StdoutLine: {'line': b'7: -can_msgs::msg::Frame encodeBrakeCommand(double brake_value,\n'}
+[1.311769] (my_vehicle_interface) StdoutLine: {'line': b'7: -                                        const CanIds &can_ids) {\n'}
+[1.311869] (my_vehicle_interface) StdoutLine: {'line': b'7: +can_msgs::msg::Frame encodeBrakeCommand(\n'}
+[1.311961] (my_vehicle_interface) StdoutLine: {'line': b'7: +  double brake_value,\n'}
+[1.312050] (my_vehicle_interface) StdoutLine: {'line': b'7: +  const CanIds & can_ids)\n'}
+[1.312139] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.312231] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -74,2 +80,4 @@\n'}
+[1.312340] (my_vehicle_interface) StdoutLine: {'line': b'7: -can_msgs::msg::Frame encodeThrottleCommand(double throttle_value,\n'}
+[1.312545] (my_vehicle_interface) StdoutLine: {'line': b'7: -                                           const CanIds &can_ids) {\n'}
+[1.312765] (my_vehicle_interface) StdoutLine: {'line': b'7: +can_msgs::msg::Frame encodeThrottleCommand(\n'}
+[1.312882] (my_vehicle_interface) StdoutLine: {'line': b'7: +  double throttle_value,\n'}
+[1.312994] (my_vehicle_interface) StdoutLine: {'line': b'7: +  const CanIds & can_ids)\n'}
+[1.313100] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.313197] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -105 +113,2 @@\n'}
+[1.313303] (my_vehicle_interface) StdoutLine: {'line': b'7: -double decodeSpeedSensor(const can_msgs::msg::Frame &frame) {\n'}
+[1.313407] (my_vehicle_interface) StdoutLine: {'line': b'7: +double decodeSpeedSensor(const can_msgs::msg::Frame & frame)\n'}
+[1.313541] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.313636] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -111 +120 @@\n'}
+[1.313729] (my_vehicle_interface) StdoutLine: {'line': b'7: -                       (static_cast<uint16_t>(frame.data[1]) << 8);\n'}
+[1.313823] (my_vehicle_interface) StdoutLine: {'line': b'7: +    (static_cast<uint16_t>(frame.data[1]) << 8);\n'}
+[1.313938] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -120 +129,2 @@\n'}
+[1.314043] (my_vehicle_interface) StdoutLine: {'line': b'7: -double decodeSteeringFeedback(const can_msgs::msg::Frame &frame) {\n'}
+[1.314143] (my_vehicle_interface) StdoutLine: {'line': b'7: +double decodeSteeringFeedback(const can_msgs::msg::Frame & frame)\n'}
+[1.314240] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.314398] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -126 +136 @@\n'}
+[1.314714] (my_vehicle_interface) StdoutLine: {'line': b'7: -                         (static_cast<int16_t>(frame.data[1]) << 8);\n'}
+[1.314815] (my_vehicle_interface) StdoutLine: {'line': b'7: +    (static_cast<int16_t>(frame.data[1]) << 8);\n'}
+[1.314907] (my_vehicle_interface) StdoutLine: {'line': b'7: \n'}
+[1.315013] (my_vehicle_interface) StdoutLine: {'line': b"7: Code style divergence in file 'src/main.cpp':\n"}
+[1.315111] (my_vehicle_interface) StdoutLine: {'line': b'7: \n'}
+[1.315223] (my_vehicle_interface) StdoutLine: {'line': b'7: --- src/main.cpp\n'}
+[1.315349] (my_vehicle_interface) StdoutLine: {'line': b'7: +++ src/main.cpp.uncrustify\n'}
+[1.315457] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -9 +9,2 @@\n'}
+[1.315619] (my_vehicle_interface) StdoutLine: {'line': b'7: -int main(int argc, char *argv[]) {\n'}
+[1.315717] (my_vehicle_interface) StdoutLine: {'line': b'7: +int main(int argc, char * argv[])\n'}
+[1.315813] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.315907] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -14 +15 @@\n'}
+[1.316002] (my_vehicle_interface) StdoutLine: {'line': b'7: -      std::make_shared<my_vehicle_interface::VehicleInterfaceNode>(options);\n'}
+[1.316109] (my_vehicle_interface) StdoutLine: {'line': b'7: +    std::make_shared<my_vehicle_interface::VehicleInterfaceNode>(options);\n'}
+[1.316219] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -16,2 +17,3 @@\n'}
+[1.316333] (my_vehicle_interface) StdoutLine: {'line': b'7: -  RCLCPP_INFO(node->get_logger(),\n'}
+[1.316430] (my_vehicle_interface) StdoutLine: {'line': b'7: -              "SDC 2026 Kart Vehicle Interface starting...");\n'}
+[1.316523] (my_vehicle_interface) StdoutLine: {'line': b'7: +  RCLCPP_INFO(\n'}
+[1.316618] (my_vehicle_interface) StdoutLine: {'line': b'7: +    node->get_logger(),\n'}
+[1.316710] (my_vehicle_interface) StdoutLine: {'line': b'7: +    "SDC 2026 Kart Vehicle Interface starting...");\n'}
+[1.316819] (my_vehicle_interface) StdoutLine: {'line': b'7: \n'}
+[1.316911] (my_vehicle_interface) StdoutLine: {'line': b"7: Code style divergence in file 'src/vehicle_interface_node.cpp':\n"}
+[1.317001] (my_vehicle_interface) StdoutLine: {'line': b'7: \n'}
+[1.317099] (my_vehicle_interface) StdoutLine: {'line': b'7: --- src/vehicle_interface_node.cpp\n'}
+[1.317193] (my_vehicle_interface) StdoutLine: {'line': b'7: +++ src/vehicle_interface_node.cpp.uncrustify\n'}
+[1.317291] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -9 +9,2 @@\n'}
+[1.317481] (my_vehicle_interface) StdoutLine: {'line': b'7: -namespace my_vehicle_interface {\n'}
+[1.317587] (my_vehicle_interface) StdoutLine: {'line': b'7: +namespace my_vehicle_interface\n'}
+[1.317680] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.317774] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -14,2 +15,3 @@\n'}
+[1.317868] (my_vehicle_interface) StdoutLine: {'line': b'7: -VehicleInterfaceNode::VehicleInterfaceNode(const rclcpp::NodeOptions &options)\n'}
+[1.317993] (my_vehicle_interface) StdoutLine: {'line': b'7: -    : Node("vehicle_interface_node", options) {\n'}
+[1.318091] (my_vehicle_interface) StdoutLine: {'line': b'7: +VehicleInterfaceNode::VehicleInterfaceNode(const rclcpp::NodeOptions & options)\n'}
+[1.318187] (my_vehicle_interface) StdoutLine: {'line': b'7: +: Node("vehicle_interface_node", options)\n'}
+[1.318292] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.318392] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -24 +26 @@\n'}
+[1.318490] (my_vehicle_interface) StdoutLine: {'line': b'7: -      static_cast<uint32_t>(this->declare_parameter("steering_can_id", 0x100));\n'}
+[1.318608] (my_vehicle_interface) StdoutLine: {'line': b'7: +    static_cast<uint32_t>(this->declare_parameter("steering_can_id", 0x100));\n'}
+[1.318704] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -26 +28 @@\n'}
+[1.318800] (my_vehicle_interface) StdoutLine: {'line': b'7: -      static_cast<uint32_t>(this->declare_parameter("brake_can_id", 0x101));\n'}
+[1.318901] (my_vehicle_interface) StdoutLine: {'line': b'7: +    static_cast<uint32_t>(this->declare_parameter("brake_can_id", 0x101));\n'}
+[1.319011] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -28 +30 @@\n'}
+[1.319116] (my_vehicle_interface) StdoutLine: {'line': b'7: -      static_cast<uint32_t>(this->declare_parameter("throttle_can_id", 0x102));\n'}
+[1.319223] (my_vehicle_interface) StdoutLine: {'line': b'7: +    static_cast<uint32_t>(this->declare_parameter("throttle_can_id", 0x102));\n'}
+[1.319322] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -30 +32 @@\n'}
+[1.319420] (my_vehicle_interface) StdoutLine: {'line': b'7: -      static_cast<uint32_t>(this->declare_parameter("speed_can_id", 0x200));\n'}
+[1.319520] (my_vehicle_interface) StdoutLine: {'line': b'7: +    static_cast<uint32_t>(this->declare_parameter("speed_can_id", 0x200));\n'}
+[1.319689] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -32 +34 @@\n'}
+[1.319870] (my_vehicle_interface) StdoutLine: {'line': b'7: -      this->declare_parameter("steering_feedback_can_id", 0x201));\n'}
+[1.320009] (my_vehicle_interface) StdoutLine: {'line': b'7: +    this->declare_parameter("steering_feedback_can_id", 0x201));\n'}
+[1.320153] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -36,8 +38,12 @@\n'}
+[1.320305] (my_vehicle_interface) StdoutLine: {'line': b'7: -  RCLCPP_INFO(this->get_logger(), "  Steering CAN ID: 0x%X",\n'}
+[1.320444] (my_vehicle_interface) StdoutLine: {'line': b'7: -              can_ids_.steering_command);\n'}
+[1.320592] (my_vehicle_interface) StdoutLine: {'line': b'7: -  RCLCPP_INFO(this->get_logger(), "  Brake CAN ID: 0x%X",\n'}
+[1.320735] (my_vehicle_interface) StdoutLine: {'line': b'7: -              can_ids_.brake_command);\n'}
+[1.320878] (my_vehicle_interface) StdoutLine: {'line': b'7: -  RCLCPP_INFO(this->get_logger(), "  Throttle CAN ID: 0x%X",\n'}
+[1.321011] (my_vehicle_interface) StdoutLine: {'line': b'7: -              can_ids_.throttle_command);\n'}
+[1.321150] (my_vehicle_interface) StdoutLine: {'line': b'7: -  RCLCPP_INFO(this->get_logger(), "  Speed sensor CAN ID: 0x%X",\n'}
+[1.321410] (my_vehicle_interface) StdoutLine: {'line': b'7: -              can_ids_.speed_sensor);\n'}
+[1.321563] (my_vehicle_interface) StdoutLine: {'line': b'7: +  RCLCPP_INFO(\n'}
+[1.321718] (my_vehicle_interface) StdoutLine: {'line': b'7: +    this->get_logger(), "  Steering CAN ID: 0x%X",\n'}
+[1.321883] (my_vehicle_interface) StdoutLine: {'line': b'7: +    can_ids_.steering_command);\n'}
+[1.322036] (my_vehicle_interface) StdoutLine: {'line': b'7: +  RCLCPP_INFO(\n'}
+[1.322178] (my_vehicle_interface) StdoutLine: {'line': b'7: +    this->get_logger(), "  Brake CAN ID: 0x%X",\n'}
+[1.322332] (my_vehicle_interface) StdoutLine: {'line': b'7: +    can_ids_.brake_command);\n'}
+[1.322494] (my_vehicle_interface) StdoutLine: {'line': b'7: +  RCLCPP_INFO(\n'}
+[1.322636] (my_vehicle_interface) StdoutLine: {'line': b'7: +    this->get_logger(), "  Throttle CAN ID: 0x%X",\n'}
+[1.322772] (my_vehicle_interface) StdoutLine: {'line': b'7: +    can_ids_.throttle_command);\n'}
+[1.322918] (my_vehicle_interface) StdoutLine: {'line': b'7: +  RCLCPP_INFO(\n'}
+[1.323091] (my_vehicle_interface) StdoutLine: {'line': b'7: +    this->get_logger(), "  Speed sensor CAN ID: 0x%X",\n'}
+[1.323241] (my_vehicle_interface) StdoutLine: {'line': b'7: +    can_ids_.speed_sensor);\n'}
+[1.323419] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -49,3 +55,3 @@\n'}
+[1.323588] (my_vehicle_interface) StdoutLine: {'line': b'7: -      this->create_subscription<autoware_control_msgs::msg::Control>(\n'}
+[1.323734] (my_vehicle_interface) StdoutLine: {'line': b'7: -          "/control/command/control_cmd", rclcpp::QoS{1},\n'}
+[1.323872] (my_vehicle_interface) StdoutLine: {'line': b'7: -          std::bind(&VehicleInterfaceNode::onControlCmd, this, _1));\n'}
+[1.324005] (my_vehicle_interface) StdoutLine: {'line': b'7: +    this->create_subscription<autoware_control_msgs::msg::Control>(\n'}
+[1.324150] (my_vehicle_interface) StdoutLine: {'line': b'7: +    "/control/command/control_cmd", rclcpp::QoS{1},\n'}
+[1.324295] (my_vehicle_interface) StdoutLine: {'line': b'7: +    std::bind(&VehicleInterfaceNode::onControlCmd, this, _1));\n'}
+[1.324433] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -54,3 +60,3 @@\n'}
+[1.324554] (my_vehicle_interface) StdoutLine: {'line': b'7: -      this->create_subscription<autoware_vehicle_msgs::msg::GearCommand>(\n'}
+[1.324682] (my_vehicle_interface) StdoutLine: {'line': b'7: -          "/control/command/gear_cmd", rclcpp::QoS{1},\n'}
+[1.324829] (my_vehicle_interface) StdoutLine: {'line': b'7: -          std::bind(&VehicleInterfaceNode::onGearCmd, this, _1));\n'}
+[1.324965] (my_vehicle_interface) StdoutLine: {'line': b'7: +    this->create_subscription<autoware_vehicle_msgs::msg::GearCommand>(\n'}
+[1.325098] (my_vehicle_interface) StdoutLine: {'line': b'7: +    "/control/command/gear_cmd", rclcpp::QoS{1},\n'}
+[1.325253] (my_vehicle_interface) StdoutLine: {'line': b'7: +    std::bind(&VehicleInterfaceNode::onGearCmd, this, _1));\n'}
+[1.325458] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -59,3 +65,3 @@\n'}
+[1.325590] (my_vehicle_interface) StdoutLine: {'line': b'7: -      autoware_vehicle_msgs::msg::TurnIndicatorsCommand>(\n'}
+[1.325725] (my_vehicle_interface) StdoutLine: {'line': b'7: -      "/control/command/turn_indicators_cmd", rclcpp::QoS{1},\n'}
+[1.325864] (my_vehicle_interface) StdoutLine: {'line': b'7: -      std::bind(&VehicleInterfaceNode::onTurnIndicatorsCmd, this, _1));\n'}
+[1.325999] (my_vehicle_interface) StdoutLine: {'line': b'7: +    autoware_vehicle_msgs::msg::TurnIndicatorsCommand>(\n'}
+[1.326131] (my_vehicle_interface) StdoutLine: {'line': b'7: +    "/control/command/turn_indicators_cmd", rclcpp::QoS{1},\n'}
+[1.326266] (my_vehicle_interface) StdoutLine: {'line': b'7: +    std::bind(&VehicleInterfaceNode::onTurnIndicatorsCmd, this, _1));\n'}
+[1.326439] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -64,3 +70,3 @@\n'}
+[1.326597] (my_vehicle_interface) StdoutLine: {'line': b'7: -      autoware_vehicle_msgs::msg::HazardLightsCommand>(\n'}
+[1.326734] (my_vehicle_interface) StdoutLine: {'line': b'7: -      "/control/command/hazard_lights_cmd", rclcpp::QoS{1},\n'}
+[1.326870] (my_vehicle_interface) StdoutLine: {'line': b'7: -      std::bind(&VehicleInterfaceNode::onHazardLightsCmd, this, _1));\n'}
+[1.327038] (my_vehicle_interface) StdoutLine: {'line': b'7: +    autoware_vehicle_msgs::msg::HazardLightsCommand>(\n'}
+[1.327219] (my_vehicle_interface) StdoutLine: {'line': b'7: +    "/control/command/hazard_lights_cmd", rclcpp::QoS{1},\n'}
+[1.327386] (my_vehicle_interface) StdoutLine: {'line': b'7: +    std::bind(&VehicleInterfaceNode::onHazardLightsCmd, this, _1));\n'}
+[1.327536] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -70,2 +76,2 @@\n'}
+[1.327673] (my_vehicle_interface) StdoutLine: {'line': b'7: -      "/from_can_bus", rclcpp::QoS{100},\n'}
+[1.327809] (my_vehicle_interface) StdoutLine: {'line': b'7: -      std::bind(&VehicleInterfaceNode::onCanFrame, this, _1));\n'}
+[1.327941] (my_vehicle_interface) StdoutLine: {'line': b'7: +    "/from_can_bus", rclcpp::QoS{100},\n'}
+[1.328085] (my_vehicle_interface) StdoutLine: {'line': b'7: +    std::bind(&VehicleInterfaceNode::onCanFrame, this, _1));\n'}
+[1.328230] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -77,2 +83,2 @@\n'}
+[1.328382] (my_vehicle_interface) StdoutLine: {'line': b'7: -      this->create_publisher<autoware_vehicle_msgs::msg::VelocityReport>(\n'}
+[1.328522] (my_vehicle_interface) StdoutLine: {'line': b'7: -          "/vehicle/status/velocity_status", rclcpp::QoS{1});\n'}
+[1.328678] (my_vehicle_interface) StdoutLine: {'line': b'7: +    this->create_publisher<autoware_vehicle_msgs::msg::VelocityReport>(\n'}
+[1.328814] (my_vehicle_interface) StdoutLine: {'line': b'7: +    "/vehicle/status/velocity_status", rclcpp::QoS{1});\n'}
+[1.328949] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -81,2 +87,2 @@\n'}
+[1.329078] (my_vehicle_interface) StdoutLine: {'line': b'7: -      this->create_publisher<autoware_vehicle_msgs::msg::SteeringReport>(\n'}
+[1.329212] (my_vehicle_interface) StdoutLine: {'line': b'7: -          "/vehicle/status/steering_status", rclcpp::QoS{1});\n'}
+[1.329375] (my_vehicle_interface) StdoutLine: {'line': b'7: +    this->create_publisher<autoware_vehicle_msgs::msg::SteeringReport>(\n'}
+[1.329544] (my_vehicle_interface) StdoutLine: {'line': b'7: +    "/vehicle/status/steering_status", rclcpp::QoS{1});\n'}
+[1.329681] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -85,2 +91,2 @@\n'}
+[1.329816] (my_vehicle_interface) StdoutLine: {'line': b'7: -      this->create_publisher<autoware_vehicle_msgs::msg::GearReport>(\n'}
+[1.329955] (my_vehicle_interface) StdoutLine: {'line': b'7: -          "/vehicle/status/gear_status", rclcpp::QoS{1});\n'}
+[1.330120] (my_vehicle_interface) StdoutLine: {'line': b'7: +    this->create_publisher<autoware_vehicle_msgs::msg::GearReport>(\n'}
+[1.330314] (my_vehicle_interface) StdoutLine: {'line': b'7: +    "/vehicle/status/gear_status", rclcpp::QoS{1});\n'}
+[1.330500] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -89,2 +95,2 @@\n'}
+[1.330673] (my_vehicle_interface) StdoutLine: {'line': b'7: -      this->create_publisher<autoware_vehicle_msgs::msg::ControlModeReport>(\n'}
+[1.330839] (my_vehicle_interface) StdoutLine: {'line': b'7: -          "/vehicle/status/control_mode", rclcpp::QoS{1});\n'}
+[1.330987] (my_vehicle_interface) StdoutLine: {'line': b'7: +    this->create_publisher<autoware_vehicle_msgs::msg::ControlModeReport>(\n'}
+[1.331140] (my_vehicle_interface) StdoutLine: {'line': b'7: +    "/vehicle/status/control_mode", rclcpp::QoS{1});\n'}
+[1.331279] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -93,2 +99,2 @@\n'}
+[1.331434] (my_vehicle_interface) StdoutLine: {'line': b'7: -      this->create_publisher<autoware_vehicle_msgs::msg::TurnIndicatorsReport>(\n'}
+[1.331572] (my_vehicle_interface) StdoutLine: {'line': b'7: -          "/vehicle/status/turn_indicators_status", rclcpp::QoS{1});\n'}
+[1.331708] (my_vehicle_interface) StdoutLine: {'line': b'7: +    this->create_publisher<autoware_vehicle_msgs::msg::TurnIndicatorsReport>(\n'}
+[1.331856] (my_vehicle_interface) StdoutLine: {'line': b'7: +    "/vehicle/status/turn_indicators_status", rclcpp::QoS{1});\n'}
+[1.332004] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -97,2 +103,2 @@\n'}
+[1.332144] (my_vehicle_interface) StdoutLine: {'line': b'7: -      this->create_publisher<autoware_vehicle_msgs::msg::HazardLightsReport>(\n'}
+[1.332320] (my_vehicle_interface) StdoutLine: {'line': b'7: -          "/vehicle/status/hazard_lights_status", rclcpp::QoS{1});\n'}
+[1.332535] (my_vehicle_interface) StdoutLine: {'line': b'7: +    this->create_publisher<autoware_vehicle_msgs::msg::HazardLightsReport>(\n'}
+[1.332670] (my_vehicle_interface) StdoutLine: {'line': b'7: +    "/vehicle/status/hazard_lights_status", rclcpp::QoS{1});\n'}
+[1.332842] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -102 +108 @@\n'}
+[1.333001] (my_vehicle_interface) StdoutLine: {'line': b'7: -      "/to_can_bus", rclcpp::QoS{100});\n'}
+[1.333149] (my_vehicle_interface) StdoutLine: {'line': b'7: +    "/to_can_bus", rclcpp::QoS{100});\n'}
+[1.333327] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -109,2 +115,2 @@\n'}
+[1.333496] (my_vehicle_interface) StdoutLine: {'line': b'7: -      std::chrono::duration_cast<std::chrono::nanoseconds>(timer_period),\n'}
+[1.333637] (my_vehicle_interface) StdoutLine: {'line': b'7: -      std::bind(&VehicleInterfaceNode::onTimer, this));\n'}
+[1.333791] (my_vehicle_interface) StdoutLine: {'line': b'7: +    std::chrono::duration_cast<std::chrono::nanoseconds>(timer_period),\n'}
+[1.333925] (my_vehicle_interface) StdoutLine: {'line': b'7: +    std::bind(&VehicleInterfaceNode::onTimer, this));\n'}
+[1.334058] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -114,2 +120,3 @@\n'}
+[1.334207] (my_vehicle_interface) StdoutLine: {'line': b'7: -  RCLCPP_INFO(this->get_logger(),\n'}
+[1.334352] (my_vehicle_interface) StdoutLine: {'line': b'7: -              "Vehicle Interface Node initialized successfully!");\n'}
+[1.334493] (my_vehicle_interface) StdoutLine: {'line': b'7: +  RCLCPP_INFO(\n'}
+[1.334635] (my_vehicle_interface) StdoutLine: {'line': b'7: +    this->get_logger(),\n'}
+[1.334802] (my_vehicle_interface) StdoutLine: {'line': b'7: +    "Vehicle Interface Node initialized successfully!");\n'}
+[1.334943] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -123 +130,2 @@\n'}
+[1.335080] (my_vehicle_interface) StdoutLine: {'line': b'7: -    const autoware_control_msgs::msg::Control::ConstSharedPtr msg) {\n'}
+[1.335212] (my_vehicle_interface) StdoutLine: {'line': b'7: +  const autoware_control_msgs::msg::Control::ConstSharedPtr msg)\n'}
+[1.335352] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.335507] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -129 +137,2 @@\n'}
+[1.335676] (my_vehicle_interface) StdoutLine: {'line': b'7: -    const autoware_vehicle_msgs::msg::GearCommand::ConstSharedPtr msg) {\n'}
+[1.335853] (my_vehicle_interface) StdoutLine: {'line': b'7: +  const autoware_vehicle_msgs::msg::GearCommand::ConstSharedPtr msg)\n'}
+[1.336008] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.336164] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -134,2 +143,3 @@\n'}
+[1.336311] (my_vehicle_interface) StdoutLine: {'line': b'7: -    const autoware_vehicle_msgs::msg::TurnIndicatorsCommand::ConstSharedPtr\n'}
+[1.336459] (my_vehicle_interface) StdoutLine: {'line': b'7: -        msg) {\n'}
+[1.336624] (my_vehicle_interface) StdoutLine: {'line': b'7: +  const autoware_vehicle_msgs::msg::TurnIndicatorsCommand::ConstSharedPtr\n'}
+[1.336759] (my_vehicle_interface) StdoutLine: {'line': b'7: +  msg)\n'}
+[1.336895] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.337030] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -140 +150,2 @@\n'}
+[1.337167] (my_vehicle_interface) StdoutLine: {'line': b'7: -    const autoware_vehicle_msgs::msg::HazardLightsCommand::ConstSharedPtr msg) {\n'}
+[1.337365] (my_vehicle_interface) StdoutLine: {'line': b'7: +  const autoware_vehicle_msgs::msg::HazardLightsCommand::ConstSharedPtr msg)\n'}
+[1.337526] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.337669] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -149 +160,2 @@\n'}
+[1.337820] (my_vehicle_interface) StdoutLine: {'line': b'7: -    const can_msgs::msg::Frame::ConstSharedPtr msg) {\n'}
+[1.337966] (my_vehicle_interface) StdoutLine: {'line': b'7: +  const can_msgs::msg::Frame::ConstSharedPtr msg)\n'}
+[1.338101] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.338262] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -156,2 +168,3 @@\n'}
+[1.338395] (my_vehicle_interface) StdoutLine: {'line': b'7: -    RCLCPP_DEBUG(this->get_logger(), "Steering: %.2f rad",\n'}
+[1.338530] (my_vehicle_interface) StdoutLine: {'line': b'7: -                 current_steering_angle_rad_);\n'}
+[1.338660] (my_vehicle_interface) StdoutLine: {'line': b'7: +    RCLCPP_DEBUG(\n'}
+[1.338827] (my_vehicle_interface) StdoutLine: {'line': b'7: +      this->get_logger(), "Steering: %.2f rad",\n'}
+[1.338962] (my_vehicle_interface) StdoutLine: {'line': b'7: +      current_steering_angle_rad_);\n'}
+[1.339103] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -166 +179,2 @@\n'}
+[1.339239] (my_vehicle_interface) StdoutLine: {'line': b'7: -void VehicleInterfaceNode::onTimer() {\n'}
+[1.339415] (my_vehicle_interface) StdoutLine: {'line': b'7: +void VehicleInterfaceNode::onTimer()\n'}
+[1.339572] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.339711] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -170,3 +184,4 @@\n'}
+[1.339867] (my_vehicle_interface) StdoutLine: {'line': b'7: -    RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 1000,\n'}
+[1.340008] (my_vehicle_interface) StdoutLine: {'line': b'7: -                         "Control command timeout (%.2f sec), stopping vehicle",\n'}
+[1.340153] (my_vehicle_interface) StdoutLine: {'line': b'7: -                         elapsed);\n'}
+[1.340421] (my_vehicle_interface) StdoutLine: {'line': b'7: +    RCLCPP_WARN_THROTTLE(\n'}
+[1.340711] (my_vehicle_interface) StdoutLine: {'line': b'7: +      this->get_logger(), *this->get_clock(), 1000,\n'}
+[1.340931] (my_vehicle_interface) StdoutLine: {'line': b'7: +      "Control command timeout (%.2f sec), stopping vehicle",\n'}
+[1.341240] (my_vehicle_interface) StdoutLine: {'line': b'7: +      elapsed);\n'}
+[1.341627] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -187 +202,2 @@\n'}
+[1.341858] (my_vehicle_interface) StdoutLine: {'line': b'7: -void VehicleInterfaceNode::sendToVehicle() {\n'}
+[1.342056] (my_vehicle_interface) StdoutLine: {'line': b'7: +void VehicleInterfaceNode::sendToVehicle()\n'}
+[1.342249] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.342429] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -201 +217 @@\n'}
+[1.342590] (my_vehicle_interface) StdoutLine: {'line': b'7: -      can_utils::encodeSteeringCommand(steering_angle, can_ids_);\n'}
+[1.342768] (my_vehicle_interface) StdoutLine: {'line': b'7: +    can_utils::encodeSteeringCommand(steering_angle, can_ids_);\n'}
+[1.342951] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -227 +243 @@\n'}
+[1.343086] (my_vehicle_interface) StdoutLine: {'line': b'7: -      can_utils::encodeThrottleCommand(throttle_cmd, can_ids_);\n'}
+[1.343250] (my_vehicle_interface) StdoutLine: {'line': b'7: +    can_utils::encodeThrottleCommand(throttle_cmd, can_ids_);\n'}
+[1.343403] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -234 +250,2 @@\n'}
+[1.343521] (my_vehicle_interface) StdoutLine: {'line': b'7: -void VehicleInterfaceNode::publishVehicleStatus() {\n'}
+[1.343623] (my_vehicle_interface) StdoutLine: {'line': b'7: +void VehicleInterfaceNode::publishVehicleStatus()\n'}
+[1.343728] (my_vehicle_interface) StdoutLine: {'line': b'7: +{\n'}
+[1.343824] (my_vehicle_interface) StdoutLine: {'line': b'7: @@ -268,3 +285,3 @@\n'}
+[1.343933] (my_vehicle_interface) StdoutLine: {'line': b'7: -    msg.mode = is_autonomous_mode_\n'}
+[1.344033] (my_vehicle_interface) StdoutLine: {'line': b'7: -                   ? autoware_vehicle_msgs::msg::ControlModeReport::AUTONOMOUS\n'}
+[1.344130] (my_vehicle_interface) StdoutLine: {'line': b'7: -                   : autoware_vehicle_msgs::msg::ControlModeReport::MANUAL;\n'}
+[1.344230] (my_vehicle_interface) StdoutLine: {'line': b'7: +    msg.mode = is_autonomous_mode_ ?\n'}
+[1.344334] (my_vehicle_interface) StdoutLine: {'line': b'7: +      autoware_vehicle_msgs::msg::ControlModeReport::AUTONOMOUS :\n'}
+[1.344436] (my_vehicle_interface) StdoutLine: {'line': b'7: +      autoware_vehicle_msgs::msg::ControlModeReport::MANUAL;\n'}
+[1.344551] (my_vehicle_interface) StdoutLine: {'line': b'7: \n'}
+[1.344647] (my_vehicle_interface) StdoutLine: {'line': b'7: 5 files with code style divergence\n'}
+[1.344759] (my_vehicle_interface) StdoutLine: {'line': b'7: -- run_test.py: return code 1\n'}
+[1.344872] (my_vehicle_interface) StdoutLine: {'line': b"7: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/uncrustify.xunit.xml'\n"}
+[1.344968] (my_vehicle_interface) StdoutLine: {'line': b'7/8 Test #7: uncrustify .......................***Failed    0.11 sec\n'}
+[1.345060] (my_vehicle_interface) StdoutLine: {'line': b'test 8\n'}
+[1.345151] (my_vehicle_interface) StdoutLine: {'line': b'    Start 8: xmllint\n'}
+[1.345244] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[1.345345] (my_vehicle_interface) StdoutLine: {'line': b'8: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/xmllint.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_xmllint/xmllint.txt" "--command" "/opt/ros/humble/bin/ament_xmllint" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/xmllint.xunit.xml"\n'}
+[1.345513] (my_vehicle_interface) StdoutLine: {'line': b'8: Test timeout computed to be: 60\n'}
+[1.345610] (my_vehicle_interface) StdoutLine: {'line': b"8: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[1.345703] (my_vehicle_interface) StdoutLine: {'line': b'8:  - /opt/ros/humble/bin/ament_xmllint --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/xmllint.xunit.xml\n'}
+[1.415438] (-) TimerEvent: {}
+[1.521355] (-) TimerEvent: {}
+[1.627547] (-) TimerEvent: {}
+[1.729967] (-) TimerEvent: {}
+[1.834130] (-) TimerEvent: {}
+[1.938695] (-) TimerEvent: {}
+[2.040595] (-) TimerEvent: {}
+[2.145150] (-) TimerEvent: {}
+[2.248091] (-) TimerEvent: {}
+[2.354637] (-) TimerEvent: {}
+[2.392934] (my_vehicle_interface) StdoutLine: {'line': b"8: File 'package.xml' is valid\n"}
+[2.397863] (my_vehicle_interface) StdoutLine: {'line': b'8: \n'}
+[2.401516] (my_vehicle_interface) StdoutLine: {'line': b"8: File 'launch/vehicle_interface.launch.xml' is valid\n"}
+[2.403047] (my_vehicle_interface) StdoutLine: {'line': b'8: \n'}
+[2.403640] (my_vehicle_interface) StdoutLine: {'line': b'8: No problems found\n'}
+[2.407821] (my_vehicle_interface) StdoutLine: {'line': b'8: -- run_test.py: return code 0\n'}
+[2.408453] (my_vehicle_interface) StdoutLine: {'line': b"8: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/xmllint.xunit.xml'\n"}
+[2.418506] (my_vehicle_interface) StdoutLine: {'line': b'8/8 Test #8: xmllint ..........................   Passed    1.11 sec\n'}
+[2.420645] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[2.421038] (my_vehicle_interface) StdoutLine: {'line': b'38% tests passed\x1b[0;0m, \x1b[0;31m5 tests failed\x1b[0;0m out of 8\n'}
+[2.421434] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[2.422012] (my_vehicle_interface) StdoutLine: {'line': b'Label Time Summary:\n'}
+[2.422349] (my_vehicle_interface) StdoutLine: {'line': b'copyright     =   0.16 sec*proc (1 test)\n'}
+[2.422771] (my_vehicle_interface) StdoutLine: {'line': b'cppcheck      =   0.08 sec*proc (1 test)\n'}
+[2.423867] (my_vehicle_interface) StdoutLine: {'line': b'cpplint       =   0.51 sec*proc (1 test)\n'}
+[2.424336] (my_vehicle_interface) StdoutLine: {'line': b'flake8        =   0.23 sec*proc (1 test)\n'}
+[2.424898] (my_vehicle_interface) StdoutLine: {'line': b'lint_cmake    =   0.07 sec*proc (1 test)\n'}
+[2.425110] (my_vehicle_interface) StdoutLine: {'line': b'linter        =   2.38 sec*proc (8 tests)\n'}
+[2.425293] (my_vehicle_interface) StdoutLine: {'line': b'pep257        =   0.10 sec*proc (1 test)\n'}
+[2.425693] (my_vehicle_interface) StdoutLine: {'line': b'uncrustify    =   0.11 sec*proc (1 test)\n'}
+[2.425971] (my_vehicle_interface) StdoutLine: {'line': b'xmllint       =   1.11 sec*proc (1 test)\n'}
+[2.426909] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[2.427584] (my_vehicle_interface) StdoutLine: {'line': b'Total Test time (real) =   2.39 sec\n'}
+[2.428102] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[2.428396] (my_vehicle_interface) StdoutLine: {'line': b'The following tests FAILED:\n'}
+[2.428629] (my_vehicle_interface) StdoutLine: {'line': b'\t\x1b[0;31m  1 - copyright (Failed)\x1b[0;0m\n'}
+[2.428791] (my_vehicle_interface) StdoutLine: {'line': b'\t\x1b[0;31m  3 - cpplint (Failed)\x1b[0;0m\n'}
+[2.428924] (my_vehicle_interface) StdoutLine: {'line': b'\t\x1b[0;31m  4 - flake8 (Failed)\x1b[0;0m\n'}
+[2.429050] (my_vehicle_interface) StdoutLine: {'line': b'\t\x1b[0;31m  6 - pep257 (Failed)\x1b[0;0m\n'}
+[2.429177] (my_vehicle_interface) StdoutLine: {'line': b'\t\x1b[0;31m  7 - uncrustify (Failed)\x1b[0;0m\n'}
+[2.429305] (my_vehicle_interface) StderrLine: {'line': b'Errors while running CTest\n'}
+[2.429497] (my_vehicle_interface) StderrLine: {'line': b'Output from these tests are in: /workspace/build/my_vehicle_interface/Testing/Temporary/LastTest.log\n'}
+[2.429689] (my_vehicle_interface) StderrLine: {'line': b'Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.\n'}
+[2.429819] (my_vehicle_interface) CommandEnded: {'returncode': 8}
+[2.430050] (my_vehicle_interface) TestFailure: {'identifier': 'my_vehicle_interface'}
+[2.430088] (my_vehicle_interface) JobEnded: {'identifier': 'my_vehicle_interface', 'rc': 0}
+[2.430989] (-) EventReactorShutdown: {}

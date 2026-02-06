@@ -1,0 +1,1 @@
+/workspace/build/my_vehicle_interface/ament_cmake_environment_hooks/local_setup.zsh

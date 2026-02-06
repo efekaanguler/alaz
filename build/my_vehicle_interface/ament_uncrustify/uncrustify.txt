@@ -1,0 +1,18 @@
+-- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':
+ - /opt/ros/humble/bin/ament_uncrustify --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/uncrustify.xunit.xml
+
+No code style divergence in file 'include/my_vehicle_interface/can_utils.hpp'
+
+No code style divergence in file 'include/my_vehicle_interface/vehicle_interface_node.hpp'
+
+No code style divergence in file 'src/can_utils.cpp'
+
+No code style divergence in file 'src/main.cpp'
+
+No code style divergence in file 'src/vehicle_interface_node.cpp'
+
+No problems found
+
+
+-- run_test.py: return code 0
+-- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/uncrustify.xunit.xml'

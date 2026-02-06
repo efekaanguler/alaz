@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <!-- Vehicle Interface Launch File for SDC 2026 Kart -->
+  
+  <!-- Arguments -->
+  <arg name="vehicle_id" default="$(env VEHICLE_ID sdc_kart)"/>
+  <arg name="config_file" default="$(find-pkg-share my_vehicle_interface)/config/vehicle_interface.param.yaml"/>
+  
+  <!-- Vehicle Interface Node -->
+  <node pkg="my_vehicle_interface" exec="my_vehicle_interface_node" name="vehicle_interface_node" output="screen">
+    <param from="$(var config_file)"/>
+    
+    <!-- Override parameters if needed -->
+    <!-- <param name="loop_rate_hz" value="100.0"/> -->
+    <!-- <param name="steering_can_id" value="0x100"/> -->
+  </node>
+  
+  <!-- 
+    NOTE: ros2_socketcan should be launched separately or included here.
+    Example:
+    <include file="$(find-pkg-share ros2_socketcan)/launch/socket_can_bridge.launch.xml">
+      <arg name="interface" value="can0"/>
+    </include>
+  -->
+  
+</launch>

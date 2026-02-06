@@ -1,0 +1,45 @@
+# =============================================================================
+# SDC 2026 Kart Vehicle Interface Parameters
+# =============================================================================
+# 
+# UPDATE THE CAN IDs BELOW FROM THE COMPETITION WIKI (A 3.3)
+#
+# =============================================================================
+
+/**:
+  ros__parameters:
+    # -------------------------------------------------------------------------
+    # General Settings
+    # -------------------------------------------------------------------------
+    loop_rate_hz: 100.0           # Control loop frequency (Hz)
+    command_timeout_sec: 0.5      # Timeout before stopping if no commands received
+
+    # -------------------------------------------------------------------------
+    # CAN IDs - Commands TO kart (Autoware → Kart)
+    # TODO: Update these from wiki (A 3.3)
+    # -------------------------------------------------------------------------
+    steering_can_id: 0x100        # Steering servo command
+    brake_can_id: 0x101           # Brake actuator command
+    throttle_can_id: 0x102        # Throttle motor command
+
+    # -------------------------------------------------------------------------
+    # CAN IDs - Status FROM kart (Kart → Autoware)
+    # TODO: Update these from wiki (A 3.3)
+    # -------------------------------------------------------------------------
+    speed_can_id: 0x200           # Speed sensor feedback
+    steering_feedback_can_id: 0x201  # Steering position feedback (if available)
+
+    # -------------------------------------------------------------------------
+    # Control Limits
+    # TODO: Adjust based on kart specifications
+    # -------------------------------------------------------------------------
+    max_steering_angle_deg: 30.0  # Maximum steering angle (degrees)
+    max_throttle_percent: 100.0   # Maximum throttle (%)
+    max_brake_percent: 100.0      # Maximum brake (%)
+
+    # -------------------------------------------------------------------------
+    # Calibration (for acceleration → throttle/brake mapping)
+    # TODO: Tune these values on the real kart
+    # -------------------------------------------------------------------------
+    accel_to_throttle_gain: 0.33  # m/s² to throttle% (1/3 = 3m/s² for full throttle)
+    decel_to_brake_gain: 0.20     # m/s² to brake% (1/5 = 5m/s² for full brake)

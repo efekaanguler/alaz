@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  name="my_vehicle_interface.uncrustify"
+  tests="5"
+  failures="0"
+  errors="0"
+  time="0.013"
+>
+  <testcase
+    name="include/my_vehicle_interface/can_utils.hpp"
+    classname="my_vehicle_interface.uncrustify"/>
+  <testcase
+    name="include/my_vehicle_interface/vehicle_interface_node.hpp"
+    classname="my_vehicle_interface.uncrustify"/>
+  <testcase
+    name="src/can_utils.cpp"
+    classname="my_vehicle_interface.uncrustify"/>
+  <testcase
+    name="src/main.cpp"
+    classname="my_vehicle_interface.uncrustify"/>
+  <testcase
+    name="src/vehicle_interface_node.cpp"
+    classname="my_vehicle_interface.uncrustify"/>
+  <system-out>Checked files:
+* include/my_vehicle_interface/can_utils.hpp
+* include/my_vehicle_interface/vehicle_interface_node.hpp
+* src/can_utils.cpp
+* src/main.cpp
+* src/vehicle_interface_node.cpp</system-out>
+</testsuite>

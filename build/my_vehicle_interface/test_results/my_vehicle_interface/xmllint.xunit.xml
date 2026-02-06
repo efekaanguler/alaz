@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite
+  name="my_vehicle_interface.xmllint"
+  tests="2"
+  errors="0"
+  failures="0"
+  time="1.135"
+>
+  <testcase
+    name="package.xml"
+    classname="my_vehicle_interface.xmllint"/>
+  <testcase
+    name="launch/vehicle_interface.launch.xml"
+    classname="my_vehicle_interface.xmllint"/>
+  <system-out>Checked files:
+* package.xml
+* launch/vehicle_interface.launch.xml</system-out>
+</testsuite>

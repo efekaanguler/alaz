@@ -23,6 +23,10 @@ else
   git clone https://github.com/autowarefoundation/autoware.git
 fi
 
+if [[ "$(uname)" == "Darwin" ]]; then
+  echo "==> macOS detected. Skipping Autoware apt-get based setup. Use Docker via dev_run.sh instead."
+  exit 0
+fi
 
 cd "$AUTOWARE_DIR"
 echo "==> Running Autoware setup (no-nvidia, docker)"

@@ -1,0 +1,2 @@
+Invoking command in '/workspace/build/my_vehicle_interface': /usr/bin/cmake /workspace/src/vehicle/external/my_vehicle_interface -DCMAKE_INSTALL_PREFIX=/workspace/install/my_vehicle_interface
+Invoked command in '/workspace/build/my_vehicle_interface' returned '1': /usr/bin/cmake /workspace/src/vehicle/external/my_vehicle_interface -DCMAKE_INSTALL_PREFIX=/workspace/install/my_vehicle_interface

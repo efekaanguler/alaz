@@ -1,0 +1,13 @@
+-- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':
+ - /opt/ros/humble/bin/ament_flake8 --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/flake8.xunit.xml
+
+
+0 files checked
+No problems found
+
+Checked files:
+
+
+
+-- run_test.py: return code 0
+-- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/flake8.xunit.xml'

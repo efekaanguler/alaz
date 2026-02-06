@@ -1,0 +1,199 @@
+[0.000000] (-) TimerEvent: {}
+[0.000745] (my_vehicle_interface) JobQueued: {'identifier': 'my_vehicle_interface', 'dependencies': OrderedDict([('my_vehicle_interface', '/workspace/install/my_vehicle_interface')])}
+[0.000924] (my_vehicle_interface) JobStarted: {'identifier': 'my_vehicle_interface'}
+[0.025637] (my_vehicle_interface) Command: {'cmd': ['/usr/bin/ctest', '-C', 'Release', '-D', 'ExperimentalTest', '--no-compress-output', '-V', '--force-new-ctest-process'], 'cwd': '/workspace/build/my_vehicle_interface', 'env': OrderedDict([('CCACHE_DIR', '/home/zuhalkoksal/.ccache'), ('HOSTNAME', 'docker-desktop'), ('LOCAL_GROUP', 'staff'), ('LOCAL_USER', 'zuhalkoksal'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/workspace/install/my_vehicle_interface/lib:/opt/autoware/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zuhalkoksal'), ('OLDPWD', '/workspace/src/vehicle/external/my_vehicle_interface'), ('ROS_PYTHON_VERSION', '3'), ('COLCON_PREFIX_PATH', '/workspace/install:/opt/autoware'), ('LOCAL_GID', '20'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('NVIDIA_DRIVER_CAPABILITIES', 'all'), ('TERM', 'xterm'), ('GAZEBO_MODEL_PATH', '/opt/autoware/share/'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'), ('XDG_RUNTIME_DIR', ''), ('LANG', 'C.UTF-8'), ('RMW_IMPLEMENTATION', 'rmw_cyclonedds_cpp'), ('XAUTHORITY', ''), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/workspace/install/my_vehicle_interface:/opt/autoware:/opt/ros/humble'), ('LOCAL_UID', '501'), ('PWD', '/workspace/build/my_vehicle_interface'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/opt/autoware/lib/python3.10/site-packages:/opt/autoware/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('TZ', ''), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/workspace/install/my_vehicle_interface:/opt/autoware')]), 'shell': False}
+[0.032616] (my_vehicle_interface) StdoutLine: {'line': b'UpdateCTestConfiguration  from :/workspace/build/my_vehicle_interface/CTestConfiguration.ini\n'}
+[0.032950] (my_vehicle_interface) StdoutLine: {'line': b'Parse Config file:/workspace/build/my_vehicle_interface/CTestConfiguration.ini\n'}
+[0.033208] (my_vehicle_interface) StdoutLine: {'line': b'   Site: docker-desktop\n'}
+[0.033433] (my_vehicle_interface) StdoutLine: {'line': b'   Build name: (empty)\n'}
+[0.033621] (my_vehicle_interface) StdoutLine: {'line': b' Add coverage exclude regular expressions.\n'}
+[0.033864] (my_vehicle_interface) StdoutLine: {'line': b'Create new tag: 20260206-1833 - Experimental\n'}
+[0.034140] (my_vehicle_interface) StdoutLine: {'line': b'UpdateCTestConfiguration  from :/workspace/build/my_vehicle_interface/CTestConfiguration.ini\n'}
+[0.034240] (my_vehicle_interface) StdoutLine: {'line': b'Parse Config file:/workspace/build/my_vehicle_interface/CTestConfiguration.ini\n'}
+[0.034347] (my_vehicle_interface) StdoutLine: {'line': b'Test project /workspace/build/my_vehicle_interface\n'}
+[0.034620] (my_vehicle_interface) StdoutLine: {'line': b'Constructing a list of tests\n'}
+[0.035286] (my_vehicle_interface) StdoutLine: {'line': b'Done constructing a list of tests\n'}
+[0.035430] (my_vehicle_interface) StdoutLine: {'line': b'Updating test list for fixtures\n'}
+[0.035612] (my_vehicle_interface) StdoutLine: {'line': b'Added 0 tests to meet fixture requirements\n'}
+[0.035792] (my_vehicle_interface) StdoutLine: {'line': b'Checking test dependency graph...\n'}
+[0.035900] (my_vehicle_interface) StdoutLine: {'line': b'Checking test dependency graph end\n'}
+[0.036033] (my_vehicle_interface) StdoutLine: {'line': b'test 1\n'}
+[0.036191] (my_vehicle_interface) StdoutLine: {'line': b'    Start 1: copyright\n'}
+[0.036367] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[0.036536] (my_vehicle_interface) StdoutLine: {'line': b'1: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/copyright.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_copyright/copyright.txt" "--command" "/opt/ros/humble/bin/ament_copyright" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/copyright.xunit.xml"\n'}
+[0.036810] (my_vehicle_interface) StdoutLine: {'line': b'1: Test timeout computed to be: 200\n'}
+[0.068361] (my_vehicle_interface) StdoutLine: {'line': b"1: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[0.068705] (my_vehicle_interface) StdoutLine: {'line': b'1:  - /opt/ros/humble/bin/ament_copyright --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/copyright.xunit.xml\n'}
+[0.100515] (-) TimerEvent: {}
+[0.178105] (my_vehicle_interface) StdoutLine: {'line': b'1: No problems found, checked 6 files\n'}
+[0.182950] (my_vehicle_interface) StdoutLine: {'line': b'1: -- run_test.py: return code 0\n'}
+[0.183212] (my_vehicle_interface) StdoutLine: {'line': b"1: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/copyright.xunit.xml'\n"}
+[0.188224] (my_vehicle_interface) StdoutLine: {'line': b'1/8 Test #1: copyright ........................   Passed    0.15 sec\n'}
+[0.188871] (my_vehicle_interface) StdoutLine: {'line': b'test 2\n'}
+[0.189047] (my_vehicle_interface) StdoutLine: {'line': b'    Start 2: cppcheck\n'}
+[0.189326] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[0.189564] (my_vehicle_interface) StdoutLine: {'line': b'2: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cppcheck.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_cppcheck/cppcheck.txt" "--command" "/opt/ros/humble/bin/ament_cppcheck" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cppcheck.xunit.xml" "--include_dirs" "/workspace/src/vehicle/external/my_vehicle_interface/include"\n'}
+[0.189752] (my_vehicle_interface) StdoutLine: {'line': b'2: Test timeout computed to be: 300\n'}
+[0.201201] (-) TimerEvent: {}
+[0.219777] (my_vehicle_interface) StdoutLine: {'line': b"2: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[0.220062] (my_vehicle_interface) StdoutLine: {'line': b'2:  - /opt/ros/humble/bin/ament_cppcheck --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cppcheck.xunit.xml --include_dirs /workspace/src/vehicle/external/my_vehicle_interface/include\n'}
+[0.255247] (my_vehicle_interface) StdoutLine: {'line': b'2: cppcheck 2.7 has known performance issues and therefore will not be used, set the AMENT_CPPCHECK_ALLOW_SLOW_VERSIONS environment variable to override this.\n'}
+[0.260856] (my_vehicle_interface) StdoutLine: {'line': b'2: -- run_test.py: return code 0\n'}
+[0.261132] (my_vehicle_interface) StdoutLine: {'line': b"2: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cppcheck.xunit.xml'\n"}
+[0.266222] (my_vehicle_interface) StdoutLine: {'line': b'2/8 Test #2: cppcheck .........................   Passed    0.08 sec\n'}
+[0.266737] (my_vehicle_interface) StdoutLine: {'line': b'test 3\n'}
+[0.267082] (my_vehicle_interface) StdoutLine: {'line': b'    Start 3: cpplint\n'}
+[0.267396] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[0.267585] (my_vehicle_interface) StdoutLine: {'line': b'3: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cpplint.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_cpplint/cpplint.txt" "--command" "/opt/ros/humble/bin/ament_cpplint" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cpplint.xunit.xml"\n'}
+[0.267771] (my_vehicle_interface) StdoutLine: {'line': b'3: Test timeout computed to be: 120\n'}
+[0.293980] (my_vehicle_interface) StdoutLine: {'line': b"3: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[0.294278] (my_vehicle_interface) StdoutLine: {'line': b'3:  - /opt/ros/humble/bin/ament_cpplint --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cpplint.xunit.xml\n'}
+[0.302438] (-) TimerEvent: {}
+[0.371185] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:34:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.373184] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:36:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.376886] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:40:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.403004] (-) TimerEvent: {}
+[0.447452] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:119:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.448494] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:120:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.450262] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:122:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.504004] (-) TimerEvent: {}
+[0.605024] (-) TimerEvent: {}
+[0.658693] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp:143:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.660574] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp:145:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.692943] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp:147:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.693154] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp:148:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.706017] (-) TimerEvent: {}
+[0.749202] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/vehicle_interface_node.cpp:272:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.751848] (my_vehicle_interface) StdoutLine: {'line': b'3: /workspace/src/vehicle/external/my_vehicle_interface/src/vehicle_interface_node.cpp:319:  At least two spaces is best between code and comments  [whitespace/comments] [2]\n'}
+[0.768872] (my_vehicle_interface) StdoutLine: {'line': b"3: Category 'whitespace/comments' errors found: 12\n"}
+[0.769132] (my_vehicle_interface) StdoutLine: {'line': b'3: Total errors found: 12\n'}
+[0.769579] (my_vehicle_interface) StdoutLine: {'line': b"3: Using '--root=/workspace/src/vehicle/external/my_vehicle_interface/include' argument\n"}
+[0.769815] (my_vehicle_interface) StdoutLine: {'line': b'3: \n'}
+[0.770098] (my_vehicle_interface) StdoutLine: {'line': b'3: Done processing /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp\n'}
+[0.770277] (my_vehicle_interface) StdoutLine: {'line': b'3: \n'}
+[0.770426] (my_vehicle_interface) StdoutLine: {'line': b'3: Done processing /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp\n'}
+[0.770565] (my_vehicle_interface) StdoutLine: {'line': b'3: \n'}
+[0.770712] (my_vehicle_interface) StdoutLine: {'line': b"3: Using '--root=/workspace/src/vehicle/external/my_vehicle_interface/src' argument\n"}
+[0.770894] (my_vehicle_interface) StdoutLine: {'line': b'3: \n'}
+[0.771047] (my_vehicle_interface) StdoutLine: {'line': b'3: Done processing /workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp\n'}
+[0.771187] (my_vehicle_interface) StdoutLine: {'line': b'3: \n'}
+[0.771325] (my_vehicle_interface) StdoutLine: {'line': b'3: Done processing /workspace/src/vehicle/external/my_vehicle_interface/src/main.cpp\n'}
+[0.771458] (my_vehicle_interface) StdoutLine: {'line': b'3: \n'}
+[0.771595] (my_vehicle_interface) StdoutLine: {'line': b'3: Done processing /workspace/src/vehicle/external/my_vehicle_interface/src/vehicle_interface_node.cpp\n'}
+[0.771733] (my_vehicle_interface) StdoutLine: {'line': b'3: \n'}
+[0.775213] (my_vehicle_interface) StdoutLine: {'line': b'3: -- run_test.py: return code 1\n'}
+[0.775472] (my_vehicle_interface) StdoutLine: {'line': b"3: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cpplint.xunit.xml'\n"}
+[0.780641] (my_vehicle_interface) StdoutLine: {'line': b'3/8 Test #3: cpplint ..........................***Failed    0.51 sec\n'}
+[0.781177] (my_vehicle_interface) StdoutLine: {'line': b'test 4\n'}
+[0.781289] (my_vehicle_interface) StdoutLine: {'line': b'    Start 4: flake8\n'}
+[0.781498] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[0.781644] (my_vehicle_interface) StdoutLine: {'line': b'4: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/flake8.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_flake8/flake8.txt" "--command" "/opt/ros/humble/bin/ament_flake8" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/flake8.xunit.xml"\n'}
+[0.781798] (my_vehicle_interface) StdoutLine: {'line': b'4: Test timeout computed to be: 60\n'}
+[0.807277] (-) TimerEvent: {}
+[0.808376] (my_vehicle_interface) StdoutLine: {'line': b"4: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[0.808665] (my_vehicle_interface) StdoutLine: {'line': b'4:  - /opt/ros/humble/bin/ament_flake8 --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/flake8.xunit.xml\n'}
+[0.908069] (-) TimerEvent: {}
+[0.979514] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[0.987328] (my_vehicle_interface) StdoutLine: {'line': b'4: 1 files checked\n'}
+[0.987535] (my_vehicle_interface) StdoutLine: {'line': b'4: No problems found\n'}
+[0.987683] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[0.987820] (my_vehicle_interface) StdoutLine: {'line': b'4: Checked files:\n'}
+[0.987956] (my_vehicle_interface) StdoutLine: {'line': b'4: \n'}
+[0.988097] (my_vehicle_interface) StdoutLine: {'line': b'4: * ./test/test_can_simulation.py\n'}
+[0.996272] (my_vehicle_interface) StdoutLine: {'line': b'4: -- run_test.py: return code 0\n'}
+[0.996714] (my_vehicle_interface) StdoutLine: {'line': b"4: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/flake8.xunit.xml'\n"}
+[1.001941] (my_vehicle_interface) StdoutLine: {'line': b'4/8 Test #4: flake8 ...........................   Passed    0.22 sec\n'}
+[1.002473] (my_vehicle_interface) StdoutLine: {'line': b'test 5\n'}
+[1.002601] (my_vehicle_interface) StdoutLine: {'line': b'    Start 5: lint_cmake\n'}
+[1.002772] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[1.002883] (my_vehicle_interface) StdoutLine: {'line': b'5: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/lint_cmake.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_lint_cmake/lint_cmake.txt" "--command" "/opt/ros/humble/bin/ament_lint_cmake" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/lint_cmake.xunit.xml"\n'}
+[1.003023] (my_vehicle_interface) StdoutLine: {'line': b'5: Test timeout computed to be: 60\n'}
+[1.009010] (-) TimerEvent: {}
+[1.030336] (my_vehicle_interface) StdoutLine: {'line': b"5: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[1.030630] (my_vehicle_interface) StdoutLine: {'line': b'5:  - /opt/ros/humble/bin/ament_lint_cmake --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/lint_cmake.xunit.xml\n'}
+[1.062028] (my_vehicle_interface) StdoutLine: {'line': b'5: \n'}
+[1.062250] (my_vehicle_interface) StdoutLine: {'line': b'5: No problems found\n'}
+[1.066446] (my_vehicle_interface) StdoutLine: {'line': b'5: -- run_test.py: return code 0\n'}
+[1.066724] (my_vehicle_interface) StdoutLine: {'line': b"5: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/lint_cmake.xunit.xml'\n"}
+[1.071466] (my_vehicle_interface) StdoutLine: {'line': b'5/8 Test #5: lint_cmake .......................   Passed    0.07 sec\n'}
+[1.072008] (my_vehicle_interface) StdoutLine: {'line': b'test 6\n'}
+[1.072126] (my_vehicle_interface) StdoutLine: {'line': b'    Start 6: pep257\n'}
+[1.072328] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[1.072460] (my_vehicle_interface) StdoutLine: {'line': b'6: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/pep257.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_pep257/pep257.txt" "--command" "/opt/ros/humble/bin/ament_pep257" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/pep257.xunit.xml"\n'}
+[1.072605] (my_vehicle_interface) StdoutLine: {'line': b'6: Test timeout computed to be: 60\n'}
+[1.098907] (my_vehicle_interface) StdoutLine: {'line': b"6: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[1.099255] (my_vehicle_interface) StdoutLine: {'line': b'6:  - /opt/ros/humble/bin/ament_pep257 --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/pep257.xunit.xml\n'}
+[1.110021] (-) TimerEvent: {}
+[1.157831] (my_vehicle_interface) StdoutLine: {'line': b'6: checking ./test/test_can_simulation.py\n'}
+[1.165266] (my_vehicle_interface) StdoutLine: {'line': b'6: ./test/test_can_simulation.py:15 at module level: D213: Multi-line docstring summary should start at the second line\n'}
+[1.165556] (my_vehicle_interface) StdoutLine: {'line': b'6: 1 errors\n'}
+[1.165787] (my_vehicle_interface) StdoutLine: {'line': b'6: -- run_test.py: return code 1\n'}
+[1.166037] (my_vehicle_interface) StdoutLine: {'line': b"6: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/pep257.xunit.xml'\n"}
+[1.170791] (my_vehicle_interface) StdoutLine: {'line': b'6/8 Test #6: pep257 ...........................***Failed    0.10 sec\n'}
+[1.171296] (my_vehicle_interface) StdoutLine: {'line': b'test 7\n'}
+[1.171717] (my_vehicle_interface) StdoutLine: {'line': b'    Start 7: uncrustify\n'}
+[1.171903] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[1.172021] (my_vehicle_interface) StdoutLine: {'line': b'7: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/uncrustify.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_uncrustify/uncrustify.txt" "--command" "/opt/ros/humble/bin/ament_uncrustify" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/uncrustify.xunit.xml"\n'}
+[1.172127] (my_vehicle_interface) StdoutLine: {'line': b'7: Test timeout computed to be: 60\n'}
+[1.199372] (my_vehicle_interface) StdoutLine: {'line': b"7: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[1.199683] (my_vehicle_interface) StdoutLine: {'line': b'7:  - /opt/ros/humble/bin/ament_uncrustify --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/uncrustify.xunit.xml\n'}
+[1.211023] (-) TimerEvent: {}
+[1.244500] (my_vehicle_interface) StdoutLine: {'line': b"7: No code style divergence in file 'include/my_vehicle_interface/can_utils.hpp'\n"}
+[1.248400] (my_vehicle_interface) StdoutLine: {'line': b'7: \n'}
+[1.249433] (my_vehicle_interface) StdoutLine: {'line': b"7: No code style divergence in file 'include/my_vehicle_interface/vehicle_interface_node.hpp'\n"}
+[1.249618] (my_vehicle_interface) StdoutLine: {'line': b'7: \n'}
+[1.249834] (my_vehicle_interface) StdoutLine: {'line': b"7: No code style divergence in file 'src/can_utils.cpp'\n"}
+[1.251033] (my_vehicle_interface) StdoutLine: {'line': b'7: \n'}
+[1.254527] (my_vehicle_interface) StdoutLine: {'line': b"7: No code style divergence in file 'src/main.cpp'\n"}
+[1.254657] (my_vehicle_interface) StdoutLine: {'line': b'7: \n'}
+[1.254774] (my_vehicle_interface) StdoutLine: {'line': b"7: No code style divergence in file 'src/vehicle_interface_node.cpp'\n"}
+[1.254940] (my_vehicle_interface) StdoutLine: {'line': b'7: \n'}
+[1.255097] (my_vehicle_interface) StdoutLine: {'line': b'7: No problems found\n'}
+[1.255463] (my_vehicle_interface) StdoutLine: {'line': b'7: -- run_test.py: return code 0\n'}
+[1.255813] (my_vehicle_interface) StdoutLine: {'line': b"7: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/uncrustify.xunit.xml'\n"}
+[1.256010] (my_vehicle_interface) StdoutLine: {'line': b'7/8 Test #7: uncrustify .......................   Passed    0.08 sec\n'}
+[1.256164] (my_vehicle_interface) StdoutLine: {'line': b'test 8\n'}
+[1.256269] (my_vehicle_interface) StdoutLine: {'line': b'    Start 8: xmllint\n'}
+[1.256376] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[1.256501] (my_vehicle_interface) StdoutLine: {'line': b'8: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/xmllint.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_xmllint/xmllint.txt" "--command" "/opt/ros/humble/bin/ament_xmllint" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/xmllint.xunit.xml"\n'}
+[1.256694] (my_vehicle_interface) StdoutLine: {'line': b'8: Test timeout computed to be: 60\n'}
+[1.282795] (my_vehicle_interface) StdoutLine: {'line': b"8: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':\n"}
+[1.283121] (my_vehicle_interface) StdoutLine: {'line': b'8:  - /opt/ros/humble/bin/ament_xmllint --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/xmllint.xunit.xml\n'}
+[1.311253] (-) TimerEvent: {}
+[1.417062] (-) TimerEvent: {}
+[1.523216] (-) TimerEvent: {}
+[1.628527] (-) TimerEvent: {}
+[1.660716] (my_vehicle_interface) StdoutLine: {'line': b"8: File 'package.xml' is valid\n"}
+[1.664950] (my_vehicle_interface) StdoutLine: {'line': b'8: \n'}
+[1.668247] (my_vehicle_interface) StdoutLine: {'line': b"8: File 'launch/vehicle_interface.launch.xml' is valid\n"}
+[1.671216] (my_vehicle_interface) StdoutLine: {'line': b'8: \n'}
+[1.671792] (my_vehicle_interface) StdoutLine: {'line': b'8: No problems found\n'}
+[1.676736] (my_vehicle_interface) StdoutLine: {'line': b'8: -- run_test.py: return code 0\n'}
+[1.677403] (my_vehicle_interface) StdoutLine: {'line': b"8: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/xmllint.xunit.xml'\n"}
+[1.687007] (my_vehicle_interface) StdoutLine: {'line': b'8/8 Test #8: xmllint ..........................   Passed    0.43 sec\n'}
+[1.688869] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[1.689306] (my_vehicle_interface) StdoutLine: {'line': b'75% tests passed\x1b[0;0m, \x1b[0;31m2 tests failed\x1b[0;0m out of 8\n'}
+[1.689642] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[1.690025] (my_vehicle_interface) StdoutLine: {'line': b'Label Time Summary:\n'}
+[1.690331] (my_vehicle_interface) StdoutLine: {'line': b'copyright     =   0.15 sec*proc (1 test)\n'}
+[1.691373] (my_vehicle_interface) StdoutLine: {'line': b'cppcheck      =   0.08 sec*proc (1 test)\n'}
+[1.692133] (my_vehicle_interface) StdoutLine: {'line': b'cpplint       =   0.51 sec*proc (1 test)\n'}
+[1.692617] (my_vehicle_interface) StdoutLine: {'line': b'flake8        =   0.22 sec*proc (1 test)\n'}
+[1.692900] (my_vehicle_interface) StdoutLine: {'line': b'lint_cmake    =   0.07 sec*proc (1 test)\n'}
+[1.693923] (my_vehicle_interface) StdoutLine: {'line': b'linter        =   1.65 sec*proc (8 tests)\n'}
+[1.694386] (my_vehicle_interface) StdoutLine: {'line': b'pep257        =   0.10 sec*proc (1 test)\n'}
+[1.695094] (my_vehicle_interface) StdoutLine: {'line': b'uncrustify    =   0.08 sec*proc (1 test)\n'}
+[1.695277] (my_vehicle_interface) StdoutLine: {'line': b'xmllint       =   0.43 sec*proc (1 test)\n'}
+[1.695420] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[1.695561] (my_vehicle_interface) StdoutLine: {'line': b'Total Test time (real) =   1.65 sec\n'}
+[1.695703] (my_vehicle_interface) StdoutLine: {'line': b'\n'}
+[1.695839] (my_vehicle_interface) StdoutLine: {'line': b'The following tests FAILED:\n'}
+[1.695989] (my_vehicle_interface) StdoutLine: {'line': b'\t\x1b[0;31m  3 - cpplint (Failed)\x1b[0;0m\n'}
+[1.696128] (my_vehicle_interface) StdoutLine: {'line': b'\t\x1b[0;31m  6 - pep257 (Failed)\x1b[0;0m\n'}
+[1.696301] (my_vehicle_interface) StderrLine: {'line': b'Errors while running CTest\n'}
+[1.696476] (my_vehicle_interface) StderrLine: {'line': b'Output from these tests are in: /workspace/build/my_vehicle_interface/Testing/Temporary/LastTest.log\n'}
+[1.696615] (my_vehicle_interface) StderrLine: {'line': b'Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.\n'}
+[1.696754] (my_vehicle_interface) CommandEnded: {'returncode': 8}
+[1.697002] (my_vehicle_interface) TestFailure: {'identifier': 'my_vehicle_interface'}
+[1.697077] (my_vehicle_interface) JobEnded: {'identifier': 'my_vehicle_interface', 'rc': 0}
+[1.698389] (-) EventReactorShutdown: {}

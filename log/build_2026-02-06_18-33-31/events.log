@@ -1,0 +1,175 @@
+[0.000000] (-) TimerEvent: {}
+[0.000170] (my_vehicle_interface) JobQueued: {'identifier': 'my_vehicle_interface', 'dependencies': OrderedDict()}
+[0.000238] (my_vehicle_interface) JobStarted: {'identifier': 'my_vehicle_interface'}
+[0.012749] (my_vehicle_interface) JobProgress: {'identifier': 'my_vehicle_interface', 'progress': 'cmake'}
+[0.013791] (my_vehicle_interface) JobProgress: {'identifier': 'my_vehicle_interface', 'progress': 'build'}
+[0.014131] (my_vehicle_interface) Command: {'cmd': ['/usr/bin/cmake', '--build', '/workspace/build/my_vehicle_interface', '--', '-j8', '-l8'], 'cwd': '/workspace/build/my_vehicle_interface', 'env': OrderedDict([('CCACHE_DIR', '/home/zuhalkoksal/.ccache'), ('HOSTNAME', 'docker-desktop'), ('LOCAL_GROUP', 'staff'), ('LOCAL_USER', 'zuhalkoksal'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/workspace/install/my_vehicle_interface/lib:/opt/autoware/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zuhalkoksal'), ('OLDPWD', '/workspace/src/vehicle/external/my_vehicle_interface'), ('ROS_PYTHON_VERSION', '3'), ('COLCON_PREFIX_PATH', '/workspace/install:/opt/autoware'), ('LOCAL_GID', '20'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('NVIDIA_DRIVER_CAPABILITIES', 'all'), ('TERM', 'xterm'), ('GAZEBO_MODEL_PATH', '/opt/autoware/share/'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'), ('XDG_RUNTIME_DIR', ''), ('LANG', 'C.UTF-8'), ('RMW_IMPLEMENTATION', 'rmw_cyclonedds_cpp'), ('XAUTHORITY', ''), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/workspace/install/my_vehicle_interface:/opt/autoware:/opt/ros/humble'), ('LOCAL_UID', '501'), ('PWD', '/workspace/build/my_vehicle_interface'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/opt/autoware/lib/python3.10/site-packages:/opt/autoware/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('TZ', ''), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/workspace/install/my_vehicle_interface:/opt/autoware:/opt/ros/humble')]), 'shell': False}
+[0.063350] (my_vehicle_interface) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target my_vehicle_interface_lib\x1b[0m\n'}
+[0.075929] (my_vehicle_interface) StdoutLine: {'line': b'[ 28%] Built target vehicle_interface_node\n'}
+[0.099585] (-) TimerEvent: {}
+[0.138941] (my_vehicle_interface) StdoutLine: {'line': b'[ 57%] \x1b[32mBuilding CXX object CMakeFiles/my_vehicle_interface_lib.dir/src/can_utils.cpp.o\x1b[0m\n'}
+[0.139688] (my_vehicle_interface) StdoutLine: {'line': b'[ 57%] \x1b[32mBuilding CXX object CMakeFiles/my_vehicle_interface_lib.dir/src/vehicle_interface_node.cpp.o\x1b[0m\n'}
+[0.200632] (-) TimerEvent: {}
+[0.301730] (-) TimerEvent: {}
+[0.402663] (-) TimerEvent: {}
+[0.507655] (-) TimerEvent: {}
+[0.608782] (-) TimerEvent: {}
+[0.709628] (-) TimerEvent: {}
+[0.811684] (-) TimerEvent: {}
+[0.912861] (-) TimerEvent: {}
+[1.018627] (-) TimerEvent: {}
+[1.119864] (-) TimerEvent: {}
+[1.220854] (-) TimerEvent: {}
+[1.326101] (-) TimerEvent: {}
+[1.426854] (-) TimerEvent: {}
+[1.530102] (-) TimerEvent: {}
+[1.635619] (-) TimerEvent: {}
+[1.736628] (-) TimerEvent: {}
+[1.838611] (-) TimerEvent: {}
+[1.943640] (-) TimerEvent: {}
+[2.049620] (-) TimerEvent: {}
+[2.150854] (-) TimerEvent: {}
+[2.252115] (-) TimerEvent: {}
+[2.354356] (-) TimerEvent: {}
+[2.456352] (-) TimerEvent: {}
+[2.559110] (-) TimerEvent: {}
+[2.659876] (-) TimerEvent: {}
+[2.764672] (-) TimerEvent: {}
+[2.865865] (-) TimerEvent: {}
+[2.968902] (-) TimerEvent: {}
+[3.072732] (-) TimerEvent: {}
+[3.173872] (-) TimerEvent: {}
+[3.278622] (-) TimerEvent: {}
+[3.379854] (-) TimerEvent: {}
+[3.481355] (-) TimerEvent: {}
+[3.584532] (-) TimerEvent: {}
+[3.685872] (-) TimerEvent: {}
+[3.789910] (-) TimerEvent: {}
+[3.890866] (-) TimerEvent: {}
+[3.995102] (-) TimerEvent: {}
+[4.100459] (-) TimerEvent: {}
+[4.201854] (-) TimerEvent: {}
+[4.306361] (-) TimerEvent: {}
+[4.407852] (-) TimerEvent: {}
+[4.509619] (-) TimerEvent: {}
+[4.610641] (-) TimerEvent: {}
+[4.711862] (-) TimerEvent: {}
+[4.812851] (-) TimerEvent: {}
+[4.913853] (-) TimerEvent: {}
+[5.018869] (-) TimerEvent: {}
+[5.119621] (-) TimerEvent: {}
+[5.221859] (-) TimerEvent: {}
+[5.327619] (-) TimerEvent: {}
+[5.433620] (-) TimerEvent: {}
+[5.536661] (-) TimerEvent: {}
+[5.637853] (-) TimerEvent: {}
+[5.738627] (-) TimerEvent: {}
+[5.842632] (-) TimerEvent: {}
+[5.943836] (-) TimerEvent: {}
+[6.044871] (-) TimerEvent: {}
+[6.145886] (-) TimerEvent: {}
+[6.248181] (-) TimerEvent: {}
+[6.348631] (-) TimerEvent: {}
+[6.450316] (-) TimerEvent: {}
+[6.554709] (-) TimerEvent: {}
+[6.655859] (-) TimerEvent: {}
+[6.761608] (-) TimerEvent: {}
+[6.867606] (-) TimerEvent: {}
+[6.971089] (-) TimerEvent: {}
+[7.076610] (-) TimerEvent: {}
+[7.180130] (-) TimerEvent: {}
+[7.285644] (-) TimerEvent: {}
+[7.386863] (-) TimerEvent: {}
+[7.490622] (-) TimerEvent: {}
+[7.596631] (-) TimerEvent: {}
+[7.698856] (-) TimerEvent: {}
+[7.803602] (-) TimerEvent: {}
+[7.909607] (-) TimerEvent: {}
+[8.012794] (-) TimerEvent: {}
+[8.118594] (-) TimerEvent: {}
+[8.220141] (-) TimerEvent: {}
+[8.322969] (-) TimerEvent: {}
+[8.423625] (-) TimerEvent: {}
+[8.524841] (-) TimerEvent: {}
+[8.625620] (-) TimerEvent: {}
+[8.728841] (-) TimerEvent: {}
+[8.832109] (-) TimerEvent: {}
+[8.932840] (-) TimerEvent: {}
+[9.033850] (-) TimerEvent: {}
+[9.139599] (-) TimerEvent: {}
+[9.245638] (-) TimerEvent: {}
+[9.348103] (-) TimerEvent: {}
+[9.453118] (-) TimerEvent: {}
+[9.553611] (-) TimerEvent: {}
+[9.654596] (-) TimerEvent: {}
+[9.755605] (-) TimerEvent: {}
+[9.819484] (my_vehicle_interface) StdoutLine: {'line': b'[ 71%] \x1b[32m\x1b[1mLinking CXX shared library libmy_vehicle_interface_lib.so\x1b[0m\n'}
+[9.859105] (-) TimerEvent: {}
+[9.959617] (-) TimerEvent: {}
+[10.064609] (-) TimerEvent: {}
+[10.165614] (-) TimerEvent: {}
+[10.270660] (-) TimerEvent: {}
+[10.371622] (-) TimerEvent: {}
+[10.472659] (-) TimerEvent: {}
+[10.573643] (-) TimerEvent: {}
+[10.674630] (-) TimerEvent: {}
+[10.775601] (-) TimerEvent: {}
+[10.876607] (-) TimerEvent: {}
+[10.936693] (my_vehicle_interface) StdoutLine: {'line': b'[ 71%] Built target my_vehicle_interface_lib\n'}
+[10.950138] (my_vehicle_interface) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target my_vehicle_interface_node\x1b[0m\n'}
+[10.977597] (-) TimerEvent: {}
+[11.016002] (my_vehicle_interface) StdoutLine: {'line': b'[ 85%] \x1b[32mBuilding CXX object CMakeFiles/my_vehicle_interface_node.dir/src/main.cpp.o\x1b[0m\n'}
+[11.078632] (-) TimerEvent: {}
+[11.179728] (-) TimerEvent: {}
+[11.288703] (-) TimerEvent: {}
+[11.392333] (-) TimerEvent: {}
+[11.496649] (-) TimerEvent: {}
+[11.597645] (-) TimerEvent: {}
+[11.698613] (-) TimerEvent: {}
+[11.799603] (-) TimerEvent: {}
+[11.900623] (-) TimerEvent: {}
+[12.001623] (-) TimerEvent: {}
+[12.102686] (-) TimerEvent: {}
+[12.203626] (-) TimerEvent: {}
+[12.304629] (-) TimerEvent: {}
+[12.338957] (my_vehicle_interface) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable my_vehicle_interface_node\x1b[0m\n'}
+[12.405648] (-) TimerEvent: {}
+[12.510601] (-) TimerEvent: {}
+[12.571678] (my_vehicle_interface) StdoutLine: {'line': b'[100%] Built target my_vehicle_interface_node\n'}
+[12.588745] (my_vehicle_interface) CommandEnded: {'returncode': 0}
+[12.591590] (my_vehicle_interface) JobProgress: {'identifier': 'my_vehicle_interface', 'progress': 'install'}
+[12.597814] (my_vehicle_interface) Command: {'cmd': ['/usr/bin/cmake', '--install', '/workspace/build/my_vehicle_interface'], 'cwd': '/workspace/build/my_vehicle_interface', 'env': OrderedDict([('CCACHE_DIR', '/home/zuhalkoksal/.ccache'), ('HOSTNAME', 'docker-desktop'), ('LOCAL_GROUP', 'staff'), ('LOCAL_USER', 'zuhalkoksal'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/workspace/install/my_vehicle_interface/lib:/opt/autoware/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zuhalkoksal'), ('OLDPWD', '/workspace/src/vehicle/external/my_vehicle_interface'), ('ROS_PYTHON_VERSION', '3'), ('COLCON_PREFIX_PATH', '/workspace/install:/opt/autoware'), ('LOCAL_GID', '20'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('NVIDIA_DRIVER_CAPABILITIES', 'all'), ('TERM', 'xterm'), ('GAZEBO_MODEL_PATH', '/opt/autoware/share/'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'), ('XDG_RUNTIME_DIR', ''), ('LANG', 'C.UTF-8'), ('RMW_IMPLEMENTATION', 'rmw_cyclonedds_cpp'), ('XAUTHORITY', ''), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/workspace/install/my_vehicle_interface:/opt/autoware:/opt/ros/humble'), ('LOCAL_UID', '501'), ('PWD', '/workspace/build/my_vehicle_interface'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/opt/autoware/lib/python3.10/site-packages:/opt/autoware/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('TZ', ''), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/workspace/install/my_vehicle_interface:/opt/autoware:/opt/ros/humble')]), 'shell': False}
+[12.604770] (my_vehicle_interface) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[12.605906] (my_vehicle_interface) StdoutLine: {'line': b'-- Execute custom install script\n'}
+[12.606813] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/lib/my_vehicle_interface/vehicle_interface_node\n'}
+[12.607496] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/launch/vehicle_interface.launch.xml\n'}
+[12.607895] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/config/vehicle_interface.param.yaml\n'}
+[12.608466] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp\n'}
+[12.608935] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp\n'}
+[12.609211] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/environment/library_path.sh\n'}
+[12.609440] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/environment/library_path.dsv\n'}
+[12.609990] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/lib/libmy_vehicle_interface_lib.so\n'}
+[12.610541] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/lib/my_vehicle_interface/my_vehicle_interface_node\n'}
+[12.610690] (-) TimerEvent: {}
+[12.610938] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/ament_index/resource_index/package_run_dependencies/my_vehicle_interface\n'}
+[12.611353] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/ament_index/resource_index/parent_prefix_path/my_vehicle_interface\n'}
+[12.611647] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/environment/ament_prefix_path.sh\n'}
+[12.611979] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/environment/ament_prefix_path.dsv\n'}
+[12.612406] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/environment/path.sh\n'}
+[12.612685] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/environment/path.dsv\n'}
+[12.612944] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/local_setup.bash\n'}
+[12.613185] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/local_setup.sh\n'}
+[12.613422] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/local_setup.zsh\n'}
+[12.613666] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/local_setup.dsv\n'}
+[12.613857] (my_vehicle_interface) StdoutLine: {'line': b'-- Symlinking: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/package.dsv\n'}
+[12.620545] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/ament_index/resource_index/packages/my_vehicle_interface\n'}
+[12.620873] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/ament_index/resource_index/rclcpp_components/my_vehicle_interface\n'}
+[12.621167] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[12.621430] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[12.621872] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[12.622112] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/cmake/my_vehicle_interfaceConfig.cmake\n'}
+[12.622382] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/cmake/my_vehicle_interfaceConfig-version.cmake\n'}
+[12.622636] (my_vehicle_interface) StdoutLine: {'line': b'-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/package.xml\n'}
+[12.623649] (my_vehicle_interface) CommandEnded: {'returncode': 0}
+[12.648411] (my_vehicle_interface) JobEnded: {'identifier': 'my_vehicle_interface', 'rc': 0}
+[12.649869] (-) EventReactorShutdown: {}

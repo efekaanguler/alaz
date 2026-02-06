@@ -1,0 +1,2 @@
+Invoking command in '/workspace/build/my_vehicle_interface': /usr/bin/ctest -C Release -D ExperimentalTest --no-compress-output -V --force-new-ctest-process
+Invoked command in '/workspace/build/my_vehicle_interface' returned '8': /usr/bin/ctest -C Release -D ExperimentalTest --no-compress-output -V --force-new-ctest-process

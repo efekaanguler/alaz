@@ -1,0 +1,35 @@
+-- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':
+ - /opt/ros/humble/bin/ament_cpplint --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cpplint.xunit.xml
+
+/workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:34:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+/workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:36:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+/workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:40:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+/workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:119:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+/workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:120:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+/workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:122:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+/workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp:143:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+/workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp:145:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+/workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp:147:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+/workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp:148:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+/workspace/src/vehicle/external/my_vehicle_interface/src/vehicle_interface_node.cpp:272:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+/workspace/src/vehicle/external/my_vehicle_interface/src/vehicle_interface_node.cpp:319:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+Category 'whitespace/comments' errors found: 12
+Total errors found: 12
+Using '--root=/workspace/src/vehicle/external/my_vehicle_interface/include' argument
+
+Done processing /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp
+
+Done processing /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp
+
+Using '--root=/workspace/src/vehicle/external/my_vehicle_interface/src' argument
+
+Done processing /workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp
+
+Done processing /workspace/src/vehicle/external/my_vehicle_interface/src/main.cpp
+
+Done processing /workspace/src/vehicle/external/my_vehicle_interface/src/vehicle_interface_node.cpp
+
+
+
+-- run_test.py: return code 1
+-- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cpplint.xunit.xml'

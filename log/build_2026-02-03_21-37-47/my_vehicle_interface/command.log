@@ -1,0 +1,4 @@
+Invoking command in '/workspace/build/my_vehicle_interface': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /workspace/src/vehicle/external/my_vehicle_interface -DCMAKE_INSTALL_PREFIX=/workspace/install/my_vehicle_interface
+Invoked command in '/workspace/build/my_vehicle_interface' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /workspace/src/vehicle/external/my_vehicle_interface -DCMAKE_INSTALL_PREFIX=/workspace/install/my_vehicle_interface
+Invoking command in '/workspace/build/my_vehicle_interface': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /workspace/build/my_vehicle_interface -- -j8 -l8
+Invoked command in '/workspace/build/my_vehicle_interface' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /workspace/build/my_vehicle_interface -- -j8 -l8

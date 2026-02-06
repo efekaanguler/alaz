@@ -1,0 +1,40 @@
+[35m[1mConsolidate compiler generated dependencies of target my_vehicle_interface_lib[0m
+[ 28%] Built target vehicle_interface_node
+[ 57%] [32mBuilding CXX object CMakeFiles/my_vehicle_interface_lib.dir/src/can_utils.cpp.o[0m
+[ 57%] [32mBuilding CXX object CMakeFiles/my_vehicle_interface_lib.dir/src/vehicle_interface_node.cpp.o[0m
+[ 71%] [32m[1mLinking CXX shared library libmy_vehicle_interface_lib.so[0m
+[ 71%] Built target my_vehicle_interface_lib
+[35m[1mConsolidate compiler generated dependencies of target my_vehicle_interface_node[0m
+[ 85%] [32mBuilding CXX object CMakeFiles/my_vehicle_interface_node.dir/src/main.cpp.o[0m
+[100%] [32m[1mLinking CXX executable my_vehicle_interface_node[0m
+[100%] Built target my_vehicle_interface_node
+-- Install configuration: ""
+-- Execute custom install script
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/lib/my_vehicle_interface/vehicle_interface_node
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/launch/vehicle_interface.launch.xml
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/config/vehicle_interface.param.yaml
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/environment/library_path.sh
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/environment/library_path.dsv
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/lib/libmy_vehicle_interface_lib.so
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/lib/my_vehicle_interface/my_vehicle_interface_node
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/ament_index/resource_index/package_run_dependencies/my_vehicle_interface
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/ament_index/resource_index/parent_prefix_path/my_vehicle_interface
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/environment/path.sh
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/environment/path.dsv
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/local_setup.bash
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/local_setup.sh
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/local_setup.zsh
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/local_setup.dsv
+-- Symlinking: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/package.dsv
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/ament_index/resource_index/packages/my_vehicle_interface
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/ament_index/resource_index/rclcpp_components/my_vehicle_interface
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/cmake/ament_cmake_export_libraries-extras.cmake
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/cmake/my_vehicle_interfaceConfig.cmake
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/cmake/my_vehicle_interfaceConfig-version.cmake
+-- Up-to-date symlink: /workspace/install/my_vehicle_interface/share/my_vehicle_interface/package.xml

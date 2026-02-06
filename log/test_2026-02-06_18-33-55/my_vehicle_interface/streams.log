@@ -1,0 +1,177 @@
+[0.027s] Invoking command in '/workspace/build/my_vehicle_interface': /usr/bin/ctest -C Release -D ExperimentalTest --no-compress-output -V --force-new-ctest-process
+[0.032s] UpdateCTestConfiguration  from :/workspace/build/my_vehicle_interface/CTestConfiguration.ini
+[0.032s] Parse Config file:/workspace/build/my_vehicle_interface/CTestConfiguration.ini
+[0.032s]    Site: docker-desktop
+[0.033s]    Build name: (empty)
+[0.033s]  Add coverage exclude regular expressions.
+[0.033s] Create new tag: 20260206-1833 - Experimental
+[0.033s] UpdateCTestConfiguration  from :/workspace/build/my_vehicle_interface/CTestConfiguration.ini
+[0.033s] Parse Config file:/workspace/build/my_vehicle_interface/CTestConfiguration.ini
+[0.034s] Test project /workspace/build/my_vehicle_interface
+[0.034s] Constructing a list of tests
+[0.034s] Done constructing a list of tests
+[0.035s] Updating test list for fixtures
+[0.035s] Added 0 tests to meet fixture requirements
+[0.035s] Checking test dependency graph...
+[0.035s] Checking test dependency graph end
+[0.035s] test 1
+[0.035s]     Start 1: copyright
+[0.035s] 
+[0.036s] 1: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/copyright.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_copyright/copyright.txt" "--command" "/opt/ros/humble/bin/ament_copyright" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/copyright.xunit.xml"
+[0.036s] 1: Test timeout computed to be: 200
+[0.068s] 1: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':
+[0.068s] 1:  - /opt/ros/humble/bin/ament_copyright --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/copyright.xunit.xml
+[0.177s] 1: No problems found, checked 6 files
+[0.182s] 1: -- run_test.py: return code 0
+[0.182s] 1: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/copyright.xunit.xml'
+[0.187s] 1/8 Test #1: copyright ........................   Passed    0.15 sec
+[0.188s] test 2
+[0.188s]     Start 2: cppcheck
+[0.188s] 
+[0.189s] 2: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cppcheck.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_cppcheck/cppcheck.txt" "--command" "/opt/ros/humble/bin/ament_cppcheck" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cppcheck.xunit.xml" "--include_dirs" "/workspace/src/vehicle/external/my_vehicle_interface/include"
+[0.189s] 2: Test timeout computed to be: 300
+[0.219s] 2: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':
+[0.219s] 2:  - /opt/ros/humble/bin/ament_cppcheck --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cppcheck.xunit.xml --include_dirs /workspace/src/vehicle/external/my_vehicle_interface/include
+[0.254s] 2: cppcheck 2.7 has known performance issues and therefore will not be used, set the AMENT_CPPCHECK_ALLOW_SLOW_VERSIONS environment variable to override this.
+[0.260s] 2: -- run_test.py: return code 0
+[0.260s] 2: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cppcheck.xunit.xml'
+[0.265s] 2/8 Test #2: cppcheck .........................   Passed    0.08 sec
+[0.266s] test 3
+[0.266s]     Start 3: cpplint
+[0.267s] 
+[0.267s] 3: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cpplint.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_cpplint/cpplint.txt" "--command" "/opt/ros/humble/bin/ament_cpplint" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cpplint.xunit.xml"
+[0.267s] 3: Test timeout computed to be: 120
+[0.293s] 3: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':
+[0.293s] 3:  - /opt/ros/humble/bin/ament_cpplint --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cpplint.xunit.xml
+[0.371s] 3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:34:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+[0.372s] 3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:36:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+[0.376s] 3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:40:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+[0.447s] 3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:119:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+[0.448s] 3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:120:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+[0.449s] 3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp:122:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+[0.658s] 3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp:143:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+[0.660s] 3: /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp:145:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+[0.692s] 3: /workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp:147:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+[0.692s] 3: /workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp:148:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+[0.748s] 3: /workspace/src/vehicle/external/my_vehicle_interface/src/vehicle_interface_node.cpp:272:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+[0.751s] 3: /workspace/src/vehicle/external/my_vehicle_interface/src/vehicle_interface_node.cpp:319:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+[0.768s] 3: Category 'whitespace/comments' errors found: 12
+[0.768s] 3: Total errors found: 12
+[0.769s] 3: Using '--root=/workspace/src/vehicle/external/my_vehicle_interface/include' argument
+[0.769s] 3: 
+[0.769s] 3: Done processing /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/can_utils.hpp
+[0.769s] 3: 
+[0.770s] 3: Done processing /workspace/src/vehicle/external/my_vehicle_interface/include/my_vehicle_interface/vehicle_interface_node.hpp
+[0.770s] 3: 
+[0.770s] 3: Using '--root=/workspace/src/vehicle/external/my_vehicle_interface/src' argument
+[0.770s] 3: 
+[0.770s] 3: Done processing /workspace/src/vehicle/external/my_vehicle_interface/src/can_utils.cpp
+[0.770s] 3: 
+[0.770s] 3: Done processing /workspace/src/vehicle/external/my_vehicle_interface/src/main.cpp
+[0.771s] 3: 
+[0.771s] 3: Done processing /workspace/src/vehicle/external/my_vehicle_interface/src/vehicle_interface_node.cpp
+[0.771s] 3: 
+[0.774s] 3: -- run_test.py: return code 1
+[0.775s] 3: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/cpplint.xunit.xml'
+[0.780s] 3/8 Test #3: cpplint ..........................***Failed    0.51 sec
+[0.780s] test 4
+[0.780s]     Start 4: flake8
+[0.781s] 
+[0.781s] 4: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/flake8.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_flake8/flake8.txt" "--command" "/opt/ros/humble/bin/ament_flake8" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/flake8.xunit.xml"
+[0.781s] 4: Test timeout computed to be: 60
+[0.808s] 4: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':
+[0.808s] 4:  - /opt/ros/humble/bin/ament_flake8 --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/flake8.xunit.xml
+[0.986s] 4: 
+[0.987s] 4: 1 files checked
+[0.987s] 4: No problems found
+[0.987s] 4: 
+[0.987s] 4: Checked files:
+[0.987s] 4: 
+[0.987s] 4: * ./test/test_can_simulation.py
+[0.996s] 4: -- run_test.py: return code 0
+[0.996s] 4: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/flake8.xunit.xml'
+[1.001s] 4/8 Test #4: flake8 ...........................   Passed    0.22 sec
+[1.002s] test 5
+[1.002s]     Start 5: lint_cmake
+[1.002s] 
+[1.002s] 5: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/lint_cmake.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_lint_cmake/lint_cmake.txt" "--command" "/opt/ros/humble/bin/ament_lint_cmake" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/lint_cmake.xunit.xml"
+[1.002s] 5: Test timeout computed to be: 60
+[1.030s] 5: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':
+[1.030s] 5:  - /opt/ros/humble/bin/ament_lint_cmake --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/lint_cmake.xunit.xml
+[1.061s] 5: 
+[1.061s] 5: No problems found
+[1.066s] 5: -- run_test.py: return code 0
+[1.066s] 5: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/lint_cmake.xunit.xml'
+[1.071s] 5/8 Test #5: lint_cmake .......................   Passed    0.07 sec
+[1.071s] test 6
+[1.071s]     Start 6: pep257
+[1.071s] 
+[1.072s] 6: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/pep257.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_pep257/pep257.txt" "--command" "/opt/ros/humble/bin/ament_pep257" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/pep257.xunit.xml"
+[1.072s] 6: Test timeout computed to be: 60
+[1.098s] 6: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':
+[1.098s] 6:  - /opt/ros/humble/bin/ament_pep257 --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/pep257.xunit.xml
+[1.164s] 6: checking ./test/test_can_simulation.py
+[1.164s] 6: ./test/test_can_simulation.py:15 at module level: D213: Multi-line docstring summary should start at the second line
+[1.165s] 6: 1 errors
+[1.165s] 6: -- run_test.py: return code 1
+[1.169s] 6: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/pep257.xunit.xml'
+[1.170s] 6/8 Test #6: pep257 ...........................***Failed    0.10 sec
+[1.171s] test 7
+[1.171s]     Start 7: uncrustify
+[1.171s] 
+[1.171s] 7: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/uncrustify.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_uncrustify/uncrustify.txt" "--command" "/opt/ros/humble/bin/ament_uncrustify" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/uncrustify.xunit.xml"
+[1.171s] 7: Test timeout computed to be: 60
+[1.199s] 7: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':
+[1.199s] 7:  - /opt/ros/humble/bin/ament_uncrustify --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/uncrustify.xunit.xml
+[1.247s] 7: No code style divergence in file 'include/my_vehicle_interface/can_utils.hpp'
+[1.248s] 7: 
+[1.249s] 7: No code style divergence in file 'include/my_vehicle_interface/vehicle_interface_node.hpp'
+[1.249s] 7: 
+[1.249s] 7: No code style divergence in file 'src/can_utils.cpp'
+[1.253s] 7: 
+[1.254s] 7: No code style divergence in file 'src/main.cpp'
+[1.254s] 7: 
+[1.254s] 7: No code style divergence in file 'src/vehicle_interface_node.cpp'
+[1.254s] 7: 
+[1.254s] 7: No problems found
+[1.255s] 7: -- run_test.py: return code 0
+[1.255s] 7: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/uncrustify.xunit.xml'
+[1.255s] 7/8 Test #7: uncrustify .......................   Passed    0.08 sec
+[1.255s] test 8
+[1.255s]     Start 8: xmllint
+[1.255s] 
+[1.256s] 8: Test command: /usr/bin/python3 "-u" "/opt/ros/humble/share/ament_cmake_test/cmake/run_test.py" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/xmllint.xunit.xml" "--package-name" "my_vehicle_interface" "--output-file" "/workspace/build/my_vehicle_interface/ament_xmllint/xmllint.txt" "--command" "/opt/ros/humble/bin/ament_xmllint" "--xunit-file" "/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/xmllint.xunit.xml"
+[1.256s] 8: Test timeout computed to be: 60
+[1.282s] 8: -- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':
+[1.282s] 8:  - /opt/ros/humble/bin/ament_xmllint --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/xmllint.xunit.xml
+[1.664s] 8: File 'package.xml' is valid
+[1.666s] 8: 
+[1.670s] 8: File 'launch/vehicle_interface.launch.xml' is valid
+[1.671s] 8: 
+[1.671s] 8: No problems found
+[1.676s] 8: -- run_test.py: return code 0
+[1.677s] 8: -- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/xmllint.xunit.xml'
+[1.686s] 8/8 Test #8: xmllint ..........................   Passed    0.43 sec
+[1.688s] 
+[1.689s] 75% tests passed[0;0m, [0;31m2 tests failed[0;0m out of 8
+[1.689s] 
+[1.689s] Label Time Summary:
+[1.690s] copyright     =   0.15 sec*proc (1 test)
+[1.691s] cppcheck      =   0.08 sec*proc (1 test)
+[1.691s] cpplint       =   0.51 sec*proc (1 test)
+[1.692s] flake8        =   0.22 sec*proc (1 test)
+[1.692s] lint_cmake    =   0.07 sec*proc (1 test)
+[1.693s] linter        =   1.65 sec*proc (8 tests)
+[1.694s] pep257        =   0.10 sec*proc (1 test)
+[1.694s] uncrustify    =   0.08 sec*proc (1 test)
+[1.694s] xmllint       =   0.43 sec*proc (1 test)
+[1.695s] 
+[1.695s] Total Test time (real) =   1.65 sec
+[1.695s] 
+[1.695s] The following tests FAILED:
+[1.695s] 	[0;31m  3 - cpplint (Failed)[0;0m
+[1.695s] 	[0;31m  6 - pep257 (Failed)[0;0m
+[1.695s] Errors while running CTest
+[1.696s] Output from these tests are in: /workspace/build/my_vehicle_interface/Testing/Temporary/LastTest.log
+[1.696s] Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.
+[1.696s] Invoked command in '/workspace/build/my_vehicle_interface' returned '8': /usr/bin/ctest -C Release -D ExperimentalTest --no-compress-output -V --force-new-ctest-process
