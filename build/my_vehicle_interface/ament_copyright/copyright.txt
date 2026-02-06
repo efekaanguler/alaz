@@ -1,8 +1,0 @@
--- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':
- - /opt/ros/humble/bin/ament_copyright --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/copyright.xunit.xml
-
-No problems found, checked 5 files
-
-
--- run_test.py: return code 0
--- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/copyright.xunit.xml'

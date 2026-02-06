@@ -1,9 +1,0 @@
--- run_test.py: invoking following command in '/workspace/src/vehicle/external/my_vehicle_interface':
- - /opt/ros/humble/bin/ament_lint_cmake --xunit-file /workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/lint_cmake.xunit.xml
-
-
-No problems found
-
-
--- run_test.py: return code 0
--- run_test.py: verify result file '/workspace/build/my_vehicle_interface/test_results/my_vehicle_interface/lint_cmake.xunit.xml'
