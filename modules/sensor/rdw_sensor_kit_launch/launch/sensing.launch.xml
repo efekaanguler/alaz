@@ -1,0 +1,50 @@
+<launch>
+  <arg name="launch_driver" default="true" description="do launch driver"/>
+  <arg name="vehicle_mirror_param_file" description="path to the file of vehicle mirror position yaml"/>
+  <arg name="pointcloud_container_name" default="pointcloud_container"/>
+  <arg name="vehicle_id" default="$(env VEHICLE_ID default)"/>
+
+  <group>
+    <!-- Tüm sensörleri /sensing namespace'i altına alıyoruz -->
+    <push-ros-namespace namespace="sensing"/>
+
+    <!-- 1. POINTCLOUD PREPROCESSOR (Kritik: Veri akışı için gerekli) -->
+    <!-- Önceki adımda oluşturduğumuz relay scriptini çağırır -->
+    <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/pointcloud_preprocessor.launch.py">
+    </include>
+
+    <!-- 2. LiDAR Driver -->
+    <!-- 2D Lidar + Pointcloud Dönüştürücüyü başlatır -->
+    <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/lidar.launch.xml">
+      <arg name="launch_driver" value="$(var launch_driver)"/>
+      <arg name="vehicle_mirror_param_file" value="$(var vehicle_mirror_param_file)"/>
+      <arg name="pointcloud_container_name" value="$(var pointcloud_container_name)"/>
+    </include>
+
+    <!-- 3. Camera Driver -->
+    <!-- 3 Kamerayı (Sol, Sağ, Orta) başlatır -->
+    <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/camera.launch.xml">
+      <arg name="launch_driver" value="$(var launch_driver)" />
+    </include>
+
+    <!-- 4. IMU Driver -->
+    <!-- Eğer IMU'nuz yoksa bu dosya boş bir launch dosyası olabilir, 
+         ancak Autoware EKF için IMU verisi bekler. -->
+    <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/imu.launch.xml">
+      <arg name="launch_driver" value="$(var launch_driver)"/>
+    </include>
+
+    <!-- 5. GNSS Driver -->
+    <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/gnss.launch.xml">
+      <arg name="launch_driver" value="$(var launch_driver)"/>
+    </include>
+
+    <!-- 6. Vehicle Velocity Converter -->
+    <!-- Hız sensörünüzden gelen veriyi Twist formatına çevirir -->
+    <include file="$(find-pkg-share autoware_vehicle_velocity_converter)/launch/vehicle_velocity_converter.launch.xml">
+      <arg name="input_vehicle_velocity_topic" value="/vehicle/status/velocity_status"/>
+      <arg name="output_twist_with_covariance" value="/sensing/vehicle_velocity_converter/twist_with_covariance"/>
+    </include>
+
+  </group>
+</launch>

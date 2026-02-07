@@ -1,0 +1,35 @@
+<launch>
+  <arg name="launch_driver" default="true" description="launch camera driver"/>
+
+  <!-- USB Kamera Sürücüleri -->
+  <!-- Her bir kamera için ayrı node başlatıyoruz -->
+  <group if="$(var launch_driver)">
+    
+    <!-- CENTER CAMERA -->
+    <node pkg="usb_cam" exec="usb_cam_node_exe" name="camera_center" output="screen">
+      <param name="video_device" value="/dev/video0"/> <!-- Video portunu kontrol et! -->
+      <param name="frame_id" value="camera_center_link"/>
+      <param name="image_width" value="640"/>
+      <param name="image_height" value="480"/>
+      <param name="pixel_format" value="yuyv"/>
+      <remap from="image_raw" to="/sensing/camera/camera_center/image_raw"/>
+      <remap from="camera_info" to="/sensing/camera/camera_center/camera_info"/>
+    </node>
+
+    <!-- LEFT CAMERA -->
+    <node pkg="usb_cam" exec="usb_cam_node_exe" name="camera_left" output="screen">
+      <param name="video_device" value="/dev/video1"/> <!-- Video portunu kontrol et! -->
+      <param name="frame_id" value="camera_left_link"/>
+      <remap from="image_raw" to="/sensing/camera/camera_left/image_raw"/>
+      <remap from="camera_info" to="/sensing/camera/camera_left/camera_info"/>
+    </node>
+
+    <!-- RIGHT CAMERA -->
+    <node pkg="usb_cam" exec="usb_cam_node_exe" name="camera_right" output="screen">
+      <param name="video_device" value="/dev/video2"/> <!-- Video portunu kontrol et! -->
+      <param name="frame_id" value="camera_right_link"/>
+      <remap from="image_raw" to="/sensing/camera/camera_right/image_raw"/>
+      <remap from="camera_info" to="/sensing/camera/camera_right/camera_info"/>
+    </node>
+  </group>
+</launch>
