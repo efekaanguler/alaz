@@ -1,0 +1,1 @@
+# set the bridge up in autoware container for sim to work

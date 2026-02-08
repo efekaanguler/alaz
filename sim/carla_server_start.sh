@@ -3,7 +3,7 @@ set -euo pipefail
 
 MODE="${1:-gui}"                 # gui | headless
 PORT="${CARLA_PORT:-2000}"
-QUALITY="${QUALITY:-Low}"       # Low | Epic, etc.
+QUALITY="${QUALITY:-Epic}"       # Low | Epic, etc.
 
 # CarlaUE4.sh'yi bul
 CARLA_SH="$(command -v CarlaUE4.sh || true)"
