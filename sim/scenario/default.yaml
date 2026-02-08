@@ -1,7 +1,7 @@
 version: 1
 
 world:
-  map: "Town03"
+  map: "Town01"
   synchronous_mode: true
   fixed_delta_seconds: 0.05
 
@@ -45,7 +45,7 @@ ego_vehicle:
       pitch: -10.0
 
 sensors:
-  profile_file: "scenario/sensors/sensor_profile.yaml"
+  profile_file: "sensors/sensor_profile.yaml"
 
 ros:
   enabled: true

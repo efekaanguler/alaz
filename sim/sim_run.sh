@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # --- config ---
-IMAGE="carlasim/carla:0.9.15"
+IMAGE="simim:v2"
 NAME="carla_sim_0_9_15"
 
 # repo root = sim_start.sh'ın bulunduğu dizinin bir üstü

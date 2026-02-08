@@ -176,7 +176,7 @@ def main():
     ap.add_argument("--config", default="../scenario/default.yaml", help="Path to scenario default.yaml")
     ap.add_argument("--host", default=os.environ.get("CARLA_HOST", "localhost"))
     ap.add_argument("--port", type=int, default=int(os.environ.get("CARLA_PORT", "2000")))
-    ap.add_argument("--timeout", type=float, default=float(os.environ.get("CARLA_TIMEOUT", "10")))
+    ap.add_argument("--timeout", type=float, default=float(os.environ.get("CARLA_TIMEOUT", "100")))
     ap.add_argument("--cleanup", action="store_true", help="Destroy existing ego_vehicle actors before spawn")
     ap.add_argument("--dry-run", action="store_true", help="Only print actions, do not spawn")
     args = ap.parse_args()
