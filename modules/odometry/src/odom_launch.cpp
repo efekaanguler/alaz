@@ -1,10 +1,9 @@
-#include <cstdio>
+#include <odometry_node.hpp>
 
-int main(int argc, char ** argv)
-{
-  (void) argc;
-  (void) argv;
-
-  printf("hello world odometry package\n");
+int main(int argc, char ** argv) {
+  rclcpp::init(argc, argv);
+  auto node = std::make_shared<OdometryNode>();
+  rclcpp::spin(node);
+  rclcpp::shutdown();
   return 0;
 }
