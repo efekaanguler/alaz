@@ -1,7 +1,7 @@
 version: 1
 
 world:
-  map: "Town01"
+  map: "Town10HD"
   synchronous_mode: true
   fixed_delta_seconds: 0.05
 
