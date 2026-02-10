@@ -13,9 +13,9 @@
 
   <buildtool_depend>ament_cmake_ros</buildtool_depend>
 
-  <depend>behavior_path_planner</depend>
-  <depend>motion_velocity_smoother</depend>
-  <depend>trajectory_follower</depend>
+  <depend>autoware_behavior_path_planner</depend>
+  <depend>autoware_velocity_smoother</depend>
+  <depend>autoware_trajectory_follower_node</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

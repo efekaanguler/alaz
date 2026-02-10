@@ -8,9 +8,9 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_ros REQUIRED)
-find_package(trajectory_follower_node REQUIRED)
-find_package(mpc_lateral_controller REQUIRED)
-find_package(adaptive_cruise_control REQUIRED)
+find_package(autoware_trajectory_follower_node REQUIRED)
+find_package(autoware_mpc_lateral_controller REQUIRED)
+#find_package(adaptive_cruise_control REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

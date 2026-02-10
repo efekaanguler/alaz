@@ -9,7 +9,7 @@ WORKSPACE_PATH="$SCRIPT_DIR"
 
 # for non-GPU: USE_GPU=0 ./dev_run.sh
 
-if [[ "${USE_GPU:-1}" == "0" ]]; then
+if [[ "${USE_GPU:-0}" == "0" ]]; then
   exec "${AUTOWARE_RUN}" --devel --no-nvidia --workspace "${WORKSPACE_PATH}" /bin/bash
 else
   exec "${AUTOWARE_RUN}" --devel --workspace "${WORKSPACE_PATH}" /bin/bash

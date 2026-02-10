@@ -26,7 +26,7 @@ fi
 
 cd "$AUTOWARE_DIR"
 echo "==> Running Autoware setup (no-nvidia, docker)"
-./setup-dev-env.sh -y --no-nvidia docker
+./setup-dev-env.sh -y --no-nvidia docker -- --ask-become-pass
 
 echo
 echo "✅ Setup complete."
