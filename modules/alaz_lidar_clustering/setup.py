@@ -25,7 +25,7 @@ setup(
     entry_points={
     'console_scripts': [
         'lidar_cluster_node = alaz_lidar_clustering.lidar_cluster_node:main',
-        'alaz_lidar_2d = alaz_lidar_clustering.alaz_lidar_2d:main',  # <-- YENİ EKLEDİĞİMİZ
-    ],
+        'alaz_lidar_2d = alaz_lidar_clustering.alaz_lidar_2d:main',  
+        ],
 },
 )
