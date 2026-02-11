@@ -48,11 +48,13 @@ class OdometryNode : public rclcpp::Node {
     std::string SPEED_TOPIC = "/speed";
     std::string STEERING_TOPIC = "/steering";
     std::string ODOM_TOPIC = "/odom";
+    std::string THROTTLE_TOPIC = "/throttle";
 
     float TIMEOUT=1.0;
 
     float speed = 0.0;
     float steering = 0.0;
+    float throttle=0.0;
     rclcpp::Time last_speed;
     rclcpp::Time last_steering;
     Odometry odom;
@@ -60,9 +62,13 @@ class OdometryNode : public rclcpp::Node {
     void publish_odometry();
     void speed_callback(std_msgs::msg::Float32 msg);
     void steering_callback(std_msgs::msg::Float32 msg);
+    void throttle_callback(std_msgs::msg::Float32 msg);
+
+    float simulate_speed();
 
     rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr speed_subscriber;
     rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr steering_subscriber;
+    rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr throttle_subscriber;
     rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_publisher;
 
     rclcpp::TimerBase::SharedPtr publish_timer;
