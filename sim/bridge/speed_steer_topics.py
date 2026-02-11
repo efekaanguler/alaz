@@ -24,7 +24,7 @@ class SpeedSteerRepublisher(Node):
         
         # Parameters
         self.declare_parameter('max_steering_angle', 1.22)  # radians (~70 degrees)
-        self.declare_parameter('input_topic', '/carla/ego_vehicle/vehicle_status')
+        self.declare_parameter('input_topsic', '/carla/ego_vehicle/vehicle_status')
         self.declare_parameter('speed_topic', '/speed')
         self.declare_parameter('steering_topic', '/steering_angle')
         
@@ -47,7 +47,7 @@ class SpeedSteerRepublisher(Node):
         
         self.get_logger().info(f'Speed/Steer Republisher started')
         self.get_logger().info(f'  Input: {input_topic}')
-        self.get_logger().info(f'  Output speed: {speed_topic} (km/h)')
+        self.get_logger().info(f'  Output speed: {speed_topic} (hm/h)')
         self.get_logger().info(f'  Output steering: {steering_topic} (radians)')
         self.get_logger().info(f'  Max steering angle: {self.max_steering_angle:.3f} rad')
     
