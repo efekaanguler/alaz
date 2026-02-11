@@ -8,6 +8,8 @@ sudo apt update
 echo "Installing CARLA python library"
 
 pip install carla==0.9.15
+pip install evdev==1.6.1
+pip install pynput
 
 #step3
 echo "Setting bridge repo up"

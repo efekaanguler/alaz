@@ -27,8 +27,8 @@ class PointCloudToLaserScan(Node):
         # Parameters
         self.declare_parameter('input_topic', '/carla/ego_vehicle/lidar_2d')
         self.declare_parameter('output_topic', '/scan')
-        self.declare_parameter('min_height', -0.5)
-        self.declare_parameter('max_height', 1.0)
+        self.declare_parameter('min_height', -3.0)
+        self.declare_parameter('max_height', 3.0)
         self.declare_parameter('angle_min', -math.pi)
         self.declare_parameter('angle_max', math.pi)
         self.declare_parameter('angle_increment', 0.0087)  # ~0.5 degrees
