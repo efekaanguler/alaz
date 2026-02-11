@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-MODE="${1:-gui}"                 # gui | headless
+MODE="${1:-headless}"                 # gui | headless
 PORT="${CARLA_PORT:-2000}"
 QUALITY="${QUALITY:-Epic}"       # Low | Epic, etc.
 
