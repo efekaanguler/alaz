@@ -1,0 +1,7 @@
+version: 1
+
+virtual_sensors:
+  speed:
+    description: "Vehicle speed derived from vehicle state (not a CARLA actor sensor)."
+    expected_ros_topic: "/carla/ego_vehicle/vehicle_state/speed"
+    unit: "mps"

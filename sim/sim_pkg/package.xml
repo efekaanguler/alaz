@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>sim_pkg</name>
+  <version>0.0.1</version>
+  <description>CARLA simulation package</description>
+  <maintainer email="example@example.com">efekaan</maintainer>
+  <license>MIT</license>
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>carla_msgs</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
