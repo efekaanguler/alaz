@@ -43,7 +43,9 @@ void OdometryNode::publish_odometry() {
     if(last_speed.nanoseconds()==0 || (now_-last_speed).seconds() > TIMEOUT) return;
     if(last_steering.nanoseconds()==0 || (now_-last_steering).seconds() > TIMEOUT) return;
 
-    odom.update_odometry(speed, steering, now_);
+    float vx = speed/36;
+    float vth = convert_steering_angle_to_angular_velocity(vx, steering);
+    odom.update_odometry(vx, vth, now_);
 
     tf2::Quaternion q;
     q.setRPY(0, 0, odom.th); // Create quaternion from yaw

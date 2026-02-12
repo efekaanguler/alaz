@@ -63,6 +63,12 @@ class OdometryNode : public rclcpp::Node {
     void speed_callback(std_msgs::msg::Float32 msg);
     void steering_callback(std_msgs::msg::Float32 msg);
     void throttle_callback(std_msgs::msg::Float32 msg);
+    float convert_steering_angle_to_angular_velocity(float cur_vel_mps, float cur_angle_rad) {
+
+      const float wheel_base = 1.05;
+      return tan(cur_angle_rad) * cur_vel_mps / wheel_base;
+
+    }
 
     float simulate_speed();
 
