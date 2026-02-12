@@ -20,7 +20,7 @@
 #include "my_vehicle_interface/can_utils.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-// Autoware messages (Universe version)
+// Autoware messages
 #include "autoware_control_msgs/msg/control.hpp"
 #include "autoware_vehicle_msgs/msg/control_mode_report.hpp"
 #include "autoware_vehicle_msgs/msg/gear_command.hpp"
@@ -35,13 +35,11 @@
 // CAN messages
 #include "can_msgs/msg/frame.hpp"
 
-namespace my_vehicle_interface
-{
+namespace my_vehicle_interface {
 
-class VehicleInterfaceNode : public rclcpp::Node
-{
+class VehicleInterfaceNode : public rclcpp::Node {
 public:
-  explicit VehicleInterfaceNode(const rclcpp::NodeOptions & options);
+  explicit VehicleInterfaceNode(const rclcpp::NodeOptions &options);
 
 private:
   // =========================================================================
@@ -52,11 +50,11 @@ private:
   void
   onGearCmd(const autoware_vehicle_msgs::msg::GearCommand::ConstSharedPtr msg);
   void onTurnIndicatorsCmd(
-    const autoware_vehicle_msgs::msg::TurnIndicatorsCommand::ConstSharedPtr
-    msg);
+      const autoware_vehicle_msgs::msg::TurnIndicatorsCommand::ConstSharedPtr
+          msg);
   void onHazardLightsCmd(
-    const autoware_vehicle_msgs::msg::HazardLightsCommand::ConstSharedPtr
-    msg);
+      const autoware_vehicle_msgs::msg::HazardLightsCommand::ConstSharedPtr
+          msg);
 
   // =========================================================================
   // CALLBACKS - From CAN bus (via ros2_socketcan)
@@ -74,17 +72,23 @@ private:
   void sendToVehicle();
   void publishVehicleStatus();
 
+  /**
+   * @brief Convert Autoware gear command to kart gear value
+   * @return 0=neutral, 1=forward, 2=reverse
+   */
+  uint8_t autowareGearToKartGear(uint8_t autoware_gear) const;
+
   // =========================================================================
   // SUBSCRIBERS - From Autoware
   // =========================================================================
   rclcpp::Subscription<autoware_control_msgs::msg::Control>::SharedPtr
-    control_cmd_sub_;
+      control_cmd_sub_;
   rclcpp::Subscription<autoware_vehicle_msgs::msg::GearCommand>::SharedPtr
-    gear_cmd_sub_;
+      gear_cmd_sub_;
   rclcpp::Subscription<autoware_vehicle_msgs::msg::TurnIndicatorsCommand>::
-  SharedPtr turn_indicators_cmd_sub_;
+      SharedPtr turn_indicators_cmd_sub_;
   rclcpp::Subscription<autoware_vehicle_msgs::msg::HazardLightsCommand>::
-  SharedPtr hazard_lights_cmd_sub_;
+      SharedPtr hazard_lights_cmd_sub_;
 
   // Subscriber from CAN bus
   rclcpp::Subscription<can_msgs::msg::Frame>::SharedPtr can_frame_sub_;
@@ -93,17 +97,17 @@ private:
   // PUBLISHERS - To Autoware
   // =========================================================================
   rclcpp::Publisher<autoware_vehicle_msgs::msg::VelocityReport>::SharedPtr
-    velocity_report_pub_;
+      velocity_report_pub_;
   rclcpp::Publisher<autoware_vehicle_msgs::msg::SteeringReport>::SharedPtr
-    steering_report_pub_;
+      steering_report_pub_;
   rclcpp::Publisher<autoware_vehicle_msgs::msg::GearReport>::SharedPtr
-    gear_report_pub_;
+      gear_report_pub_;
   rclcpp::Publisher<autoware_vehicle_msgs::msg::ControlModeReport>::SharedPtr
-    control_mode_report_pub_;
+      control_mode_report_pub_;
   rclcpp::Publisher<autoware_vehicle_msgs::msg::TurnIndicatorsReport>::SharedPtr
-    turn_indicators_report_pub_;
+      turn_indicators_report_pub_;
   rclcpp::Publisher<autoware_vehicle_msgs::msg::HazardLightsReport>::SharedPtr
-    hazard_lights_report_pub_;
+      hazard_lights_report_pub_;
 
   // Publisher to CAN bus
   rclcpp::Publisher<can_msgs::msg::Frame>::SharedPtr can_frame_pub_;
@@ -119,17 +123,30 @@ private:
   autoware_control_msgs::msg::Control::ConstSharedPtr control_cmd_ptr_;
   autoware_vehicle_msgs::msg::GearCommand::ConstSharedPtr gear_cmd_ptr_;
   autoware_vehicle_msgs::msg::TurnIndicatorsCommand::ConstSharedPtr
-    turn_indicators_cmd_ptr_;
+      turn_indicators_cmd_ptr_;
   autoware_vehicle_msgs::msg::HazardLightsCommand::ConstSharedPtr
-    hazard_lights_cmd_ptr_;
+      hazard_lights_cmd_ptr_;
 
   // =========================================================================
-  // STATE - Latest status from vehicle (CAN)
+  // STATE - Latest status from vehicle (CAN feedback)
   // =========================================================================
   double current_velocity_mps_{0.0};
+  int16_t current_steering_sensor_raw_{0};
   double current_steering_angle_rad_{0.0};
-  uint8_t current_gear_{autoware_vehicle_msgs::msg::GearReport::DRIVE};
-  bool is_autonomous_mode_{true};
+
+  // Motor feedback state
+  uint8_t motor_throttle_dac_{0};
+  bool motor_is_braking_{false};
+  uint8_t motor_gear_{0};
+  bool motor_is_idle_{false};
+
+  // Steering ECU feedback state
+  int16_t steer_ecu_current_angle_{0};
+  int16_t steer_ecu_target_angle_{0};
+  bool steer_ecu_has_error_{false};
+
+  // Current gear for CAN commands
+  uint8_t current_kart_gear_{1}; // Default: forward
 
   // =========================================================================
   // CONFIGURATION
@@ -137,6 +154,9 @@ private:
   can_utils::CanIds can_ids_;
   double loop_rate_hz_;
   double command_timeout_sec_;
+  double max_steering_angle_rad_;
+  double accel_to_throttle_gain_;
+  double decel_to_brake_gain_;
   rclcpp::Time last_command_time_;
 };
 

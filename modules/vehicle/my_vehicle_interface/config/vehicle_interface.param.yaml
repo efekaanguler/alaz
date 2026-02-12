@@ -1,8 +1,9 @@
 # =============================================================================
 # SDC 2026 Kart Vehicle Interface Parameters
 # =============================================================================
-# 
-# UPDATE THE CAN IDs BELOW FROM THE COMPETITION WIKI (A 3.3)
+#
+# CAN IDs and protocol from SDC Wiki:
+# https://github.com/SelfDrivingChallenge/ClosedCategory/wiki/Kart
 #
 # =============================================================================
 
@@ -11,35 +12,27 @@
     # -------------------------------------------------------------------------
     # General Settings
     # -------------------------------------------------------------------------
-    loop_rate_hz: 100.0           # Control loop frequency (Hz)
-    command_timeout_sec: 0.5      # Timeout before stopping if no commands received
+    # 25 Hz matches the wiki example sending speed (0.04s period).
+    # Motor ECU times out after 200ms, so we need at least 5 Hz.
+    loop_rate_hz: 25.0
+    # Motor ECU timeout is 200ms, so we use the same for command timeout
+    command_timeout_sec: 0.2
 
     # -------------------------------------------------------------------------
-    # CAN IDs - Commands TO kart (Autoware → Kart)
-    # TODO: Update these from wiki (A 3.3)
+    # Steering Configuration
     # -------------------------------------------------------------------------
-    steering_can_id: 0x100        # Steering servo command
-    brake_can_id: 0x101           # Brake actuator command
-    throttle_can_id: 0x102        # Throttle motor command
+    # Maximum physical steering angle of the kart (radians)
+    # This is used to convert Autoware's steering angle (radians) to
+    # the kart's -1.25/1.25 float range.
+    # ~30 degrees = 0.5236 rad (needs calibration on real kart)
+    max_steering_angle_rad: 0.5236
 
     # -------------------------------------------------------------------------
-    # CAN IDs - Status FROM kart (Kart → Autoware)
-    # TODO: Update these from wiki (A 3.3)
+    # Acceleration Mapping (Autoware -> Kart)
     # -------------------------------------------------------------------------
-    speed_can_id: 0x200           # Speed sensor feedback
-    steering_feedback_can_id: 0x201  # Steering position feedback (if available)
-
-    # -------------------------------------------------------------------------
-    # Control Limits
-    # TODO: Adjust based on kart specifications
-    # -------------------------------------------------------------------------
-    max_steering_angle_deg: 30.0  # Maximum steering angle (degrees)
-    max_throttle_percent: 100.0   # Maximum throttle (%)
-    max_brake_percent: 100.0      # Maximum brake (%)
-
-    # -------------------------------------------------------------------------
-    # Calibration (for acceleration → throttle/brake mapping)
-    # TODO: Tune these values on the real kart
-    # -------------------------------------------------------------------------
-    accel_to_throttle_gain: 0.33  # m/s² to throttle% (1/3 = 3m/s² for full throttle)
-    decel_to_brake_gain: 0.20     # m/s² to brake% (1/5 = 5m/s² for full brake)
+    # Maps m/s² to throttle/brake percentage (0.0-1.0)
+    # accel_to_throttle_gain: 0.33 means 3 m/s² = 100% throttle
+    # decel_to_brake_gain: 0.20 means 5 m/s² = 100% brake
+    # TODO: Tune these on the real kart
+    accel_to_throttle_gain: 0.33
+    decel_to_brake_gain: 0.20

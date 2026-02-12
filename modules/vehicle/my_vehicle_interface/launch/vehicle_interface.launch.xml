@@ -9,15 +9,20 @@
   <!-- Vehicle Interface Node -->
   <node pkg="my_vehicle_interface" exec="my_vehicle_interface_node" name="vehicle_interface_node" output="screen">
     <param from="$(var config_file)"/>
-    
-    <!-- Override parameters if needed -->
-    <!-- <param name="loop_rate_hz" value="100.0"/> -->
-    <!-- <param name="steering_can_id" value="0x100"/> -->
   </node>
   
   <!-- 
     NOTE: ros2_socketcan should be launched separately or included here.
-    Example:
+    CAN interface setup: The kart uses USB-CAN adapter with slcand driver.
+    
+    Before launching, ensure CAN interface is up:
+      slcan_attach -f -s6 -o /dev/TinCan
+      slcand -F /dev/TinCan can0
+      ip link set up can0
+    
+    Or use the TinCanService systemd service.
+    
+    Then launch ros2_socketcan:
     <include file="$(find-pkg-share ros2_socketcan)/launch/socket_can_bridge.launch.xml">
       <arg name="interface" value="can0"/>
     </include>

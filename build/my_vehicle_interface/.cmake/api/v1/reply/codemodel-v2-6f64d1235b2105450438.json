@@ -1,0 +1,97 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-5b6f2c350bf387507e7c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "my_vehicle_interface",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "my_vehicle_interface_lib::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-my_vehicle_interface_lib-85cc51e1c86020e45544.json",
+					"name" : "my_vehicle_interface_lib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "my_vehicle_interface_node::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-my_vehicle_interface_node-ba5b4a16c3b1cabc4f22.json",
+					"name" : "my_vehicle_interface_node",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "my_vehicle_interface_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-my_vehicle_interface_uninstall-865ee7d1399848314877.json",
+					"name" : "my_vehicle_interface_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-02a96267977492caa934.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vehicle_interface_node::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vehicle_interface_node-6b069672753b37350871.json",
+					"name" : "vehicle_interface_node",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/workspace/build/my_vehicle_interface",
+		"source" : "/workspace/modules/vehicle/my_vehicle_interface"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}
