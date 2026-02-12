@@ -31,10 +31,5 @@ echo "Colcon build"
 
 colcon build --symlink-install
 
-#step6
-echo "Sourcing"
-
-source ~/Workspace/ros-bridge/install/setup.bash 
-
 #done
 echo "DONE!"
