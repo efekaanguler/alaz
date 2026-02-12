@@ -1,0 +1,38 @@
+# =============================================================================
+# SDC 2026 Kart Vehicle Interface Parameters
+# =============================================================================
+#
+# CAN IDs and protocol from SDC Wiki:
+# https://github.com/SelfDrivingChallenge/ClosedCategory/wiki/Kart
+#
+# =============================================================================
+
+/**:
+  ros__parameters:
+    # -------------------------------------------------------------------------
+    # General Settings
+    # -------------------------------------------------------------------------
+    # 25 Hz matches the wiki example sending speed (0.04s period).
+    # Motor ECU times out after 200ms, so we need at least 5 Hz.
+    loop_rate_hz: 25.0
+    # Motor ECU timeout is 200ms, so we use the same for command timeout
+    command_timeout_sec: 0.2
+
+    # -------------------------------------------------------------------------
+    # Steering Configuration
+    # -------------------------------------------------------------------------
+    # Maximum physical steering angle of the kart (radians)
+    # This is used to convert Autoware's steering angle (radians) to
+    # the kart's -1.25/1.25 float range.
+    # ~30 degrees = 0.5236 rad (needs calibration on real kart)
+    max_steering_angle_rad: 0.5236
+
+    # -------------------------------------------------------------------------
+    # Acceleration Mapping (Autoware -> Kart)
+    # -------------------------------------------------------------------------
+    # Maps m/s² to throttle/brake percentage (0.0-1.0)
+    # accel_to_throttle_gain: 0.33 means 3 m/s² = 100% throttle
+    # decel_to_brake_gain: 0.20 means 5 m/s² = 100% brake
+    # TODO: Tune these on the real kart
+    accel_to_throttle_gain: 0.33
+    decel_to_brake_gain: 0.20
