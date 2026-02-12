@@ -7,7 +7,7 @@ package_name = 'sim_pkg'
 setup(
     name=package_name,
     version='0.0.1',
-    packages=['src'],
+    packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
@@ -21,10 +21,10 @@ setup(
     license='MIT',
     entry_points={
         'console_scripts': [
-            'keyboard_controls = src.keyboard_controls:main',
-            'pointcloud_to_laserscan = src.pointcloud_to_laserscan:main',
-            'realistic_controls = src.realistic_controls:main',
-            'speed_steer_topics = src.speed_steer_topics:main',
+            'keyboard_controls = sim_pkg.keyboard_controls:main',
+            'pointcloud_to_laserscan = sim_pkg.pointcloud_to_laserscan:main',
+            'realistic_controls = sim_pkg.realistic_controls:main',
+            'speed_steer_topics = sim_pkg.speed_steer_topics:main',
         ],
     },
 )

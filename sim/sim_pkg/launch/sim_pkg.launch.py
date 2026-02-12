@@ -1,6 +1,6 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
@@ -28,11 +28,13 @@ def generate_launch_description():
             output='screen'
         ),
         
+        # Sadece keyboard:=false ile çalışır (varsayılan)
         Node(
             package='sim_pkg',
             executable='realistic_controls',
             name='realistic_controls',
-            output='screen'
+            output='screen',
+            condition=UnlessCondition(LaunchConfiguration('keyboard'))
         ),
         
         # Sadece keyboard:=true ile çalışır

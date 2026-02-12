@@ -1,5 +1,4 @@
 #!/bin/bash
-# filepath: /home/efekaan/Desktop/alaz/2026/alaz/sim/bridge/sourcing.sh
 
 # Find and source ROS Bridge setup.bash
 
