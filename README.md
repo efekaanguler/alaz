@@ -15,9 +15,34 @@
    ```bash
    ./repo_init.sh
    ```
-## Running
+## Running Autoware Container
 
 ```bash
 ./dev_run.sh
 ```
+## Using Simulation
 
+/sim altındaki .md dosyalarını incele
+
+## Build
+
+Paketleri derlemek için:
+
+```bash
+# Sadece sim_pkg paketini derle
+./build_simpkg.sh
+
+# modules/ altındaki tüm paketleri derle
+./build_modules.sh
+
+# Temiz derleme için --clean ekle
+# Tüm paketler silinir ve yeniden buildlenir
+./build_modules.sh --clean
+```
+
+Derleme sonrası paketleri kullanmak için:
+
+```bash
+source /opt/ros/humble/setup.bash
+source ./install/setup.bash
+```
