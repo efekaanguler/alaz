@@ -35,5 +35,10 @@ colcon build --symlink-install
 sudo apt update
 sudo apt install ros-humble-urg-node
 
+#lidar clustering deps
+pip install scikit-learn
+pip uninstall numpy
+pip install numpy==1.24.0
+
 #done
 echo "DONE!"

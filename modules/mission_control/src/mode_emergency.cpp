@@ -72,8 +72,8 @@ bool EmergencyMode::checkState() {
     }
 
     if(last_localized.nanoseconds()==0 || (now-last_localized).seconds() > TIMEOUT) {
-        RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: Localization Failed");
-        state = false;
+        //RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: Localization Failed");
+        //state = false;
     }
 
     return state;

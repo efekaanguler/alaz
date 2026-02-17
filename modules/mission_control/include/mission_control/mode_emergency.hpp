@@ -9,11 +9,11 @@
 
 class EmergencyMode : public ModeBase {
 public:
-    std::string LIDAR_TOPIC="";
+    std::string LIDAR_TOPIC="/carla/ego_vehicle/lidar_2d";
     std::string GNSS_TOPIC="";
     std::string IMU_TOPIC="";
-    std::string CAMERA_TOPIC="";
-    std::string ODOM_TOPIC="";
+    std::string CAMERA_TOPIC="/carla/ego_vehicle/front_camera/image";
+    std::string ODOM_TOPIC="/odom";
 
     EmergencyMode(rclcpp::Node::SharedPtr node);
     unsigned int execute() override;
