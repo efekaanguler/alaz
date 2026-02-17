@@ -1,6 +1,5 @@
 <launch>
   <arg name="launch_driver" default="true" description="do launch driver"/>
-  <arg name="vehicle_mirror_param_file" description="path to the file of vehicle mirror position yaml"/>
   <arg name="pointcloud_container_name" default="pointcloud_container"/>
 
   <group>
@@ -16,7 +15,6 @@
     <!-- 2D Lidar: LaserScan (/scan) ve PointCloud2 (/pointcloud_raw) yayınlar -->
     <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/lidar.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)"/>
-      <arg name="vehicle_mirror_param_file" value="$(var vehicle_mirror_param_file)"/>
       <arg name="pointcloud_container_name" value="$(var pointcloud_container_name)"/>
     </include>
 

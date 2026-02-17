@@ -31,5 +31,9 @@ echo "Colcon build"
 
 colcon build --symlink-install
 
+#allah kurtarsın
+sudo apt update
+sudo apt install ros-humble-urg-node
+
 #done
 echo "DONE!"

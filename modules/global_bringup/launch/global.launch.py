@@ -40,39 +40,15 @@ def generate_launch_description():
     autoware_cfg = _load_yaml(os.path.join(cfg_dir, "autoware_args.yaml"))
     packages_cfg = _load_yaml(os.path.join(cfg_dir, "bringup.yaml"))
     
+    from launch.actions import DeclareLaunchArgument
+    from launch.substitutions import LaunchConfiguration
     actions = []
-    
-    # ========== AUTOWARE ==========
-    # Autoware'i başlat (eğer enabled ise)
-    if _get_nested(autoware_cfg, "autoware.enabled", True):
-        autoware_args = autoware_cfg.get("autoware", {})
-        launch_args = {
-            "map_path": autoware_args.get("map_path", ""),
-            "vehicle_model": autoware_args.get("vehicle_model", ""),
-            "sensor_model": autoware_args.get("sensor_model", ""),
-            "pose_source": autoware_args.get("pose_source", "yabloc"),
-            "use_sim_time": str(autoware_args.get("use_sim_time", False)).lower(),
-        }
-        
-        # Try custom wrapper first
-        autoware_include = os.path.join(includes_dir, "autoware.launch.py")
-        if os.path.exists(autoware_include):
-            actions.append(IncludeLaunchDescription(
-                AnyLaunchDescriptionSource(autoware_include),
-                launch_arguments=launch_args.items(),
-            ))
-        else:
-            # Fallback to autoware_launch package
-            try:
-                aw_share = get_package_share_directory("autoware_launch")
-                aw_launch = os.path.join(aw_share, "launch", "autoware.launch.xml")
-                if os.path.exists(aw_launch):
-                    actions.append(IncludeLaunchDescription(
-                        AnyLaunchDescriptionSource(aw_launch),
-                        launch_arguments=launch_args.items(),
-                    ))
-            except Exception:
-                pass
+    # vehicle_model argümanını default olarak ekle
+    actions.append(DeclareLaunchArgument(
+        "vehicle_model",
+        default_value="rdw_vehicle",
+        description="Default vehicle model name"
+    ))
     
     # ========== PACKAGES ==========
     for pkg_name, pkg_cfg in packages_cfg.get("packages", {}).items():
