@@ -51,5 +51,8 @@ install(TARGETS
   mission_control_launch
   DESTINATION lib/${PROJECT_NAME}  
 )
+install(DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
+)
 
 ament_package()

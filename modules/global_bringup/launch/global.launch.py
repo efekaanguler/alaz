@@ -75,19 +75,22 @@ def generate_launch_description():
                 pass
     
     # ========== PACKAGES ==========
-    # TODO: Yeni paket eklemek için:
-    # 1. bringup.yaml dosyasına paket konfigürasyonu ekleyin
-    # 2. launch/includes/ altında {paket_adı}.launch.py oluşturun
-    # 3. Aşağıdaki kod bloğunu kopyalayıp paket adını değiştirin:
-    #
-    # if packages_cfg.get("packages", {}).get("my_package", {}).get("enabled", False):
-    #     pkg_cfg = packages_cfg["packages"]["my_package"]
-    #     pkg_launch = os.path.join(includes_dir, pkg_cfg.get("launch_file", "my_package.launch.py"))
-    #     if os.path.exists(pkg_launch):
-    #         pkg_args = pkg_cfg.get("arguments", {})
-    #         actions.append(IncludeLaunchDescription(
-    #             AnyLaunchDescriptionSource(pkg_launch),
-    #             launch_arguments=pkg_args.items(),
-    #         ))
+    for pkg_name, pkg_cfg in packages_cfg.get("packages", {}).items():
+        if not pkg_cfg.get("enabled", False):
+            continue
+        launch_file = pkg_cfg.get("launch_file")
+        if not launch_file:
+            continue
+        try:
+            pkg_share = get_package_share_directory(pkg_name)
+            launch_path = os.path.join(pkg_share, "launch", launch_file)
+            if os.path.exists(launch_path):
+                pkg_args = pkg_cfg.get("arguments", {})
+                actions.append(IncludeLaunchDescription(
+                    AnyLaunchDescriptionSource(launch_path),
+                    launch_arguments=pkg_args.items(),
+                ))
+        except Exception as e:
+            print(f"[WARN] Could not launch {pkg_name}: {e}")
     
     return LaunchDescription(actions)

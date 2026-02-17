@@ -2,7 +2,7 @@
 # TODO: Yeni Autoware argümanları eklemek için bu dosyaya ekleyin
 
 autoware:
-  enabled: true
+  enabled: false
   use_sim_time: false
   pose_source: "yabloc"  # Options: yabloc, ndt, ekf
   map_path: ""  # Harita dosyasının tam yolu

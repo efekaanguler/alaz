@@ -5,7 +5,7 @@
   <arg name="vehicle_info_param_file" default="$(find-pkg-share rdw_vehicle_description)/config/vehicle_info.param.yaml"/>
 
   <group scoped="false">
-    <include file="$(find-pkg-share global_parameter_loader)/launch/global_params.launch.py">
+    <include file="$(find-pkg-share autoware_global_parameter_loader)/launch/global_params.launch.py">
       <arg name="vehicle_info_param_file" value="$(var vehicle_info_param_file)"/>
     </include>
   </group>

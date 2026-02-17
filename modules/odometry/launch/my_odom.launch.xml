@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="odometry" exec="odom_launch" name="my_odometry_node" output="screen">
+    </node>
+</launch>

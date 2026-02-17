@@ -1,16 +1,40 @@
-# Global bringup configuration
-# Hangi paketlerin başlatılacağını belirler
-
 packages:
-  # TODO: Yeni paket eklemek için:
-  # 1. Buraya paket adını ve parametrelerini ekleyin
-  # 2. launch/includes/ altında ilgili .launch.py dosyasını oluşturun
-  # 3. global.launch.py'deki PACKAGES bölümünde yeni paketi include edin
+  rdw_vehicle_launch:
+    enabled: true
+    launch_file: "vehicle.launch.xml"
   
-  # Örnek paket yapısı:
-  # my_package:
-  #   enabled: true
-  #   launch_file: "my_package.launch.py"
-  #   arguments:
-  #     param1: "value1"
-  #     param2: "value2"
+  my_vehicle_interface:
+    enabled: true
+    launch_file: "vehicle_interface.launch.xml"
+  
+  rdw_sensor_kit_launch:
+    enabled: true
+    launch_file: "sensing.launch.xml"
+
+  odometry:
+    enabled: true
+    launch_file: "my_odom.launch.xml"
+
+  alaz_lidar_clustering:
+    enabled: true
+    launch_file: "lidar_clustering.launch.xml"
+  
+  localization:
+    enabled: true
+    launch_file: "localization.launch.py"
+
+  perception_module:
+    enabled: true
+    launch_file: "perception.launch.xml"
+
+  planning:
+    enabled: true
+    launch_file: "planning.launch.py"
+    
+  control:
+    enabled: true
+    launch_file: "control.launch.py"
+    
+  mission_control:
+    enabled: true
+    launch_file: "mission_control.launch.xml"

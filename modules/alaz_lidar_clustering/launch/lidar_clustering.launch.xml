@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="alaz_lidar_clustering" exec="lidar_cluster_node" name="alaz_lidar_node" output="screen">
+    </node>
+</launch>

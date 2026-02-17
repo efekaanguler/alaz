@@ -1,8 +1,9 @@
-# TF frame configuration
-# TODO: Frame ID'leri değiştirmek gerektiğinde bu dosyayı kullanın
-
 frames:
-  # Örnek:
-  # map_frame: "map"
-  # base_link_frame: "base_link"
-  # sensor_frame: "velodyne"
+  map_frame: "map"
+  odom_frame: "odom"
+  base_link_frame: "base_link"
+  base_footprint_frame: "base_footprint"
+  lidar_frame: "velodyne_top"
+  camera_center_frame: "camera_center_link"
+  camera_left_frame: "camera_left_link"
+  camera_right_frame: "camera_right_link"
