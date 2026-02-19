@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="sensor_kit_macro" params="parent x y z roll pitch yaw">
+    
+    <!-- Yapılandırma ve Kalibrasyon Dosyalarını Yükle -->
+    <xacro:arg name="gpu" default="false"/>
+    <xacro:arg name="config_dir" default="$(find rdw_sensor_kit_description)/config"/>
+    <xacro:property name="sensor_kit_base_link" default="sensor_kit_base_link"/>
+
+    <!-- Kalibrasyon verilerini YAML'dan çek -->
+    <xacro:property name="calibration" value="${xacro.load_yaml('$(arg config_dir)/sensors_calibration.yaml')}"/>
+
+    <!-- 1. Sensor Kit Base Link (Ana Bağlantı) -->
+    <joint name="${sensor_kit_base_link}_joint" type="fixed">
+      <origin rpy="${roll} ${pitch} ${yaw}" xyz="${x} ${y} ${z}"/>
+      <parent link="${parent}"/>
+      <child link="${sensor_kit_base_link}"/>
+    </joint>
+    <link name="${sensor_kit_base_link}">
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </link>
+
+    <!-- 2. Camera Center (Merkez) -->
+    <joint name="camera_center_joint" type="fixed">
+      <origin 
+        xyz="${calibration['camera_center_link']['x']} ${calibration['camera_center_link']['y']} ${calibration['camera_center_link']['z']}" 
+        rpy="${calibration['camera_center_link']['roll']} ${calibration['camera_center_link']['pitch']} ${calibration['camera_center_link']['yaw']}"
+      />
+      <parent link="${sensor_kit_base_link}"/>
+      <child link="camera_center_link"/>
+    </joint>
+    <link name="camera_center_link">
+      <visual>
+        <geometry><box size="0.05 0.1 0.05"/></geometry>
+        <material name="blue"><color rgba="0 0 1 1"/></material>
+      </visual>
+    </link>
+
+    <!-- 3. Camera Left (Sol) -->
+    <joint name="camera_left_joint" type="fixed">
+      <origin 
+        xyz="${calibration['camera_left_link']['x']} ${calibration['camera_left_link']['y']} ${calibration['camera_left_link']['z']}" 
+        rpy="${calibration['camera_left_link']['roll']} ${calibration['camera_left_link']['pitch']} ${calibration['camera_left_link']['yaw']}"
+      />
+      <parent link="${sensor_kit_base_link}"/>
+      <child link="camera_left_link"/>
+    </joint>
+    <link name="camera_left_link">
+      <visual>
+        <geometry><box size="0.05 0.1 0.05"/></geometry>
+        <material name="blue"><color rgba="0 0 1 1"/></material>
+      </visual>
+    </link>
+
+    <!-- 4. Camera Right (Sağ) -->
+    <joint name="camera_right_joint" type="fixed">
+      <origin 
+        xyz="${calibration['camera_right_link']['x']} ${calibration['camera_right_link']['y']} ${calibration['camera_right_link']['z']}" 
+        rpy="${calibration['camera_right_link']['roll']} ${calibration['camera_right_link']['pitch']} ${calibration['camera_right_link']['yaw']}"
+      />
+      <parent link="${sensor_kit_base_link}"/>
+      <child link="camera_right_link"/>
+    </joint>
+    <link name="camera_right_link">
+      <visual>
+        <geometry><box size="0.05 0.1 0.05"/></geometry>
+        <material name="blue"><color rgba="0 0 1 1"/></material>
+      </visual>
+    </link>
+
+    <!-- 5. LiDAR -->
+    <joint name="lidar_joint" type="fixed">
+      <origin 
+        xyz="${calibration['lidar_link']['x']} ${calibration['lidar_link']['y']} ${calibration['lidar_link']['z']}" 
+        rpy="${calibration['lidar_link']['roll']} ${calibration['lidar_link']['pitch']} ${calibration['lidar_link']['yaw']}"
+      />
+      <parent link="${sensor_kit_base_link}"/>
+      <child link="lidar_link"/>
+    </joint>
+    <link name="lidar_link">
+      <visual>
+        <geometry><cylinder radius="0.05" length="0.05"/></geometry>
+        <material name="red"><color rgba="1 0 0 1"/></material>
+      </visual>
+    </link>
+
+  </xacro:macro>
+</robot>

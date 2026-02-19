@@ -1,0 +1,96 @@
+#TODO
+
+# ============================================================
+# YabLoc PARAMETRE ŞABLONU
+# ============================================================
+# Bu dosya YabLoc algoritmasının davranışını ayarlamak için kullanılır.
+# 
+# ÖNEMLİ: Bu dosya bir ŞABLON'dur!
+# Autoware Universe versiyonunuza göre node isimleri ve parametreler değişebilir.
+#
+# NASIL KULLANILIR:
+# 1. YabLoc node isimlerini bulun:
+#    ros2 node list | grep -i yabloc
+#
+# 2. Parametreleri listeleyin:
+#    ros2 param list /<yabloc_node_name>
+#
+# 3. Mevcut parametreleri dökümleyin:
+#    ros2 param dump /<yabloc_node_name> --output-dir ./
+#
+# 4. Bu dosyaya gerçek node isimleri ve parametreleri ekleyin
+#
+# 5. Autoware'e bu dosyayı kullanması için söyleyin (iki yöntem):
+#    A) global_bringup'ta autoware_launch config override
+#    B) Özel bir launch wrapper oluşturarak
+# ============================================================
+
+# ------------------------------------------------------------
+# YabLoc ANA NODE AYARLARI
+# ------------------------------------------------------------
+# Not: Node ismi Autoware versiyonunuza göre değişebilir
+# Örnek olasılıklar:
+#   - /localization/yabloc/yabloc_node
+#   - /localization/pose_estimator/yabloc
+#   - /yabloc/estimator
+
+# ÖRNEK PARAMETRE YAPISI (gerçek node ismine göre güncelleyin):
+# /localization/yabloc/yabloc_node:
+#   ros__parameters:
+#     # ------------------------------------------------------------
+#     # TEMEL AYARLAR
+#     # ------------------------------------------------------------
+#     use_sim_time: false  # Simülasyon modunda true yapın
+#     
+#     # ------------------------------------------------------------
+#     # KAMERA AYARLARI
+#     # ------------------------------------------------------------
+#     # YabLoc kamera görüntülerini işleyerek çizgi/işaret tespiti yapar
+#     camera_frame_id: "camera_link"
+#     image_processing_rate_hz: 10.0  # Saniyede kaç frame işlensin
+#     
+#     # ------------------------------------------------------------
+#     # ODOMETRİ AYARLARI  
+#     # ------------------------------------------------------------
+#     # Tekerlek odometrisi YabLoc'un hız/yön tahmini için kullanılır
+#     odom_frame_id: "odom"
+#     use_wheel_odometry: true
+#     
+#     # ------------------------------------------------------------
+#     # HARİTA EŞLEŞTİRME PARAMETRELERİ
+#     # ------------------------------------------------------------
+#     # YabLoc görüntüdeki çizgi/işaretleri harita ile eşleştirir
+#     max_match_distance: 2.0       # Maksimum eşleştirme mesafesi (metre)
+#     max_yaw_error_rad: 0.35       # Maksimum yaw hatası (radyan, ~20 derece)
+#     min_match_score: 0.5          # Minimum eşleştirme skoru (0-1)
+#     
+#     # ------------------------------------------------------------
+#     # PERFORMANS AYARLARI
+#     # ------------------------------------------------------------
+#     # İşlem yükünü ve doğruluğu dengelemek için
+#     downsample_ratio: 2           # Görüntü küçültme oranı (hız için)
+#     max_features: 100             # Maksimum feature sayısı
+#     
+#     # ------------------------------------------------------------
+#     # DEBUG/GÖRSELLEŞTİRME
+#     # ------------------------------------------------------------
+#     publish_debug_markers: false  # Debug marker'ları yayınla
+#     publish_match_image: false    # Eşleştirme görüntüsü yayınla (ağır!)
+
+# ============================================================
+# HIZLI BAŞLANGIÇ - SIKÇA DEĞİŞTİRİLEN PARAMETRELER
+# ============================================================
+# 
+# Daha hassas lokalizasyon için:
+#   - max_match_distance: 1.0 (daha dar eşleştirme)
+#   - min_match_score: 0.7 (daha yüksek eşik)
+#
+# Daha hızlı işlem için:
+#   - image_processing_rate_hz: 5.0 (daha az frame)
+#   - downsample_ratio: 4 (daha küçük görüntü)
+#
+# Debug için:
+#   - publish_debug_markers: true
+#   - publish_match_image: true (dikkat: çok fazla bant genişliği kullanır!)
+#
+# ============================================================

@@ -1,0 +1,40 @@
+<launch>
+  <arg name="launch_driver" default="true"/>
+  <arg name="host_ip" default="192.168.0.10"/>
+  <arg name="use_concat_filter" default="true"/>
+  <arg name="vehicle_id" default="$(env VEHICLE_ID default)"/>
+  <arg name="pointcloud_container_name" default="pointcloud_container"/>
+
+  <group>
+    <push-ros-namespace namespace="lidar"/>
+
+    <group>
+      <push-ros-namespace namespace="top"/>
+      
+      <!-- 1. 2D LIDAR SÜRÜCÜSÜ -->
+      <!-- Eğer Lidarınız Hokuyo ise 'urg_node', RPLidar ise 'rplidar_ros' paketini kullanın. -->
+      <!-- Aşağıdaki örnek urg_node (Hokuyo) içindir. Kendi lidar paketinize göre exec ismini değiştirin. -->
+      <group if="$(var launch_driver)">
+        <node pkg="urg_node" exec="urg_node_driver" name="lidar_driver" output="screen">
+          <param name="ip_address" value="192.168.0.10"/> <!-- Lidar IP adresinizi buraya yazın -->
+          <param name="serial_port" value="/dev/ttyACM0"/> <!-- USB kullanıyorsanız burayı aktif edin -->
+          <param name="frame_id" value="lidar_link"/>
+          <param name="angle_min" value="-2.356"/> <!-- Tarama açısı limitleri (Radyan) -->
+          <param name="angle_max" value="2.356"/>
+        </node>
+      </group>
+
+      <!-- 2. LASERSCAN -> POINTCLOUD DÖNÜŞÜMÜ -->
+      <!-- Autoware perception modülü PointCloud2 formatı bekler. -->
+      <node pkg="pointcloud_to_laserscan" exec="laserscan_to_pointcloud_node" name="laserscan_to_pointcloud">
+        <remap from="scan_in" to="scan"/>
+        <remap from="cloud" to="pointcloud_raw"/>
+        <param name="target_frame" value="lidar_link"/>
+        <param name="transform_tolerance" value="0.01"/>
+        <param name="min_height" value="-1.0"/>
+        <param name="max_height" value="1.0"/>
+      </node>
+      
+    </group>
+  </group>
+</launch>

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <!-- Paket bilgileri -->
+  <name>global_bringup</name>
+  <version>1.0.0</version>
+  <description>Global launch system for all modules</description>
+  <maintainer email="your@email.com">Your Name</maintainer>
+  <license>Apache-2.0</license>
+
+  <!-- Build tool (değiştirmeyin) -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!-- ============================================ -->
+  <!-- BAĞIMLILIKLAR (DEPENDENCIES)                 -->
+  <!-- ============================================ -->
+  <!-- Bu paket çalışırken ihtiyaç duyduğu paketler -->
+  
+  <!-- ROS2 temel bağımlılıklar -->
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
+  
+  <!-- Python launch dosyaları için -->
+  <exec_depend>ament_index_python</exec_depend>
+  
+  <!-- YAML dosyaları okumak için (Python) -->
+  <exec_depend>python3-yaml</exec_depend>
+
+  <!-- ============================================ -->
+  <!-- YENİ MODÜL/PAKET EKLEDİĞİNİZDE NE YAPMALI?   -->
+  <!-- ============================================ -->
+  <!-- 
+  1. EĞER BAŞKA BİR ROS2 PAKETİNİ KULLANIYORSANIZ:
+     - <depend>paket_adi</depend> ekleyin
+     - Örnek: <depend>sensor_msgs</depend>
+  
+  2. EĞER SADECE RUNTIME'DA GEREKLİYSE:
+     - <exec_depend>paket_adi</exec_depend> kullanın
+     - Örnek: <exec_depend>autoware_launch</exec_depend>
+  
+  3. EĞER SADECE BUILD SIRASINDA GEREKLİYSE:
+     - <build_depend>paket_adi</build_depend> kullanın
+  
+  4. BAĞIMLILIK TÜRLERİ:
+     - <depend>: Hem build hem runtime (EN YAYGINI)
+     - <build_depend>: Sadece derleme sırasında
+     - <exec_depend>: Sadece çalışma sırasında
+     - <test_depend>: Sadece test sırasında
+  
+  5. AUTOWARE VEYA BAŞKA BİR BÜYÜK FRAMEWORK:
+     - Global launch dosyanız o paketi başlatıyorsa
+     - <exec_depend>autoware_launch</exec_depend> gibi ekleyin
+  
+  6. PYTHON KÜTÜPHANELERİ:
+     - Ubuntu paket adını kullanın
+     - Örnek: <exec_depend>python3-numpy</exec_depend>
+  -->
+
+  <!-- Test bağımlılıkları (isteğe bağlı) -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

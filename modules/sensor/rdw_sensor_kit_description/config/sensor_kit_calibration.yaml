@@ -1,0 +1,42 @@
+sensor_kit_base_link:
+  camera_center_link:
+    x: 0.05
+    y: 0.0
+    z: 0.10
+    roll: 0.0
+    pitch: 0.0
+    yaw: 0.0
+    
+  camera_left_link:
+    x: 0.0
+    y: 0.10
+    z: 0.10
+    roll: 0.0
+    pitch: 0.0
+    yaw: 0.52 # Yaklaşık 30 derece sola
+
+  camera_right_link:
+    x: 0.0
+    y: -0.10
+    z: 0.10
+    roll: 0.0
+    pitch: 0.0
+    yaw: -0.52 # Yaklaşık 30 derece sağa
+
+  lidar_link:
+    x: 0.05
+    y: 0.0
+    z: -0.20
+    roll: 0.0
+    pitch: 0.0
+    yaw: 0.0
+
+  # Eğer IMU/GNSS cihazınız yoksa bunları 0 noktasında bırakabilir 
+  # veya silebilirsiniz (Lidar içinde ise Lidar koordinatlarını girin).
+  gnss_link:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    roll: 0.0
+    pitch: 0.0
+    yaw: 0.0

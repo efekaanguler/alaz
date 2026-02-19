@@ -7,10 +7,11 @@ AUTOWARE_RUN="${SCRIPT_DIR}/../autoware/docker/run.sh"
 
 WORKSPACE_PATH="$SCRIPT_DIR"
 
-# for non-GPU: USE_GPU=0 ./dev_run.sh
-
-if [[ "${USE_GPU:-1}" == "0" ]]; then
-  exec "${AUTOWARE_RUN}" --devel --no-nvidia --workspace "${WORKSPACE_PATH}" /bin/bash
-else
+# GPU kontrolü - nvidia-smi varsa ve çalışıyorsa GPU kullan
+if command -v nvidia-smi &> /dev/null && nvidia-smi &> /dev/null; then
+  echo "GPU tespit edildi, GPU ile başlatılıyor..."
   exec "${AUTOWARE_RUN}" --devel --workspace "${WORKSPACE_PATH}" /bin/bash
+else
+  echo "GPU bulunamadı, GPU'suz başlatılıyor..."
+  exec "${AUTOWARE_RUN}" --devel --no-nvidia --workspace "${WORKSPACE_PATH}" /bin/bash
 fi

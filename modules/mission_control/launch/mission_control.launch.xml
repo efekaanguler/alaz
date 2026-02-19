@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="mission_control" exec="mission_control_launch" name="mission_control_xml_node" output="screen">
+    </node>
+</launch>

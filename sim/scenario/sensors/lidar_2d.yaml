@@ -1,0 +1,17 @@
+version: 1
+
+presets:
+  lidar_2d_10hz_medium:
+    type: "sensor.lidar.ray_cast"
+    attributes:
+      # "2D LiDAR" approximation: single ring, single plane
+      channels: "1"
+      upper_fov: "0.0"
+      lower_fov: "0.0"
+
+      range: "6.0"
+      rotation_frequency: "10.0"   # 10 Hz scan
+      points_per_second: "20000"
+
+      noise_stddev: "0.0"
+      sensor_tick: "0.1"           # 10 Hz publish

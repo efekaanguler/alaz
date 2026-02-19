@@ -1,0 +1,25 @@
+/**:
+  ros__parameters:
+    # --- Tekerlek Fiziksel Özellikleri ---
+    # Bu değerler odometri (konum) hesabı için kritiktir.
+    # Eğer lastik çapınız farklıysa burayı güncelleyin.
+    wheel_radius: 0.2916  # Tekerlek yarıçapı (metre)
+    wheel_width: 0.175    # Lastik taban genişliği (metre)
+
+    # --- Sizin Verdiğiniz Şase Ölçüleri ---
+    wheel_base: 1.05      # Ön ve arka tekerlek merkezleri arası (1050mm -> 1.05m)
+    wheel_tread: 1.00     # Sağ ve sol tekerlek merkezleri arası (1000mm -> 1.00m)
+
+    # --- Hesaplanan Gövde Çıkıntıları (Overhangs) ---
+    # Not: Bu değerler tekerlek merkezinden tamponun en ucuna olan mesafedir.
+    # Aracınızın şase boyutuna uygun standart güvenli değerler girilmiştir.
+    front_overhang: 0.40  # Ön tekerlek merkezinden ön tampon ucuna
+    rear_overhang: 0.40   # Arka tekerlek merkezinden arka tampon ucuna
+
+    # Yan çıkıntılar (Kaporta genişliği payı)
+    left_overhang: 0.10   # Sol tekerlekten sol kaporta ucuna
+    right_overhang: 0.10  # Sağ tekerlekten sağ kaporta ucuna
+
+    # --- Genel Araç Bilgileri ---
+    vehicle_height: 1.5     # Araç yüksekliği (metre)
+    max_steer_angle: 0.5236 # Maksimum direksiyon açısı (yaklaşık 30 derece)

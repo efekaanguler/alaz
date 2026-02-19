@@ -1,0 +1,8 @@
+<launch>
+    <node pkg="alaz_lidar_clustering" exec="alaz_lidar_2d" name="alaz_lidar_node" output="screen">
+        <param name="max_range" value="6.0"/>
+        <param name="scan_topic" value="/scan"/>
+        <param name="cluster_tolerance" value="0.8"/>
+        <param name="min_cluster_size" value="3"/>
+    </node>
+</launch>
