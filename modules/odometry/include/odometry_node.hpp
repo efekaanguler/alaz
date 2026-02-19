@@ -46,7 +46,7 @@ class OdometryNode : public rclcpp::Node {
 
     private:
     std::string SPEED_TOPIC = "/speed";
-    std::string STEERING_TOPIC = "/steering";
+    std::string STEERING_TOPIC = "/steering_angle";
     std::string ODOM_TOPIC = "/odom";
     std::string THROTTLE_TOPIC = "/throttle";
 

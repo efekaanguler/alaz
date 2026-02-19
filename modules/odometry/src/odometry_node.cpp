@@ -67,5 +67,5 @@ void OdometryNode::publish_odometry() {
     odom_.twist.twist.angular.z = steering;
 
     odom_publisher->publish(odom_);
-
+    RCLCPP_INFO(this->get_logger(), "Odometry published");
 }

@@ -19,6 +19,7 @@ StartMode::StartMode(rclcpp::Node::SharedPtr node) : node_(node) {
     
     localization_subscriber = node->create_subscription<autoware_adapi_v1_msgs::msg::LocalizationInitializationState>("/localization/initialization_state", 10, std::bind(&StartMode::localization_callback, this, std::placeholders::_1));
 
+    localized = true;
 }
 
 
