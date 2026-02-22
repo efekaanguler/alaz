@@ -1,5 +1,5 @@
 <package format="3">
-  <name>can_bridge</name>
+  <name>ros2_can_bridge</name>
   <version>0.0.1</version>
   <description>ROS2 package to bridge CAN bus and ROS2 topics for vehicle control and feedback.</description>
   <maintainer email="user@example.com">User</maintainer>
