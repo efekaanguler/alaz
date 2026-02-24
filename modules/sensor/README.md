@@ -9,8 +9,8 @@ Otonom sürüş yığınının (stack), Haritalama (Mapping) ve Algılama (Perce
 Autoware standartlarına uygun olarak bu kit iki ana paketten oluşur:
 
 ### 1. `rdw_sensor_kit_description` (Tanımlamalar)
-*   **`config/sensors_calibration.yaml`**: **En Kritik Dosya.** Sensörlerin birbirine göre olan uzaklıkları ve açıları burada tutulur.
-*   **`urdf/sensor_kit.xacro`**: Sensörlerin 3D modellerini, parent-child ilişkilerini ve `sensors_calibration.yaml` dosyasından verilerin nasıl okunacağını tanımlar.
+*   **`config/sensor_kit_calibration.yaml`**: **En Kritik Dosya.** Sensörlerin birbirine göre olan uzaklıkları ve açıları burada tutulur.
+*   **`urdf/sensor_kit.xacro`**: Sensörlerin 3D modellerini, parent-child ilişkilerini ve `sensor_kit_calibration.yaml` dosyasından verilerin nasıl okunacağını tanımlar.
 
 ### 2. `rdw_sensor_kit_launch` (Başlatma)
 *   **`launch/sensing.launch.xml`**: Tüm sensörleri (Lidar, Kamera, GNSS) başlatan ve veri akışını yöneten ana dosya.
@@ -36,7 +36,7 @@ Eğer fiziksel araç üzerinde bir sensör sökülüp başka yere takılırsa ve
 ### Senaryo 1: Sensörlerin Birbirine Göre Yeri Değişti
 Örneğin, sol kamerayı biraz daha sola kaydırdınız.
 
-1.  **Dosya:** `rdw_sensor_kit_description/config/sensors_calibration.yaml` dosyasını açın.
+1.  **Dosya:** `rdw_sensor_kit_description/config/sensor_kit_calibration.yaml` dosyasını açın.
 2.  İlgili sensörün (`camera_left_link` vb.) satırını bulun.
 3.  Değerleri güncelleyin:
     *   **`x, y, z`**: Sensör kiti merkezine göre metre cinsinden mesafe.
@@ -45,7 +45,7 @@ Eğer fiziksel araç üzerinde bir sensör sökülüp başka yere takılırsa ve
 ### Senaryo 2: Tüm Kitin Araca Göre Yeri Değişti
 Örneğin, sensörlerin takılı olduğu tavan barını komple 10 cm öne aldınız.
 
-1.  **Dosya:** `rdw_sensor_kit_launch/config/sensors_calibration.yaml` dosyasını açın.
+1.  **Dosya:** `rdw_sensor_kit_description/config/sensors_calibration.yaml` dosyasını açın.
 2.  `base_link` -> `sensor_kit_base_link` dönüşümünü güncelleyin.
 
 ## Kritik Uyarı: Haritalama (Mapping) Etkisi

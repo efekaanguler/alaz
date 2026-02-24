@@ -25,7 +25,7 @@ ARGS=(
 )
 
 if [[ "${MODE}" == "headless" ]]; then
-  ARGS+=(-RenderOffScreen)
+  ARGS+=(-nullrhi)
 fi
 
 exec "${CARLA_SH}" "${ARGS[@]}"
