@@ -8,7 +8,7 @@
     <xacro:property name="sensor_kit_base_link" default="sensor_kit_base_link"/>
 
     <!-- Kalibrasyon verilerini YAML'dan çek -->
-    <xacro:property name="calibration" value="${xacro.load_yaml('$(arg config_dir)/sensors_calibration.yaml')}"/>
+    <xacro:property name="calibration" value="${xacro.load_yaml('$(arg config_dir)/sensor_kit_calibration.yaml')}"/>
 
     <!-- 1. Sensor Kit Base Link (Ana Bağlantı) -->
     <joint name="${sensor_kit_base_link}_joint" type="fixed">
@@ -23,8 +23,8 @@
     <!-- 2. Camera Center (Merkez) -->
     <joint name="camera_center_joint" type="fixed">
       <origin 
-        xyz="${calibration['camera_center_link']['x']} ${calibration['camera_center_link']['y']} ${calibration['camera_center_link']['z']}" 
-        rpy="${calibration['camera_center_link']['roll']} ${calibration['camera_center_link']['pitch']} ${calibration['camera_center_link']['yaw']}"
+        xyz="${calibration['sensor_kit_base_link']['camera_center_link']['x']} ${calibration['sensor_kit_base_link']['camera_center_link']['y']} ${calibration['sensor_kit_base_link']['camera_center_link']['z']}" 
+        rpy="${calibration['sensor_kit_base_link']['camera_center_link']['roll']} ${calibration['sensor_kit_base_link']['camera_center_link']['pitch']} ${calibration['sensor_kit_base_link']['camera_center_link']['yaw']}"
       />
       <parent link="${sensor_kit_base_link}"/>
       <child link="camera_center_link"/>
@@ -39,8 +39,8 @@
     <!-- 3. Camera Left (Sol) -->
     <joint name="camera_left_joint" type="fixed">
       <origin 
-        xyz="${calibration['camera_left_link']['x']} ${calibration['camera_left_link']['y']} ${calibration['camera_left_link']['z']}" 
-        rpy="${calibration['camera_left_link']['roll']} ${calibration['camera_left_link']['pitch']} ${calibration['camera_left_link']['yaw']}"
+        xyz="${calibration['sensor_kit_base_link']['camera_left_link']['x']} ${calibration['sensor_kit_base_link']['camera_left_link']['y']} ${calibration['sensor_kit_base_link']['camera_left_link']['z']}" 
+        rpy="${calibration['sensor_kit_base_link']['camera_left_link']['roll']} ${calibration['sensor_kit_base_link']['camera_left_link']['pitch']} ${calibration['sensor_kit_base_link']['camera_left_link']['yaw']}"
       />
       <parent link="${sensor_kit_base_link}"/>
       <child link="camera_left_link"/>
@@ -55,8 +55,8 @@
     <!-- 4. Camera Right (Sağ) -->
     <joint name="camera_right_joint" type="fixed">
       <origin 
-        xyz="${calibration['camera_right_link']['x']} ${calibration['camera_right_link']['y']} ${calibration['camera_right_link']['z']}" 
-        rpy="${calibration['camera_right_link']['roll']} ${calibration['camera_right_link']['pitch']} ${calibration['camera_right_link']['yaw']}"
+        xyz="${calibration['sensor_kit_base_link']['camera_right_link']['x']} ${calibration['sensor_kit_base_link']['camera_right_link']['y']} ${calibration['sensor_kit_base_link']['camera_right_link']['z']}" 
+        rpy="${calibration['sensor_kit_base_link']['camera_right_link']['roll']} ${calibration['sensor_kit_base_link']['camera_right_link']['pitch']} ${calibration['sensor_kit_base_link']['camera_right_link']['yaw']}"
       />
       <parent link="${sensor_kit_base_link}"/>
       <child link="camera_right_link"/>
@@ -71,8 +71,8 @@
     <!-- 5. LiDAR -->
     <joint name="lidar_joint" type="fixed">
       <origin 
-        xyz="${calibration['lidar_link']['x']} ${calibration['lidar_link']['y']} ${calibration['lidar_link']['z']}" 
-        rpy="${calibration['lidar_link']['roll']} ${calibration['lidar_link']['pitch']} ${calibration['lidar_link']['yaw']}"
+        xyz="${calibration['sensor_kit_base_link']['lidar_link']['x']} ${calibration['sensor_kit_base_link']['lidar_link']['y']} ${calibration['sensor_kit_base_link']['lidar_link']['z']}" 
+        rpy="${calibration['sensor_kit_base_link']['lidar_link']['roll']} ${calibration['sensor_kit_base_link']['lidar_link']['pitch']} ${calibration['sensor_kit_base_link']['lidar_link']['yaw']}"
       />
       <parent link="${sensor_kit_base_link}"/>
       <child link="lidar_link"/>

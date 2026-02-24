@@ -11,25 +11,21 @@
     <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/pointcloud_preprocessor.launch.py">
     </include>
 
-    <!-- 2. LiDAR DRIVER -->
-    <!-- 2D Lidar: LaserScan (/scan) ve PointCloud2 (/pointcloud_raw) yayınlar -->
-    <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/lidar.launch.xml">
-      <arg name="launch_driver" value="$(var launch_driver)"/>
-      <arg name="pointcloud_container_name" value="$(var pointcloud_container_name)"/>
+    <!-- 2. LiDAR Driver -->
+    <!-- 2D Lidar + Pointcloud Dönüştürücüyü başlatır -->
+   <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/lidar.launch.xml">
+      <arg name="serial_port" value="/dev/ttyUSB0"/>
+      <arg name="serial_baudrate" value="115200"/>
+      <arg name="scan_mode" value="Standard"/>
     </include>
-
-    <!-- 3. CAMERA DRIVERS -->
-    <!-- 3 USB Kamera (Sol, Sağ, Orta) -->
+    <!-- 3. Camera Driver -->
+    <!-- 3 Kamerayı (Sol, Sağ, Orta) başlatır -->
     <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/camera.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)" />
     </include>
 
-    <!-- NOT: IMU ve GNSS sensörleri mevcut olmadığı için kaldırıldı -->
-    
-    <!-- NOT: Wheel encoder verisi my_vehicle_interface paketinden 
-         CAN üzerinden /vehicle/status/velocity_status olarak geliyor.
-         Eğer bu veriyi Twist formatına çevirmeniz gerekiyorsa aşağıdaki satırları açın:
-    
+    <!-- 6. Vehicle Velocity Converter -->
+    <!-- Hız sensörünüzden gelen veriyi Twist formatına çevirir -->
     <include file="$(find-pkg-share autoware_vehicle_velocity_converter)/launch/vehicle_velocity_converter.launch.xml">
       <arg name="input_vehicle_velocity_topic" value="/vehicle/status/velocity_status"/>
       <arg name="output_twist_with_covariance" value="/sensing/vehicle_velocity_converter/twist_with_covariance"/>
