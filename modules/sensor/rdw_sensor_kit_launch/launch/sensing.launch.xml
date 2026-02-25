@@ -1,10 +1,24 @@
 <launch>
   <arg name="launch_driver" default="true" description="do launch driver"/>
+  <arg name="launch_lidar" default="true"/>
+  <arg name="launch_camera" default="true"/>
   <arg name="pointcloud_container_name" default="pointcloud_container"/>
+  <arg name="lidar_serial_port" default="/dev/ttyUSB0"/>
+  <arg name="lidar_serial_baudrate" default="115200"/>
+  <arg name="lidar_scan_mode" default="Standard"/>
+  <arg name="lidar_set_scan_mode" default="false"/>
 
   <group>
     <!-- Tüm sensörleri /sensing namespace'i altına alıyoruz -->
     <push-ros-namespace namespace="sensing"/>
+
+    <node pkg="robot_state_publisher"
+        exec="robot_state_publisher"
+        name="robot_state_publisher"
+        output="screen">
+      <param name="robot_description"
+         value="$(command 'xacro $(find-pkg-share rdw_sensor_kit_description)/urdf/sensor_kit_standalone.urdf.xacro')"/>
+    </node>
 
     <!-- 1. POINTCLOUD PREPROCESSOR -->
     <!-- LaserScan'i PointCloud2'ye çevirir ve relay eder -->
@@ -13,14 +27,15 @@
 
     <!-- 2. LiDAR Driver -->
     <!-- 2D Lidar + Pointcloud Dönüştürücüyü başlatır -->
-   <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/lidar.launch.xml">
-      <arg name="serial_port" value="/dev/ttyUSB0"/>
-      <arg name="serial_baudrate" value="115200"/>
-      <arg name="scan_mode" value="Standard"/>
+   <include if="$(var launch_lidar)" file="$(find-pkg-share rdw_sensor_kit_launch)/launch/lidar.launch.xml">
+    <arg name="serial_port" value="$(var lidar_serial_port)"/>
+      <arg name="serial_baudrate" value="$(var lidar_serial_baudrate)"/>
+      <arg name="scan_mode" value="$(var lidar_scan_mode)"/>
+      <arg name="set_scan_mode" value="$(var lidar_set_scan_mode)"/>
     </include>
     <!-- 3. Camera Driver -->
     <!-- 3 Kamerayı (Sol, Sağ, Orta) başlatır -->
-    <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/camera.launch.xml">
+    <include if="$(var launch_camera)" file="$(find-pkg-share rdw_sensor_kit_launch)/launch/camera.launch.xml">
       <arg name="launch_driver" value="$(var launch_driver)" />
     </include>
 
@@ -30,7 +45,6 @@
       <arg name="input_vehicle_velocity_topic" value="/vehicle/status/velocity_status"/>
       <arg name="output_twist_with_covariance" value="/sensing/vehicle_velocity_converter/twist_with_covariance"/>
     </include>
-    -->
 
   </group>
 </launch>

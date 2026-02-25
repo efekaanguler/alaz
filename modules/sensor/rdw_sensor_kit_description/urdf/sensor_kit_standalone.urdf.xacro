@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<robot name="rdw_sensor_kit" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find rdw_sensor_kit_description)/urdf/sensor_kit.xacro"/>
+
+  <link name="base_link"/>
+
+  <xacro:sensor_kit_macro
+    parent="base_link"
+    x="0.0"
+    y="0.0"
+    z="0.0"
+    roll="0.0"
+    pitch="0.0"
+    yaw="0.0"/>
+</robot>
