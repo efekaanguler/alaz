@@ -203,9 +203,9 @@ main() {
 
     # --- ALAZ OTONOM SENSÖR KONTROLÜ ---
     DEVICE_FLAGS=""
-    if [ -e "/dev/logitech_cam" ]; then
-        DEVICE_FLAGS="$DEVICE_FLAGS --device=/dev/logitech_cam:/dev/logitech_cam"
-        echo -e "${GREEN}✅ Kamera (/dev/logitech_cam) Docker'a dahil ediliyor...${NC}"
+    if [ -e "/dev/center_camera" ]; then
+        DEVICE_FLAGS="$DEVICE_FLAGS --device=/dev/center_camera:/dev/center_camera"
+        echo -e "${GREEN}✅ Kamera (/dev/center_camera) Docker'a dahil ediliyor...${NC}"
     fi
     if [ -e "/dev/sllidar" ]; then
         DEVICE_FLAGS="$DEVICE_FLAGS --device=/dev/sllidar:/dev/sllidar"

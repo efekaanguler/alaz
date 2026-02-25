@@ -1,1 +1,2 @@
-SUBSYSTEM=="video4linux", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="0893", ATTR{index}=="0", SYMLINK+="logitech_cam"
+# --- ALAZ MERKEZ KAMERA (GECICI - subsystemdan sonra KERNELS="x-y.z" eklenecek) ---
+SUBSYSTEM=="video4linux", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="0893", ATTR{index}=="0", SYMLINK+="center_camera"
