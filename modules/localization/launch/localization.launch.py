@@ -25,6 +25,7 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, LogInfo, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from ament_index_python.packages import get_package_share_directory
+from launch_ros.actions import Node
 
 
 def _load_yaml(path: str) -> dict:
@@ -101,13 +102,18 @@ def generate_launch_description():
             default_value=default_config_dir,
             description="Lokalizasyon config dosyalarının bulunduğu dizin"
         ),
-        
         DeclareLaunchArgument(
             "use_sim_time",
             default_value="false",
             description="Simülasyon zamanı kullanılsın mı (true/false)"
         ),
-        
         # Launch setup fonksiyonunu çağır
         OpaqueFunction(function=_launch_setup),
+        # Initial pose publisher node
+        Node(
+            package='localization',
+            executable='initial_pose_pub.py',
+            name='initial_pose_publisher',
+            output='screen'
+        ),
     ])

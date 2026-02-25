@@ -15,4 +15,11 @@ install(FILES
   DESTINATION share/${PROJECT_NAME}
 )
 
+
+# Python node'larını install et
+install(PROGRAMS
+  initial_pose_pub.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 ament_package()
