@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="in_image" default="/sensing/camera/camera0/image_raw"/>
+  <arg name="detection_rect" default="yolox/rois0"/>
+  <arg name="tracked_rect" default="rois0"/>
+  <arg name="enable_visualizer" default="false"/>
+  <arg name="camera_index" default="0"/>
+
+  <arg name="track_high_thresh" default="0.5"/>
+  <arg name="track_low_thresh" default="0.1"/>
+  <arg name="new_track_thresh" default="0.6"/>
+  <arg name="match_thresh" default="0.7"/>
+  <arg name="track_buffer" default="30"/>
+  <arg name="min_hits" default="1"/>
+
+  <node pkg="autoware_bytetrack" exec="bytetrack_node" name="bytetrack$(var camera_index)" output="screen">
+    <param name="enable_visualizer" value="$(var enable_visualizer)"/>
+    <param name="track_high_thresh" value="$(var track_high_thresh)"/>
+    <param name="track_low_thresh" value="$(var track_low_thresh)"/>
+    <param name="new_track_thresh" value="$(var new_track_thresh)"/>
+    <param name="match_thresh" value="$(var match_thresh)"/>
+    <param name="track_buffer" value="$(var track_buffer)"/>
+    <param name="min_hits" value="$(var min_hits)"/>
+
+    <remap from="~/input/image" to="$(var in_image)"/>
+    <remap from="~/input/detection_rect" to="$(var detection_rect)"/>
+    <remap from="~/output/tracked_rect" to="$(var tracked_rect)"/>
+  </node>
+</launch>

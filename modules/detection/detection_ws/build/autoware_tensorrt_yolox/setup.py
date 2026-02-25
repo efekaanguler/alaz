@@ -1,0 +1,1 @@
+/workspace/modules/detection/detection_ws/src/autoware_tensorrt_yolox/setup.py

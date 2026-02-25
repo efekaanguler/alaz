@@ -1,0 +1,26 @@
+[2.264s] Invoking command in '/workspace/modules/detection/detection_ws/build/autoware_tensorrt_yolox': PYTHONPATH=/workspace/modules/detection/detection_ws/build/autoware_tensorrt_yolox/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /workspace/modules/detection/detection_ws/build/autoware_tensorrt_yolox/build --no-deps symlink_data
+[2.769s] running develop
+[3.166s] running egg_info
+[3.167s] creating autoware_tensorrt_yolox.egg-info
+[3.167s] writing autoware_tensorrt_yolox.egg-info/PKG-INFO
+[3.167s] writing dependency_links to autoware_tensorrt_yolox.egg-info/dependency_links.txt
+[3.167s] writing entry points to autoware_tensorrt_yolox.egg-info/entry_points.txt
+[3.167s] writing requirements to autoware_tensorrt_yolox.egg-info/requires.txt
+[3.167s] writing top-level names to autoware_tensorrt_yolox.egg-info/top_level.txt
+[3.168s] writing manifest file 'autoware_tensorrt_yolox.egg-info/SOURCES.txt'
+[3.179s] reading manifest file 'autoware_tensorrt_yolox.egg-info/SOURCES.txt'
+[3.182s] writing manifest file 'autoware_tensorrt_yolox.egg-info/SOURCES.txt'
+[3.188s] running build_ext
+[3.188s] Creating /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/lib/python3.10/site-packages/autoware-tensorrt-yolox.egg-link (link to .)
+[3.189s] Installing yolox_node script to /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/lib/autoware_tensorrt_yolox
+[3.189s] 
+[3.189s] Installed /workspace/modules/detection/detection_ws/build/autoware_tensorrt_yolox
+[3.189s] running symlink_data
+[3.190s] creating /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/share/ament_index
+[3.191s] creating /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/share/ament_index/resource_index
+[3.191s] creating /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/share/ament_index/resource_index/packages
+[3.191s] symbolically linking /workspace/modules/detection/detection_ws/build/autoware_tensorrt_yolox/resource/autoware_tensorrt_yolox -> /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/share/ament_index/resource_index/packages
+[3.191s] symbolically linking /workspace/modules/detection/detection_ws/build/autoware_tensorrt_yolox/package.xml -> /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/share/autoware_tensorrt_yolox
+[3.191s] creating /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/share/autoware_tensorrt_yolox/launch
+[3.191s] symbolically linking /workspace/modules/detection/detection_ws/build/autoware_tensorrt_yolox/launch/yolox.launch.xml -> /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/share/autoware_tensorrt_yolox/launch
+[3.293s] Invoked command in '/workspace/modules/detection/detection_ws/build/autoware_tensorrt_yolox' returned '0': PYTHONPATH=/workspace/modules/detection/detection_ws/build/autoware_tensorrt_yolox/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /workspace/modules/detection/detection_ws/build/autoware_tensorrt_yolox/build --no-deps symlink_data

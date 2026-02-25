@@ -1,0 +1,17 @@
+[1.258s] Invoking command in '/workspace/modules/detection/detection_ws/build/autoware_traffic_light_classifier': PYTHONPATH=/workspace/modules/detection/detection_ws/build/autoware_traffic_light_classifier/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/workspace/modules/detection/detection_ws/install/autoware_traffic_light_classifier/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /workspace/modules/detection/detection_ws/build/autoware_traffic_light_classifier/build --no-deps symlink_data
+[1.494s] running develop
+[1.648s] running egg_info
+[1.648s] writing autoware_traffic_light_classifier.egg-info/PKG-INFO
+[1.649s] writing dependency_links to autoware_traffic_light_classifier.egg-info/dependency_links.txt
+[1.649s] writing entry points to autoware_traffic_light_classifier.egg-info/entry_points.txt
+[1.649s] writing requirements to autoware_traffic_light_classifier.egg-info/requires.txt
+[1.649s] writing top-level names to autoware_traffic_light_classifier.egg-info/top_level.txt
+[1.651s] reading manifest file 'autoware_traffic_light_classifier.egg-info/SOURCES.txt'
+[1.651s] writing manifest file 'autoware_traffic_light_classifier.egg-info/SOURCES.txt'
+[1.655s] running build_ext
+[1.655s] Creating /workspace/modules/detection/detection_ws/install/autoware_traffic_light_classifier/lib/python3.10/site-packages/autoware-traffic-light-classifier.egg-link (link to .)
+[1.655s] Installing traffic_light_classifier_node script to /workspace/modules/detection/detection_ws/install/autoware_traffic_light_classifier/lib/autoware_traffic_light_classifier
+[1.655s] 
+[1.655s] Installed /workspace/modules/detection/detection_ws/build/autoware_traffic_light_classifier
+[1.655s] running symlink_data
+[1.693s] Invoked command in '/workspace/modules/detection/detection_ws/build/autoware_traffic_light_classifier' returned '0': PYTHONPATH=/workspace/modules/detection/detection_ws/build/autoware_traffic_light_classifier/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/workspace/modules/detection/detection_ws/install/autoware_traffic_light_classifier/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /workspace/modules/detection/detection_ws/build/autoware_traffic_light_classifier/build --no-deps symlink_data

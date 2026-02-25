@@ -1,0 +1,14 @@
+package.xml
+setup.cfg
+setup.py
+autoware_detection_autoware_bridge/__init__.py
+autoware_detection_autoware_bridge/detection_autoware_bridge_node.py
+autoware_detection_autoware_bridge.egg-info/PKG-INFO
+autoware_detection_autoware_bridge.egg-info/SOURCES.txt
+autoware_detection_autoware_bridge.egg-info/dependency_links.txt
+autoware_detection_autoware_bridge.egg-info/entry_points.txt
+autoware_detection_autoware_bridge.egg-info/requires.txt
+autoware_detection_autoware_bridge.egg-info/top_level.txt
+autoware_detection_autoware_bridge.egg-info/zip-safe
+launch/detection_autoware_bridge.launch.xml
+resource/autoware_detection_autoware_bridge

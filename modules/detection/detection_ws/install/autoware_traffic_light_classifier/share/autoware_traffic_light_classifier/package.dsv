@@ -1,0 +1,9 @@
+source;share/autoware_traffic_light_classifier/hook/pythonpath.ps1
+source;share/autoware_traffic_light_classifier/hook/pythonpath.dsv
+source;share/autoware_traffic_light_classifier/hook/pythonpath.sh
+source;share/autoware_traffic_light_classifier/hook/ament_prefix_path.ps1
+source;share/autoware_traffic_light_classifier/hook/ament_prefix_path.dsv
+source;share/autoware_traffic_light_classifier/hook/ament_prefix_path.sh
+source;../../build/autoware_traffic_light_classifier/share/autoware_traffic_light_classifier/hook/pythonpath_develop.ps1
+source;../../build/autoware_traffic_light_classifier/share/autoware_traffic_light_classifier/hook/pythonpath_develop.dsv
+source;../../build/autoware_traffic_light_classifier/share/autoware_traffic_light_classifier/hook/pythonpath_develop.sh

@@ -1,0 +1,3 @@
+[console_scripts]
+yolox_node = autoware_tensorrt_yolox.yolox_node:main
+

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="yolox_node_name" default="tensorrt_yolox0"/>
+  <arg name="image_transport_decompressor_node_name" default="image_transport_decompressor_node0"/>
+  <arg name="input/image" default="/sensing/camera/camera0/image_raw"/>
+  <arg name="output/objects" default="rois0"/>
+  <arg name="model_path"/>
+  <arg name="label_path" default=""/>
+  <arg name="color_map_path" default=""/>
+  <arg name="input_width" default="640"/>
+  <arg name="input_height" default="640"/>
+  <arg name="score_threshold" default="0.35"/>
+  <arg name="nms_threshold" default="0.45"/>
+  <arg name="device" default="cpu"/>
+  <arg name="class_allowlist" default="0,2"/>
+
+  <node pkg="autoware_tensorrt_yolox" exec="yolox_node" name="$(var yolox_node_name)" output="screen">
+    <param name="model_path" value="$(var model_path)"/>
+    <param name="label_path" value="$(var label_path)"/>
+    <param name="color_map_path" value="$(var color_map_path)"/>
+    <param name="input_width" value="$(var input_width)"/>
+    <param name="input_height" value="$(var input_height)"/>
+    <param name="score_threshold" value="$(var score_threshold)"/>
+    <param name="nms_threshold" value="$(var nms_threshold)"/>
+    <param name="device" value="$(var device)"/>
+    <param name="class_allowlist" value="$(var class_allowlist)"/>
+
+    <remap from="~/input/image" to="$(var input/image)"/>
+    <remap from="~/output/objects" to="$(var output/objects)"/>
+  </node>
+</launch>

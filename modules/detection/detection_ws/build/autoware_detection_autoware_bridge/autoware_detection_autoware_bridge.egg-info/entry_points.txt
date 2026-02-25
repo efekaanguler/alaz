@@ -1,0 +1,3 @@
+[console_scripts]
+detection_autoware_bridge_node = autoware_detection_autoware_bridge.detection_autoware_bridge_node:main
+
