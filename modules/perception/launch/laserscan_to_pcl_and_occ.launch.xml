@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  laserscan_to_pcl_and_occ.launch.xml
+
+  Converts LaserScan data to PointCloud2 for LiDAR clustering / ROI fusion and
+  planner fallback occupancy generation.
+
+  Pipeline:
+    /scan (LaserScan) → laserscan_to_pointcloud → /perception/lidar/pointcloud
+    (OccupancyGrid fallback is launched by scripts/nuc_docker_perception.sh)
+
+  Usage:
+    ros2 launch perception laserscan_to_pcl_and_occ.launch.xml
+-->
+<launch>
+  <!-- Arguments -->
+  <arg name="scan_topic" default="/scan" description="Input LaserScan topic"/>
+  <arg name="points_topic" default="/perception/lidar/pointcloud" description="Output PointCloud2 topic"/>
+  <arg name="frame_id" default="base_link" description="Target frame for transform"/>
+
+  <!-- LaserScan → PointCloud2 conversion -->
+  <node pkg="pointcloud_to_laserscan" exec="laserscan_to_pointcloud_node" name="laserscan_to_pcl"
+        output="screen">
+    <remap from="scan_in" to="$(var scan_topic)"/>
+    <remap from="cloud" to="$(var points_topic)"/>
+    <param name="target_frame" value="$(var frame_id)"/>
+    <param name="tolerance" value="0.01"/>
+  </node>
+
+  <!-- Dummy LaserScan publisher for testing (publishes a simple scan) -->
+  <!--
+  <node pkg="perception" exec="dummy_scan_publisher.py" name="dummy_scan" output="screen">
+    <param name="topic" value="$(var scan_topic)"/>
+    <param name="frame_id" value="laser"/>
+    <param name="num_readings" value="360"/>
+    <param name="range_min" value="0.1"/>
+    <param name="range_max" value="10.0"/>
+  </node>
+  -->
+</launch>

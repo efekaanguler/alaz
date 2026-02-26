@@ -1,0 +1,3 @@
+[console_scripts]
+bytetrack_node = autoware_bytetrack.bytetrack_node:main
+

@@ -8,3 +8,6 @@ sudo udevadm control --reload-rules
 sudo udevadm trigger
 
 echo "Kurulum tamamlandı! Lütfen sensörlerin USB kablolarını çıkarıp tekrar takın."
+
+pip install python-can
+python3 -m pip install -U typing_extensions

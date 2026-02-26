@@ -39,3 +39,6 @@ ros2 pkg list | grep -E "v4l2_camera|sllidar"
 echo "OK: setup bitti. Her shell'de:"
 echo "  source /opt/ros/${ROS_DISTRO}/setup.bash"
 echo "  source /sllidar/install/setup.bash"
+
+pip install python-can
+python3 -m pip install -U typing_extensions

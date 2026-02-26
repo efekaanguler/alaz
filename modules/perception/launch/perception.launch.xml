@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  perception.launch.xml — Main launch file for the perception pipeline.
+
+  Launches:
+  - Camera image publisher (webcam → /camera/image_raw)
+  - Detection visualizer (optional)
+
+  Usage:
+    ros2 launch perception perception.launch.xml
+    ros2 launch perception perception.launch.xml enable_viz:=false
+-->
+<launch>
+  <!-- Arguments -->
+  <arg name="enable_viz" default="true" description="Enable detection visualizer"/>
+  <arg name="camera_device" default="0" description="Camera device index"/>
+  <arg name="image_topic" default="/camera/image_raw" description="Camera topic"/>
+  <arg name="detection_topic" default="/perception/detections" description="Detection output topic"/>
+
+  <!-- Webcam → ROS bridge -->
+  <node pkg="perception" exec="mjpeg_to_ros.py" name="webcam_publisher" output="screen">
+    <param name="device" value="$(var camera_device)"/>
+    <param name="topic" value="$(var image_topic)"/>
+    <param name="width" value="640"/>
+    <param name="height" value="480"/>
+    <param name="fps" value="30.0"/>
+  </node>
+
+  <!-- Detection visualizer (optional) -->
+  <group if="$(var enable_viz)">
+    <node pkg="perception" exec="visualize_detections.py" name="detection_visualizer" output="screen">
+      <param name="image_topic" value="$(var image_topic)"/>
+      <param name="detection_topic" value="$(var detection_topic)"/>
+    </node>
+  </group>
+</launch>
