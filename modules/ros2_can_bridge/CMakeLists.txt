@@ -8,17 +8,28 @@ find_package(ament_cmake_python REQUIRED)
 ament_python_install_package(${PROJECT_NAME})
 
 
-# launch dosyaları
+
+# launch dosyalarını recursive olarak kopyala (sadece dosyalar)
 install(
-  DIRECTORY launch
-  DESTINATION share/${PROJECT_NAME}
+  DIRECTORY launch/
+  DESTINATION share/${PROJECT_NAME}/launch
+  FILES_MATCHING PATTERN "*.py"
 )
 
-# resource index (colcon/ament index için genelde şart)
+# install node script so launch can find executables under install/lib/<package>
 install(
-  FILES resource/${PROJECT_NAME}
-  DESTINATION share/ament_index/resource_index/packages
+  PROGRAMS
+    ros2_can_bridge/bridge_node.py
+  DESTINATION lib/${PROJECT_NAME}
 )
+
+# resource dosyasını kopyala (varsa)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/resource/${PROJECT_NAME}")
+  install(
+    FILES resource/${PROJECT_NAME}
+    DESTINATION share/ament_index/resource_index/packages
+  )
+endif()
 
 # package.xml
 install(
