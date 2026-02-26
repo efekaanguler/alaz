@@ -1,0 +1,4 @@
+yabloc_segment_filter_node:
+  ros__parameters:
+    filter_threshold: 0.0
+    image_size: "640x480"

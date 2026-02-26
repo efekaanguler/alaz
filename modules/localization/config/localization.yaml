@@ -27,12 +27,12 @@ localization:
     # Kamera görüntüsü (YabLoc'un ana girdisi)
     # Tip: sensor_msgs/Image
     # Örnek: /sensing/camera/traffic_light/image_raw
-    camera: /sensing/camera/image
+    camera: /image_raw
     
     # Tekerlek odometrisi (YabLoc'un hız/yön bilgisi için kullandığı)
     # Tip: nav_msgs/Odometry
     # Örnek: /vehicle/status/velocity_status veya /localization/kinematic_state
-    wheel_odom: /vehicle/odometry
+    wheel_odom: /odom
     
     # YabLoc'un çıktı topic'i (Autoware içinde otomatik oluşturulur)
     # Sadece referans için burada, değiştirmeyin.

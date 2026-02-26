@@ -1,0 +1,4 @@
+yabloc_graph_segment_node:
+  ros__parameters:
+    segment_threshold: 0.0
+    target_height_ratio: 0.8

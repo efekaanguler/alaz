@@ -1,0 +1,3 @@
+yabloc_camera_particle_corrector_node:
+  ros__parameters:
+    acceptable_max_delay: 0.5

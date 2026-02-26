@@ -15,11 +15,15 @@
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
   <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>rclpy</exec_depend>
 
   <!-- Optional (often already available). Keep commented if you want it minimal. -->
   <!-- <exec_depend>python3-yaml</exec_depend> -->
 
   <export>
     <build_type>ament_cmake</build_type>
+    <launch>
+      <launch_file>launch/localization.launch.py</launch_file>
+    </launch>
   </export>
 </package>

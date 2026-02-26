@@ -19,6 +19,8 @@ install(FILES
 # Python node'larını install et
 install(PROGRAMS
   initial_pose_pub.py
+  odom_to_twist_cov.py
+  map_projector_info_pub.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

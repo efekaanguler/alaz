@@ -1,119 +1,157 @@
 #!/usr/bin/env python3
-"""
-============================================================
-LOCALIZATION LAUNCH - YabLoc Tabanlı Lokalizasyon
-============================================================
-
-Bu launch dosyası, araç lokalizasyonu için merkezi yapılandırma sağlar.
-Şu anda sadece YabLoc kullanılmaktadır.
-
-YabLoc için girdiler:
-  - Kamera görüntüsü (camera input)
-  - Odometri verisi (wheel odometry)
-
-global_bringup tarafından çağrılır ve Autoware'e pose_source parametresi iletir.
-
-Düzenlenebilir parametreler:
-  - localization.yaml: Topic isimleri, frame isimleri
-  - yabloc.param.yaml: YabLoc algoritma parametreleri (match threshold, vb.)
-============================================================
-"""
-
 import os
-import yaml
+
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, LogInfo, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.substitutions import LaunchConfiguration
-from ament_index_python.packages import get_package_share_directory
+from launch.launch_description_sources import AnyLaunchDescriptionSource
 from launch_ros.actions import Node
-
-
-def _load_yaml(path: str) -> dict:
-    """YAML dosyasını yükler. Dosya bulunamazsa boş dict döner."""
-    if not os.path.exists(path):
-        return {}
-    try:
-        with open(path, "r") as f:
-            return yaml.safe_load(f) or {}
-    except Exception:
-        return {}
-
-
-def _get_value(cfg: dict, key_path: str, default):
-    """İç içe dict'ten değer alır. Örn: "localization.pose_source" """
-    keys = key_path.split(".")
-    for key in keys:
-        if not isinstance(cfg, dict) or key not in cfg:
-            return default
-        cfg = cfg[key]
-    return cfg
-
-
-def _launch_setup(context, *args, **kwargs):
-    """Launch dosyasının çalışma zamanı kurulumu."""
-    
-    # Paket yollarını al
-    share_dir = get_package_share_directory("localization")
-    default_config_dir = os.path.join(share_dir, "config")
-    
-    # Parametreleri oku
-    config_dir = LaunchConfiguration("config_dir").perform(context) or default_config_dir
-    use_sim_time = LaunchConfiguration("use_sim_time").perform(context).lower() == "true"
-    
-    # localization.yaml dosyasını yükle
-    loc_yaml_path = os.path.join(config_dir, "localization.yaml")
-    cfg = _load_yaml(loc_yaml_path)
-    
-    # Konfigürasyondan değerleri al
-    pose_source = _get_value(cfg, "localization.pose_source", "yabloc")
-    camera_topic = _get_value(cfg, "localization.topics.camera", "/sensing/camera/image")
-    odom_topic = _get_value(cfg, "localization.topics.wheel_odom", "/vehicle/odometry")
-    
-    # Bilgilendirme logları
-    return [
-        LogInfo(msg=""),
-        LogInfo(msg="========================================"),
-        LogInfo(msg="  LOCALIZATION MODULE - YabLoc Setup"),
-        LogInfo(msg="========================================"),
-        LogInfo(msg=f"Config dizini    : {config_dir}"),
-        LogInfo(msg=f"Pose kaynağı     : {pose_source}"),
-        LogInfo(msg=f"Kamera topic     : {camera_topic}"),
-        LogInfo(msg=f"Odometri topic   : {odom_topic}"),
-        LogInfo(msg=f"Simülasyon modu  : {use_sim_time}"),
-        LogInfo(msg="========================================"),
-        LogInfo(msg=""),
-        LogInfo(msg="[NOT] Bu modül sadece yapılandırma merkezi olarak çalışır."),
-        LogInfo(msg="[NOT] YabLoc, Autoware tarafından global_bringup üzerinden başlatılır."),
-        LogInfo(msg="[NOT] Topic ve parametreler localization.yaml'dan okunur."),
-        LogInfo(msg=""),
-    ]
+from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
-    """Launch tanımını oluşturur."""
-    
-    share_dir = get_package_share_directory("localization")
-    default_config_dir = os.path.join(share_dir, "config")
-    
+    use_sim_time = LaunchConfiguration("use_sim_time")
+
+    # Inputs
+    lanelet2_map_path = LaunchConfiguration("lanelet2_map_path")
+    odom_topic = LaunchConfiguration("odom_topic")
+    src_image = LaunchConfiguration("src_image")
+    src_info = LaunchConfiguration("src_info")
+
+    # Topics
+    twist_cov_topic = LaunchConfiguration("twist_cov_topic")
+    projected_cloud = "/projected_line_segments_cloud"
+
+    # YabLoc expected map topics
+    ll2_road_marking = "/localization/pose_estimator/yabloc/map/ll2_road_marking"
+    ll2_bounding_box = "/localization/pose_estimator/yabloc/map/ll2_bounding_box"
+
+    # Package shares
+    img_share = get_package_share_directory("yabloc_image_processing")
+    pf_share = get_package_share_directory("yabloc_particle_filter")
+    common_share = get_package_share_directory("yabloc_common")
+    map_loader_share = get_package_share_directory("autoware_map_loader")
+
+    # Launch files
+    img_launch = os.path.join(img_share, "launch", "yabloc_image_processing.launch.xml")
+    pf_launch = os.path.join(pf_share, "launch", "yabloc_particle_filter.launch.xml")
+    map_launch = os.path.join(map_loader_share, "launch", "lanelet2_map_loader.launch.xml")
+
+    # Default param yaml paths
+    default_undistort = os.path.join(img_share, "config", "undistort.param.yaml")
+    default_graph_seg = os.path.join(img_share, "config", "graph_segment.param.yaml")
+    default_seg_filter = os.path.join(img_share, "config", "segment_filter.param.yaml")
+
+    default_predictor = os.path.join(pf_share, "config", "predictor.param.yaml")
+    default_cam_corr = os.path.join(pf_share, "config", "camera_particle_corrector.param.yaml")
+    default_gnss_corr = os.path.join(pf_share, "config", "gnss_particle_corrector.param.yaml")
+
+    default_ll2_decomposer = os.path.join(common_share, "config", "ll2_decomposer.param.yaml")
+
+    # LaunchConfiguration for param paths
+    undistort_param_path = LaunchConfiguration("undistort_param_path")
+    graph_segment_param_path = LaunchConfiguration("graph_segment_param_path")
+    segment_filter_param_path = LaunchConfiguration("segment_filter_param_path")
+
+    predictor_param_path = LaunchConfiguration("predictor_param_path")
+    camera_particle_corrector_param_path = LaunchConfiguration("camera_particle_corrector_param_path")
+    gnss_particle_corrector_param_path = LaunchConfiguration("gnss_particle_corrector_param_path")
+
+    ll2_decomposer_param_path = LaunchConfiguration("ll2_decomposer_param_path")
+
     return LaunchDescription([
-        # ===== TEMEL PARAMETRELER =====
-        DeclareLaunchArgument(
-            "config_dir",
-            default_value=default_config_dir,
-            description="Lokalizasyon config dosyalarının bulunduğu dizin"
-        ),
-        DeclareLaunchArgument(
-            "use_sim_time",
-            default_value="false",
-            description="Simülasyon zamanı kullanılsın mı (true/false)"
-        ),
-        # Launch setup fonksiyonunu çağır
-        OpaqueFunction(function=_launch_setup),
-        # Initial pose publisher node
+        DeclareLaunchArgument("use_sim_time", default_value="false"),
+
+        # Map path (your file)
+        DeclareLaunchArgument("lanelet2_map_path", default_value="/workspace/maps/map.osm"),
+
+        # Your topics
+        DeclareLaunchArgument("odom_topic", default_value="/vehicle/odometry"),
+        DeclareLaunchArgument("src_image", default_value="/sensing/camera/image"),
+        DeclareLaunchArgument("src_info", default_value="/sensing/camera/camera_info"),
+        DeclareLaunchArgument("twist_cov_topic", default_value="/localization/twist_estimator/twist_with_covariance"),
+
+        # Params: image_processing
+        DeclareLaunchArgument("undistort_param_path", default_value=default_undistort),
+        DeclareLaunchArgument("graph_segment_param_path", default_value=default_graph_seg),
+        DeclareLaunchArgument("segment_filter_param_path", default_value=default_seg_filter),
+
+        # Params: particle_filter
+        DeclareLaunchArgument("predictor_param_path", default_value=default_predictor),
+        DeclareLaunchArgument("camera_particle_corrector_param_path", default_value=default_cam_corr),
+        DeclareLaunchArgument("gnss_particle_corrector_param_path", default_value=default_gnss_corr),
+
+        # Params: ll2_decomposer
+        DeclareLaunchArgument("ll2_decomposer_param_path", default_value=default_ll2_decomposer),
+
+        # 0) Publish /map/map_projector_info permanently (Local)
         Node(
-            package='localization',
-            executable='initial_pose_pub.py',
-            name='initial_pose_publisher',
-            output='screen'
+            package="localization",
+            executable="map_projector_info_pub.py",
+            name="map_projector_info_pub",
+            output="screen",
+        ),
+
+        # 1) Lanelet2 map loader -> publish exactly /map/vector_map (requires projector info)
+        IncludeLaunchDescription(
+            AnyLaunchDescriptionSource(map_launch),
+            launch_arguments={
+                "lanelet2_map_path": lanelet2_map_path,
+                "lanelet2_map_topic": "/map/vector_map",
+                "lanelet2_map_marker_topic": "/map/vector_map_marker",
+            }.items(),
+        ),
+
+        # 2) Odometry -> TwistWithCovarianceStamped
+        Node(
+            package="localization",
+            executable="odom_to_twist_cov.py",
+            name="odom_to_twist_cov",
+            output="screen",
+            parameters=[{
+                "use_sim_time": use_sim_time,
+                "odom_topic": odom_topic,
+                "twist_topic": twist_cov_topic,
+            }],
+        ),
+
+        # 3) LaneletMapBin (/map/vector_map) -> ll2 clouds for YabLoc
+        Node(
+            package="yabloc_common",
+            executable="yabloc_ll2_decomposer_node",
+            name="ll2_decomposer",
+            output="screen",
+            parameters=[ll2_decomposer_param_path, {"use_sim_time": use_sim_time}],
+            remappings=[
+                ("input/vector_map", "/map/vector_map"),
+                ("output/ll2_road_marking", ll2_road_marking),
+                ("output/ll2_bounding_box", ll2_bounding_box),
+            ],
+        ),
+
+        # 4) YabLoc image processing
+        IncludeLaunchDescription(
+            AnyLaunchDescriptionSource(img_launch),
+            launch_arguments={
+                "src_image": src_image,
+                "src_info": src_info,
+                "undistort_param_path": undistort_param_path,
+                "graph_segment_param_path": graph_segment_param_path,
+                "segment_filter_param_path": segment_filter_param_path,
+            }.items(),
+        ),
+
+        # 5) YabLoc particle filter
+        IncludeLaunchDescription(
+            AnyLaunchDescriptionSource(pf_launch),
+            launch_arguments={
+                "twist_cov_for_prediction": twist_cov_topic,
+                "input_projected_line_segments_cloud": projected_cloud,
+                "input_ll2_road_marking": ll2_road_marking,
+                "input_ll2_bounding_box": ll2_bounding_box,
+                "predictor_param_path": predictor_param_path,
+                "camera_particle_corrector_param_path": camera_particle_corrector_param_path,
+                "gnss_particle_corrector_param_path": gnss_particle_corrector_param_path,
+            }.items(),
         ),
     ])
