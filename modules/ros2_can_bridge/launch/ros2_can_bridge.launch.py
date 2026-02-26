@@ -5,7 +5,7 @@ def generate_launch_description():
     return LaunchDescription([
         Node(
             package='ros2_can_bridge',
-            executable='ros2_can_bridge_node',
+            executable='bridge_node.py',
             name='ros2_can_bridge_node',
             output='screen',
         ),
