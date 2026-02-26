@@ -1,7 +1,8 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, ExecuteProcess
+from launch.conditions import IfCondition
 from ament_index_python.packages import get_package_share_directory
 import os
 
@@ -26,6 +27,11 @@ def generate_launch_description():
                 default_value=velocity_smoother_param_path,
                 description="Path to velocity smoother parameters file",
             ),
+            DeclareLaunchArgument(
+                name="use_dummy_scenario",
+                default_value="false",
+                description="Publish a dummy scenario message for standalone planner testing",
+            ),
             Node(
                 package="autoware_behavior_path_planner",
                 executable="autoware_behavior_path_planner_node",
@@ -40,6 +46,20 @@ def generate_launch_description():
                 name="velocity_smoother",
                 parameters=[LaunchConfiguration("velocity_smoother_params")],
                 remappings=[],
+                output="screen",
+            ),
+            ExecuteProcess(
+                condition=IfCondition(LaunchConfiguration("use_dummy_scenario")),
+                cmd=[
+                    "ros2",
+                    "topic",
+                    "pub",
+                    "-r",
+                    "1",
+                    "/autoware_behavior_path_planner/input/scenario",
+                    "autoware_internal_planning_msgs/msg/Scenario",
+                    "{}",
+                ],
                 output="screen",
             ),
         ]
