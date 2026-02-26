@@ -1,15 +1,11 @@
 <launch>
   <arg name="launch_driver" default="true" description="do launch driver"/>
-  <arg name="launch_lidar" default="true"/>
-  <arg name="launch_camera" default="true"/>
   <arg name="pointcloud_container_name" default="pointcloud_container"/>
-  <arg name="lidar_serial_port" default="/dev/ttyUSB0"/>
-  <arg name="lidar_serial_baudrate" default="115200"/>
-  <arg name="lidar_scan_mode" default="Standard"/>
-  <arg name="lidar_set_scan_mode" default="false"/>
+  
+  <arg name="lidar_device" default="/dev/sllidar" description="SLLiDAR device"/>
+  <arg name="camera_device" default="/dev/center_camera" description="Center camera device"/>
 
   <group>
-    <!-- Tüm sensörleri /sensing namespace'i altına alıyoruz -->
     <push-ros-namespace namespace="sensing"/>
 
     <node pkg="robot_state_publisher"
@@ -20,27 +16,17 @@
          value="$(command 'xacro $(find-pkg-share rdw_sensor_kit_description)/urdf/sensor_kit_standalone.urdf.xacro')"/>
     </node>
 
-    <!-- 1. POINTCLOUD PREPROCESSOR -->
-    <!-- LaserScan'i PointCloud2'ye çevirir ve relay eder -->
     <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/pointcloud_preprocessor.launch.py">
     </include>
 
-    <!-- 2. LiDAR Driver -->
-    <!-- 2D Lidar + Pointcloud Dönüştürücüyü başlatır -->
-   <include if="$(var launch_lidar)" file="$(find-pkg-share rdw_sensor_kit_launch)/launch/lidar.launch.xml">
-    <arg name="serial_port" value="$(var lidar_serial_port)"/>
-      <arg name="serial_baudrate" value="$(var lidar_serial_baudrate)"/>
-      <arg name="scan_mode" value="$(var lidar_scan_mode)"/>
-      <arg name="set_scan_mode" value="$(var lidar_set_scan_mode)"/>
-    </include>
-    <!-- 3. Camera Driver -->
-    <!-- 3 Kamerayı (Sol, Sağ, Orta) başlatır -->
-    <include if="$(var launch_camera)" file="$(find-pkg-share rdw_sensor_kit_launch)/launch/camera.launch.xml">
-      <arg name="launch_driver" value="$(var launch_driver)" />
+    <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/lidar.launch.xml">
+      <arg name="lidar_device" value="$(var lidar_device)"/>
     </include>
 
-    <!-- 6. Vehicle Velocity Converter -->
-    <!-- Hız sensörünüzden gelen veriyi Twist formatına çevirir -->
+    <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/camera.launch.xml">
+      <arg name="camera_device" value="$(var camera_device)"/>
+    </include>
+
     <include file="$(find-pkg-share autoware_vehicle_velocity_converter)/launch/vehicle_velocity_converter.launch.xml">
       <arg name="input_vehicle_velocity_topic" value="/vehicle/status/velocity_status"/>
       <arg name="output_twist_with_covariance" value="/sensing/vehicle_velocity_converter/twist_with_covariance"/>
