@@ -1,0 +1,70 @@
+/**:
+  ros__parameters:
+    input/detection01/channel: objects
+    input/detection01/objects: /perception/object_recognition/detection/objects
+    input/detection02/channel: dummy02
+    input/detection02/objects: /perception/dummy02
+    input/detection03/channel: dummy03
+    input/detection03/objects: /perception/dummy03
+    input/detection04/channel: dummy04
+    input/detection04/objects: /perception/dummy04
+    input/detection05/channel: dummy05
+    input/detection05/objects: /perception/dummy05
+    input/detection06/channel: dummy06
+    input/detection06/objects: /perception/dummy06
+    input/detection07/channel: dummy07
+    input/detection07/objects: /perception/dummy07
+    input/detection08/channel: dummy08
+    input/detection08/objects: /perception/dummy08
+    input/detection09/channel: dummy09
+    input/detection09/objects: /perception/dummy09
+    input/detection10/channel: dummy10
+    input/detection10/objects: /perception/dummy10
+    input/detection11/channel: dummy11
+    input/detection11/objects: /perception/dummy11
+    input/detection12/channel: dummy12
+    input/detection12/objects: /perception/dummy12
+    input/detection13/channel: dummy13
+    input/detection13/objects: /perception/dummy13
+    input/detection14/channel: dummy14
+    input/detection14/objects: /perception/dummy14
+    input_channels:
+      dummy02:
+        flags:
+          can_spawn_new_tracker: false
+      dummy03:
+        flags:
+          can_spawn_new_tracker: false
+      dummy04:
+        flags:
+          can_spawn_new_tracker: false
+      dummy05:
+        flags:
+          can_spawn_new_tracker: false
+      dummy06:
+        flags:
+          can_spawn_new_tracker: false
+      dummy07:
+        flags:
+          can_spawn_new_tracker: false
+      dummy08:
+        flags:
+          can_spawn_new_tracker: false
+      dummy09:
+        flags:
+          can_spawn_new_tracker: false
+      dummy10:
+        flags:
+          can_spawn_new_tracker: false
+      dummy11:
+        flags:
+          can_spawn_new_tracker: false
+      dummy12:
+        flags:
+          can_spawn_new_tracker: false
+      dummy13:
+        flags:
+          can_spawn_new_tracker: false
+      dummy14:
+        flags:
+          can_spawn_new_tracker: false
