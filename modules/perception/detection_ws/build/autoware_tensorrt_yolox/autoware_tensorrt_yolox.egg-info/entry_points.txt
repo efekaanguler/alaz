@@ -1,4 +1,0 @@
-[console_scripts]
-yolov8_node = autoware_tensorrt_yolox.yolov8_node:main
-yolox_node = autoware_tensorrt_yolox.yolox_node:main
-
