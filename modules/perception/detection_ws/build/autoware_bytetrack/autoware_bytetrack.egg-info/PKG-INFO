@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: autoware-bytetrack
+Version: 0.1.0
+Summary: Minimal ByteTrack-like tracking package for ROS 2 Detection2DArray streams.
+Home-page: UNKNOWN
+Maintainer: zuhalkoksal
+Maintainer-email: zuhalkoksal@example.com
+License: Apache-2.0
+Platform: UNKNOWN
+
+UNKNOWN
+

@@ -1,0 +1,26 @@
+[6.860s] Invoking command in '/workspace/modules/detection/detection_ws/build/autoware_detection_autoware_bridge': PYTHONPATH=/workspace/modules/detection/detection_ws/build/autoware_detection_autoware_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /workspace/modules/detection/detection_ws/build/autoware_detection_autoware_bridge/build --no-deps symlink_data
+[9.064s] running develop
+[10.203s] running egg_info
+[10.210s] creating autoware_detection_autoware_bridge.egg-info
+[10.212s] writing autoware_detection_autoware_bridge.egg-info/PKG-INFO
+[10.273s] writing dependency_links to autoware_detection_autoware_bridge.egg-info/dependency_links.txt
+[10.291s] writing entry points to autoware_detection_autoware_bridge.egg-info/entry_points.txt
+[10.292s] writing requirements to autoware_detection_autoware_bridge.egg-info/requires.txt
+[10.293s] writing top-level names to autoware_detection_autoware_bridge.egg-info/top_level.txt
+[10.295s] writing manifest file 'autoware_detection_autoware_bridge.egg-info/SOURCES.txt'
+[10.313s] reading manifest file 'autoware_detection_autoware_bridge.egg-info/SOURCES.txt'
+[10.594s] writing manifest file 'autoware_detection_autoware_bridge.egg-info/SOURCES.txt'
+[10.670s] running build_ext
+[10.671s] Creating /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/lib/python3.10/site-packages/autoware-detection-autoware-bridge.egg-link (link to .)
+[10.749s] Installing detection_autoware_bridge_node script to /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/lib/autoware_detection_autoware_bridge
+[10.839s] 
+[10.857s] Installed /workspace/modules/detection/detection_ws/build/autoware_detection_autoware_bridge
+[10.857s] running symlink_data
+[10.874s] creating /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/share/ament_index
+[10.884s] creating /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/share/ament_index/resource_index
+[10.890s] creating /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/share/ament_index/resource_index/packages
+[10.890s] symbolically linking /workspace/modules/detection/detection_ws/build/autoware_detection_autoware_bridge/resource/autoware_detection_autoware_bridge -> /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/share/ament_index/resource_index/packages
+[10.891s] symbolically linking /workspace/modules/detection/detection_ws/build/autoware_detection_autoware_bridge/package.xml -> /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge
+[10.975s] creating /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/launch
+[11.080s] symbolically linking /workspace/modules/detection/detection_ws/build/autoware_detection_autoware_bridge/launch/detection_autoware_bridge.launch.xml -> /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/launch
+[11.231s] Invoked command in '/workspace/modules/detection/detection_ws/build/autoware_detection_autoware_bridge' returned '0': PYTHONPATH=/workspace/modules/detection/detection_ws/build/autoware_detection_autoware_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /workspace/modules/detection/detection_ws/build/autoware_detection_autoware_bridge/build --no-deps symlink_data

@@ -1,0 +1,26 @@
+running develop
+running egg_info
+creating autoware_tensorrt_yolox.egg-info
+writing autoware_tensorrt_yolox.egg-info/PKG-INFO
+writing dependency_links to autoware_tensorrt_yolox.egg-info/dependency_links.txt
+writing entry points to autoware_tensorrt_yolox.egg-info/entry_points.txt
+writing requirements to autoware_tensorrt_yolox.egg-info/requires.txt
+writing top-level names to autoware_tensorrt_yolox.egg-info/top_level.txt
+writing manifest file 'autoware_tensorrt_yolox.egg-info/SOURCES.txt'
+reading manifest file 'autoware_tensorrt_yolox.egg-info/SOURCES.txt'
+writing manifest file 'autoware_tensorrt_yolox.egg-info/SOURCES.txt'
+running build_ext
+Creating /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/lib/python3.10/site-packages/autoware-tensorrt-yolox.egg-link (link to .)
+Installing yolov8_node script to /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/lib/autoware_tensorrt_yolox
+Installing yolox_node script to /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/lib/autoware_tensorrt_yolox
+
+Installed /workspace/modules/detection/detection_ws/build/autoware_tensorrt_yolox
+running symlink_data
+creating /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/share/ament_index
+creating /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/share/ament_index/resource_index
+creating /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/share/ament_index/resource_index/packages
+symbolically linking /workspace/modules/detection/detection_ws/build/autoware_tensorrt_yolox/resource/autoware_tensorrt_yolox -> /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/share/ament_index/resource_index/packages
+symbolically linking /workspace/modules/detection/detection_ws/build/autoware_tensorrt_yolox/package.xml -> /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/share/autoware_tensorrt_yolox
+creating /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/share/autoware_tensorrt_yolox/launch
+symbolically linking /workspace/modules/detection/detection_ws/build/autoware_tensorrt_yolox/launch/yolox.launch.xml -> /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/share/autoware_tensorrt_yolox/launch
+symbolically linking /workspace/modules/detection/detection_ws/build/autoware_tensorrt_yolox/launch/yolov8.launch.xml -> /workspace/modules/detection/detection_ws/install/autoware_tensorrt_yolox/share/autoware_tensorrt_yolox/launch

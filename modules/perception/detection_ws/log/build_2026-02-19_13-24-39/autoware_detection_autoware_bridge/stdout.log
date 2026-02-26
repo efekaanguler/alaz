@@ -1,0 +1,24 @@
+running develop
+running egg_info
+creating autoware_detection_autoware_bridge.egg-info
+writing autoware_detection_autoware_bridge.egg-info/PKG-INFO
+writing dependency_links to autoware_detection_autoware_bridge.egg-info/dependency_links.txt
+writing entry points to autoware_detection_autoware_bridge.egg-info/entry_points.txt
+writing requirements to autoware_detection_autoware_bridge.egg-info/requires.txt
+writing top-level names to autoware_detection_autoware_bridge.egg-info/top_level.txt
+writing manifest file 'autoware_detection_autoware_bridge.egg-info/SOURCES.txt'
+reading manifest file 'autoware_detection_autoware_bridge.egg-info/SOURCES.txt'
+writing manifest file 'autoware_detection_autoware_bridge.egg-info/SOURCES.txt'
+running build_ext
+Creating /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/lib/python3.10/site-packages/autoware-detection-autoware-bridge.egg-link (link to .)
+Installing detection_autoware_bridge_node script to /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/lib/autoware_detection_autoware_bridge
+
+Installed /workspace/modules/detection/detection_ws/build/autoware_detection_autoware_bridge
+running symlink_data
+creating /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/share/ament_index
+creating /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/share/ament_index/resource_index
+creating /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/share/ament_index/resource_index/packages
+symbolically linking /workspace/modules/detection/detection_ws/build/autoware_detection_autoware_bridge/resource/autoware_detection_autoware_bridge -> /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/share/ament_index/resource_index/packages
+symbolically linking /workspace/modules/detection/detection_ws/build/autoware_detection_autoware_bridge/package.xml -> /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge
+creating /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/launch
+symbolically linking /workspace/modules/detection/detection_ws/build/autoware_detection_autoware_bridge/launch/detection_autoware_bridge.launch.xml -> /workspace/modules/detection/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/launch

@@ -1,0 +1,6 @@
+/**:
+  ros__parameters:
+    use_onnx: true
+    onnx_input_height: 96
+    onnx_input_width: 96
+    min_color_ratio: 0.01
