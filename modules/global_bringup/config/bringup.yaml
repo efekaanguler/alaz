@@ -3,9 +3,9 @@ packages:
     enabled: true
     launch_file: "vehicle.launch.xml"
   
-  my_vehicle_interface:
+  ros2_can_bridge:
     enabled: true
-    launch_file: "vehicle_interface.launch.xml"
+    launch_file: "ros2_can_bridge.launch.py"
   
   rdw_sensor_kit_launch:
     enabled: true
