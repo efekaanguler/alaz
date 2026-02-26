@@ -7,14 +7,12 @@ import cv2
 import numpy as np
 import rclpy
 from cv_bridge import CvBridge
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2D, Detection2DArray, ObjectHypothesisWithPose
 
-try:
-    import onnxruntime as ort
-except ImportError:  # pragma: no cover
-    ort = None
+ort = None
 
 
 def _bbox_to_xyxy(det: Detection2D) -> Tuple[float, float, float, float]:
@@ -122,7 +120,11 @@ class TrafficLightClassifierNode(Node):
         )
 
     def _shutdown_once(self) -> None:
-        rclpy.shutdown()
+        if rclpy.ok():
+            try:
+                rclpy.shutdown()
+            except Exception:
+                pass
 
     def _load_labels(self, label_path: str) -> List[str]:
         if label_path == '':
@@ -142,6 +144,15 @@ class TrafficLightClassifierNode(Node):
         if not self.use_onnx:
             self.get_logger().info('use_onnx=false, classifier will use HSV fallback')
             return
+
+        global ort
+        if ort is None:
+            try:
+                import onnxruntime as _ort  # pylint: disable=import-outside-toplevel
+                ort = _ort
+            except ImportError:
+                self.get_logger().warning('onnxruntime is not installed, classifier will use HSV fallback')
+                return
 
         if ort is None:
             self.get_logger().warning('onnxruntime is not installed, classifier will use HSV fallback')
@@ -320,12 +331,18 @@ def main(args=None) -> None:
     node = TrafficLightClassifierNode()
     try:
         rclpy.spin(node)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
-        if rclpy.ok():
+        try:
             node.destroy_node()
-            rclpy.shutdown()
+        except Exception:
+            pass
+        if rclpy.ok():
+            try:
+                rclpy.shutdown()
+            except Exception:
+                pass
 
 
 if __name__ == '__main__':

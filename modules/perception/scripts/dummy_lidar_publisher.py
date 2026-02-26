@@ -19,6 +19,7 @@ import math
 import time
 
 import rclpy
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 
@@ -36,6 +37,8 @@ class DummyLidarPublisher(Node):
         )
 
     def publish_scan(self):
+        if not rclpy.ok():
+            return
         msg = LaserScan()
         msg.header.stamp = self.get_clock().now().to_msg()
         msg.header.frame_id = 'laser'
@@ -77,7 +80,10 @@ class DummyLidarPublisher(Node):
         msg.ranges = ranges
         msg.intensities = [100.0] * num_readings
 
-        self.pub.publish(msg)
+        try:
+            self.pub.publish(msg)
+        except Exception:
+            return
         self.frame_count += 1
 
         if self.frame_count % 50 == 0:
@@ -94,11 +100,18 @@ def main():
     node = DummyLidarPublisher(rate=args.rate, add_obstacle=args.obstacle)
     try:
         rclpy.spin(node)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
-        node.destroy_node()
-        rclpy.shutdown()
+        try:
+            node.destroy_node()
+        except Exception:
+            pass
+        if rclpy.ok():
+            try:
+                rclpy.shutdown()
+            except Exception:
+                pass
 
 
 if __name__ == '__main__':

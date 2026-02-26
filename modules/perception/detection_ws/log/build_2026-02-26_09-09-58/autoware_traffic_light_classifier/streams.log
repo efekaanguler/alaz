@@ -1,0 +1,28 @@
+[1.276s] Invoking command in '/workspace/modules/perception/detection_ws/build/autoware_traffic_light_classifier': PYTHONPATH=/workspace/modules/perception/detection_ws/build/autoware_traffic_light_classifier/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/workspace/modules/perception/detection_ws/install/autoware_traffic_light_classifier/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /workspace/modules/perception/detection_ws/build/autoware_traffic_light_classifier/build --no-deps symlink_data
+[1.574s] running develop
+[1.772s] running egg_info
+[1.773s] creating autoware_traffic_light_classifier.egg-info
+[1.778s] writing autoware_traffic_light_classifier.egg-info/PKG-INFO
+[1.779s] writing dependency_links to autoware_traffic_light_classifier.egg-info/dependency_links.txt
+[1.785s] writing entry points to autoware_traffic_light_classifier.egg-info/entry_points.txt
+[1.786s] writing requirements to autoware_traffic_light_classifier.egg-info/requires.txt
+[1.788s] writing top-level names to autoware_traffic_light_classifier.egg-info/top_level.txt
+[1.789s] writing manifest file 'autoware_traffic_light_classifier.egg-info/SOURCES.txt'
+[1.791s] reading manifest file 'autoware_traffic_light_classifier.egg-info/SOURCES.txt'
+[1.797s] writing manifest file 'autoware_traffic_light_classifier.egg-info/SOURCES.txt'
+[1.800s] running build_ext
+[1.800s] Creating /workspace/modules/perception/detection_ws/install/autoware_traffic_light_classifier/lib/python3.10/site-packages/autoware-traffic-light-classifier.egg-link (link to .)
+[1.809s] Installing traffic_light_classifier_node script to /workspace/modules/perception/detection_ws/install/autoware_traffic_light_classifier/lib/autoware_traffic_light_classifier
+[1.812s] 
+[1.814s] Installed /workspace/modules/perception/detection_ws/build/autoware_traffic_light_classifier
+[1.814s] running symlink_data
+[1.816s] creating /workspace/modules/perception/detection_ws/install/autoware_traffic_light_classifier/share/ament_index
+[1.817s] creating /workspace/modules/perception/detection_ws/install/autoware_traffic_light_classifier/share/ament_index/resource_index
+[1.817s] creating /workspace/modules/perception/detection_ws/install/autoware_traffic_light_classifier/share/ament_index/resource_index/packages
+[1.821s] symbolically linking /workspace/modules/perception/detection_ws/build/autoware_traffic_light_classifier/resource/autoware_traffic_light_classifier -> /workspace/modules/perception/detection_ws/install/autoware_traffic_light_classifier/share/ament_index/resource_index/packages
+[1.821s] symbolically linking /workspace/modules/perception/detection_ws/build/autoware_traffic_light_classifier/package.xml -> /workspace/modules/perception/detection_ws/install/autoware_traffic_light_classifier/share/autoware_traffic_light_classifier
+[1.823s] creating /workspace/modules/perception/detection_ws/install/autoware_traffic_light_classifier/share/autoware_traffic_light_classifier/launch
+[1.825s] symbolically linking /workspace/modules/perception/detection_ws/build/autoware_traffic_light_classifier/launch/pedestrian_traffic_light_classifier.launch.xml -> /workspace/modules/perception/detection_ws/install/autoware_traffic_light_classifier/share/autoware_traffic_light_classifier/launch
+[1.826s] creating /workspace/modules/perception/detection_ws/install/autoware_traffic_light_classifier/share/autoware_traffic_light_classifier/config
+[1.827s] symbolically linking /workspace/modules/perception/detection_ws/build/autoware_traffic_light_classifier/config/pedestrian_traffic_light_classifier.param.yaml -> /workspace/modules/perception/detection_ws/install/autoware_traffic_light_classifier/share/autoware_traffic_light_classifier/config
+[1.861s] Invoked command in '/workspace/modules/perception/detection_ws/build/autoware_traffic_light_classifier' returned '0': PYTHONPATH=/workspace/modules/perception/detection_ws/build/autoware_traffic_light_classifier/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/workspace/modules/perception/detection_ws/install/autoware_traffic_light_classifier/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /workspace/modules/perception/detection_ws/build/autoware_traffic_light_classifier/build --no-deps symlink_data

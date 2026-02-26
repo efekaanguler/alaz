@@ -145,12 +145,15 @@ class DetectionAutowareBridge(Node):
             return
 
         out = TrafficLightGroupArray()
-        out.stamp = msg.header.stamp
+        if hasattr(out, 'stamp'):
+            out.stamp = msg.header.stamp
+        elif hasattr(out, 'header'):
+            out.header = msg.header
 
         for idx, det in enumerate(msg.detections):
             class_id, score = _extract_hypothesis(det)
             group = TrafficLightGroup()
-            group.lanelet_id = _lanelet_id(det, idx)
+            _set_traffic_light_group_id(group, _lanelet_id(det, idx))
             group.elements.append(_to_traffic_light_element(class_id, _clamp01(score)))
             out.traffic_light_groups.append(group)
 
@@ -294,6 +297,14 @@ def _lanelet_id(det: Detection2D, index: int) -> int:
             pass
 
     return -(index + 1)
+
+
+def _set_traffic_light_group_id(group: TrafficLightGroup, value: int) -> None:
+    """Handle message version differences in TrafficLightGroup ID field name."""
+    for attr in ('lanelet_id', 'traffic_light_group_id', 'map_primitive_id', 'id'):
+        if hasattr(group, attr):
+            setattr(group, attr, int(value))
+            return
 
 
 def _to_traffic_light_element(class_id: str, score: float) -> TrafficLightElement:

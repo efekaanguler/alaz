@@ -10,7 +10,13 @@ install(PROGRAMS
   scripts/visualize_detections.py
   scripts/dummy_lidar_publisher.py
   scripts/dummy_camera_publisher.py
+  scripts/camera_info_fallback_publisher.py
+  scripts/scan_static_tf_fallback.py
+  scripts/pointcloud_to_occupancy_grid.py
+  scripts/detection2d_to_tier4_rois.py
   scripts/docker_pipeline_start.sh
+  scripts/nuc_docker_perception.sh
+  scripts/test_nuc_perception_runtime.sh
   scripts/test_detection_e2e.sh
   scripts/test_planner_integration.sh
   scripts/test_perception_pipeline.sh
@@ -25,6 +31,11 @@ install(DIRECTORY models/
 # Install launch files
 install(DIRECTORY launch/
   DESTINATION share/${PROJECT_NAME}/launch
+)
+
+# Install config files (NUC fallback calibration, etc.)
+install(DIRECTORY config/
+  DESTINATION share/${PROJECT_NAME}/config
 )
 
 ament_package()

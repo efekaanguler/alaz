@@ -1,0 +1,172 @@
+[0.114s] [34mcolcon[0m [1;30mDEBUG[0m [32mCommand line arguments: ['/usr/bin/colcon', 'build', '--symlink-install', '--packages-select', 'autoware_detection_autoware_bridge'][0m
+[0.114s] [34mcolcon[0m [1;30mDEBUG[0m [32mParsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=True, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=8, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=['autoware_detection_autoware_bridge'], packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0xffff80a260e0>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffff80b4b6d0>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffff80b4b6d0>>, mixin_verb=('build',))[0m
+[0.257s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(colcon_meta) check parameters
+[0.257s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(recursive) check parameters
+[0.258s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(ignore) check parameters
+[0.258s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(path) check parameters
+[0.258s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(colcon_meta) discover
+[0.258s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(recursive) discover
+[0.258s] [34mcolcon.colcon_core.package_discovery[0m [1;30mINFO[0m Crawling recursively for packages in '/workspace/modules/perception/detection_ws'
+[0.258s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.258s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'ignore'
+[0.259s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'ignore_ament_install'
+[0.259s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['colcon_pkg']
+[0.259s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'colcon_pkg'
+[0.259s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['colcon_meta']
+[0.259s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'colcon_meta'
+[0.259s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['ros']
+[0.259s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'ros'
+[0.269s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['cmake', 'python']
+[0.269s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'cmake'
+[0.270s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'python'
+[0.270s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['python_setup_py']
+[0.270s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'python_setup_py'
+[0.270s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.270s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(build) by extension 'ignore'
+[0.271s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(build) ignored
+[0.271s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.271s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(install) by extension 'ignore'
+[0.271s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(install) ignored
+[0.272s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.272s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(log) by extension 'ignore'
+[0.272s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(log) ignored
+[0.272s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.273s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'ignore'
+[0.273s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'ignore_ament_install'
+[0.273s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extensions ['colcon_pkg']
+[0.273s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'colcon_pkg'
+[0.273s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extensions ['colcon_meta']
+[0.273s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'colcon_meta'
+[0.273s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extensions ['ros']
+[0.273s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'ros'
+[0.274s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extensions ['cmake', 'python']
+[0.274s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'cmake'
+[0.274s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'python'
+[0.274s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extensions ['python_setup_py']
+[0.274s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'python_setup_py'
+[0.275s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_bytetrack) by extensions ['ignore', 'ignore_ament_install']
+[0.275s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_bytetrack) by extension 'ignore'
+[0.276s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_bytetrack) by extension 'ignore_ament_install'
+[0.276s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_bytetrack) by extensions ['colcon_pkg']
+[0.276s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_bytetrack) by extension 'colcon_pkg'
+[0.276s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_bytetrack) by extensions ['colcon_meta']
+[0.276s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_bytetrack) by extension 'colcon_meta'
+[0.276s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_bytetrack) by extensions ['ros']
+[0.276s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_bytetrack) by extension 'ros'
+[0.280s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'src/autoware_bytetrack' with type 'ros.ament_python' and name 'autoware_bytetrack'[0m
+[0.280s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_detection_autoware_bridge) by extensions ['ignore', 'ignore_ament_install']
+[0.280s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_detection_autoware_bridge) by extension 'ignore'
+[0.280s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_detection_autoware_bridge) by extension 'ignore_ament_install'
+[0.280s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_detection_autoware_bridge) by extensions ['colcon_pkg']
+[0.281s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_detection_autoware_bridge) by extension 'colcon_pkg'
+[0.281s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_detection_autoware_bridge) by extensions ['colcon_meta']
+[0.281s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_detection_autoware_bridge) by extension 'colcon_meta'
+[0.281s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_detection_autoware_bridge) by extensions ['ros']
+[0.281s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_detection_autoware_bridge) by extension 'ros'
+[0.282s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'src/autoware_detection_autoware_bridge' with type 'ros.ament_python' and name 'autoware_detection_autoware_bridge'[0m
+[0.282s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_tensorrt_yolox) by extensions ['ignore', 'ignore_ament_install']
+[0.283s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_tensorrt_yolox) by extension 'ignore'
+[0.283s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_tensorrt_yolox) by extension 'ignore_ament_install'
+[0.283s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_tensorrt_yolox) by extensions ['colcon_pkg']
+[0.283s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_tensorrt_yolox) by extension 'colcon_pkg'
+[0.283s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_tensorrt_yolox) by extensions ['colcon_meta']
+[0.283s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_tensorrt_yolox) by extension 'colcon_meta'
+[0.283s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_tensorrt_yolox) by extensions ['ros']
+[0.283s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_tensorrt_yolox) by extension 'ros'
+[0.284s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'src/autoware_tensorrt_yolox' with type 'ros.ament_python' and name 'autoware_tensorrt_yolox'[0m
+[0.284s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_traffic_light_classifier) by extensions ['ignore', 'ignore_ament_install']
+[0.285s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_traffic_light_classifier) by extension 'ignore'
+[0.285s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_traffic_light_classifier) by extension 'ignore_ament_install'
+[0.285s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_traffic_light_classifier) by extensions ['colcon_pkg']
+[0.285s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_traffic_light_classifier) by extension 'colcon_pkg'
+[0.285s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_traffic_light_classifier) by extensions ['colcon_meta']
+[0.285s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_traffic_light_classifier) by extension 'colcon_meta'
+[0.285s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_traffic_light_classifier) by extensions ['ros']
+[0.285s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/autoware_traffic_light_classifier) by extension 'ros'
+[0.286s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'src/autoware_traffic_light_classifier' with type 'ros.ament_python' and name 'autoware_traffic_light_classifier'[0m
+[0.286s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/tier4_perception_launch) by extensions ['ignore', 'ignore_ament_install']
+[0.286s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/tier4_perception_launch) by extension 'ignore'
+[0.286s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/tier4_perception_launch) by extension 'ignore_ament_install'
+[0.287s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/tier4_perception_launch) by extensions ['colcon_pkg']
+[0.287s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/tier4_perception_launch) by extension 'colcon_pkg'
+[0.287s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/tier4_perception_launch) by extensions ['colcon_meta']
+[0.287s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/tier4_perception_launch) by extension 'colcon_meta'
+[0.287s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/tier4_perception_launch) by extensions ['ros']
+[0.287s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/tier4_perception_launch) by extension 'ros'
+[0.294s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'src/tier4_perception_launch' with type 'ros.ament_cmake' and name 'tier4_perception_launch'[0m
+[0.294s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(recursive) using defaults
+[0.294s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(ignore) discover
+[0.294s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(ignore) using defaults
+[0.294s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(path) discover
+[0.294s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(path) using defaults
+[0.310s] [34mcolcon.colcon_core.package_selection[0m [1;30mINFO[0m Skipping not selected package 'autoware_bytetrack' in 'src/autoware_bytetrack'
+[0.310s] [34mcolcon.colcon_core.package_selection[0m [1;30mINFO[0m Skipping not selected package 'autoware_tensorrt_yolox' in 'src/autoware_tensorrt_yolox'
+[0.310s] [34mcolcon.colcon_core.package_selection[0m [1;30mINFO[0m Skipping not selected package 'autoware_traffic_light_classifier' in 'src/autoware_traffic_light_classifier'
+[0.310s] [34mcolcon.colcon_core.package_selection[0m [1;30mINFO[0m Skipping not selected package 'tier4_perception_launch' in 'src/tier4_perception_launch'
+[0.311s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'autoware_detection_autoware_bridge' build argument 'cmake_args' from command line to 'None'
+[0.311s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'autoware_detection_autoware_bridge' build argument 'cmake_target' from command line to 'None'
+[0.311s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'autoware_detection_autoware_bridge' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.311s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'autoware_detection_autoware_bridge' build argument 'cmake_clean_cache' from command line to 'False'
+[0.311s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'autoware_detection_autoware_bridge' build argument 'cmake_clean_first' from command line to 'False'
+[0.311s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'autoware_detection_autoware_bridge' build argument 'cmake_force_configure' from command line to 'False'
+[0.311s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'autoware_detection_autoware_bridge' build argument 'ament_cmake_args' from command line to 'None'
+[0.311s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'autoware_detection_autoware_bridge' build argument 'catkin_cmake_args' from command line to 'None'
+[0.311s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'autoware_detection_autoware_bridge' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.311s] [34mcolcon.colcon_core.verb[0m [1;30mDEBUG[0m [32mBuilding package 'autoware_detection_autoware_bridge' with the following arguments: {'ament_cmake_args': None, 'build_base': '/workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge', 'merge_install': False, 'path': '/workspace/modules/perception/detection_ws/src/autoware_detection_autoware_bridge', 'symlink_install': True, 'test_result_base': None}[0m
+[0.311s] [34mcolcon.colcon_core.executor[0m [1;30mINFO[0m Executing jobs using 'parallel' executor
+[0.312s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mrun_until_complete[0m
+[0.312s] [34mcolcon.colcon_ros.task.ament_python.build[0m [1;30mINFO[0m Building ROS package in '/workspace/modules/perception/detection_ws/src/autoware_detection_autoware_bridge' with build type 'ament_python'
+[0.312s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('autoware_detection_autoware_bridge', 'ament_prefix_path')
+[0.314s] [34mcolcon.colcon_core.plugin_system[0m [1;30mINFO[0m Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.314s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/hook/ament_prefix_path.ps1'
+[0.315s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/hook/ament_prefix_path.dsv'
+[0.316s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/hook/ament_prefix_path.sh'
+[0.317s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.317s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[0.550s] [34mcolcon.colcon_core.task.python.build[0m [1;30mINFO[0m Building Python package in '/workspace/modules/perception/detection_ws/src/autoware_detection_autoware_bridge'
+[0.551s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.551s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[0.862s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge': PYTHONPATH=/workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge/build --no-deps symlink_data[0m
+[1.247s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('autoware_detection_autoware_bridge', 'pythonpath_develop')
+[1.248s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/hook/pythonpath_develop.ps1'
+[1.248s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge' returned '0': PYTHONPATH=/workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge/build --no-deps symlink_data[0m
+[1.249s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/hook/pythonpath_develop.dsv'
+[1.250s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/hook/pythonpath_develop.sh'
+[1.252s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge' for CMake module files
+[1.254s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge' for CMake config files
+[1.257s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/lib'
+[1.258s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/bin'
+[1.258s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/lib/pkgconfig/autoware_detection_autoware_bridge.pc'
+[1.258s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/lib/python3.10/site-packages'
+[1.258s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('autoware_detection_autoware_bridge', 'pythonpath')
+[1.258s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/hook/pythonpath.ps1'
+[1.259s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/hook/pythonpath.dsv'
+[1.260s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/hook/pythonpath.sh'
+[1.261s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/bin'
+[1.261s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(autoware_detection_autoware_bridge)
+[1.261s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/package.ps1'
+[1.262s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/package.dsv'
+[1.263s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/package.sh'
+[1.264s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/package.bash'
+[1.264s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/share/autoware_detection_autoware_bridge/package.zsh'
+[1.265s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/share/colcon-core/packages/autoware_detection_autoware_bridge)
+[1.266s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mclosing loop[0m
+[1.266s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mloop closed[0m
+[1.266s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mrun_until_complete finished with '0'[0m
+[1.266s] [34mcolcon.colcon_core.event_reactor[0m [1;30mDEBUG[0m [32mjoining thread[0m
+[1.272s] [34mcolcon.colcon_core.plugin_system[0m [1;30mINFO[0m Skipping extension 'colcon_notification.desktop_notification.notify_send': Could not find 'notify-send'
+[1.272s] [34mcolcon.colcon_core.plugin_system[0m [1;30mINFO[0m Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[1.272s] [34mcolcon.colcon_core.plugin_system[0m [1;30mINFO[0m Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[1.272s] [34mcolcon.colcon_notification.desktop_notification[0m [1;30mINFO[0m Sending desktop notification using 'notify2'
+[1.272s] [34mcolcon.colcon_notification.desktop_notification.notify2[0m [1;30mDEBUG[0m [32mFailed to initialize notify2: org.freedesktop.DBus.Error.NotSupported: Unable to autolaunch a dbus-daemon without a $DISPLAY for X11[0m
+[1.273s] [34mcolcon.colcon_core.event_reactor[0m [1;30mDEBUG[0m [32mjoined thread[0m
+[1.273s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/workspace/modules/perception/detection_ws/install/local_setup.ps1'
+[1.275s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix util module '/workspace/modules/perception/detection_ws/install/_local_setup_util_ps1.py'
+[1.276s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/workspace/modules/perception/detection_ws/install/setup.ps1'
+[1.278s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/workspace/modules/perception/detection_ws/install/local_setup.sh'
+[1.279s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix util module '/workspace/modules/perception/detection_ws/install/_local_setup_util_sh.py'
+[1.280s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/workspace/modules/perception/detection_ws/install/setup.sh'
+[1.282s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/workspace/modules/perception/detection_ws/install/local_setup.bash'
+[1.283s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/workspace/modules/perception/detection_ws/install/setup.bash'
+[1.285s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/workspace/modules/perception/detection_ws/install/local_setup.zsh'
+[1.286s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/workspace/modules/perception/detection_ws/install/setup.zsh'

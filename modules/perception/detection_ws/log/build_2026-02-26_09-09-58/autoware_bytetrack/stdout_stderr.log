@@ -1,0 +1,24 @@
+running develop
+running egg_info
+creating autoware_bytetrack.egg-info
+writing autoware_bytetrack.egg-info/PKG-INFO
+writing dependency_links to autoware_bytetrack.egg-info/dependency_links.txt
+writing entry points to autoware_bytetrack.egg-info/entry_points.txt
+writing requirements to autoware_bytetrack.egg-info/requires.txt
+writing top-level names to autoware_bytetrack.egg-info/top_level.txt
+writing manifest file 'autoware_bytetrack.egg-info/SOURCES.txt'
+reading manifest file 'autoware_bytetrack.egg-info/SOURCES.txt'
+writing manifest file 'autoware_bytetrack.egg-info/SOURCES.txt'
+running build_ext
+Creating /workspace/modules/perception/detection_ws/install/autoware_bytetrack/lib/python3.10/site-packages/autoware-bytetrack.egg-link (link to .)
+Installing bytetrack_node script to /workspace/modules/perception/detection_ws/install/autoware_bytetrack/lib/autoware_bytetrack
+
+Installed /workspace/modules/perception/detection_ws/build/autoware_bytetrack
+running symlink_data
+creating /workspace/modules/perception/detection_ws/install/autoware_bytetrack/share/ament_index
+creating /workspace/modules/perception/detection_ws/install/autoware_bytetrack/share/ament_index/resource_index
+creating /workspace/modules/perception/detection_ws/install/autoware_bytetrack/share/ament_index/resource_index/packages
+symbolically linking /workspace/modules/perception/detection_ws/build/autoware_bytetrack/resource/autoware_bytetrack -> /workspace/modules/perception/detection_ws/install/autoware_bytetrack/share/ament_index/resource_index/packages
+symbolically linking /workspace/modules/perception/detection_ws/build/autoware_bytetrack/package.xml -> /workspace/modules/perception/detection_ws/install/autoware_bytetrack/share/autoware_bytetrack
+creating /workspace/modules/perception/detection_ws/install/autoware_bytetrack/share/autoware_bytetrack/launch
+symbolically linking /workspace/modules/perception/detection_ws/build/autoware_bytetrack/launch/bytetrack.launch.xml -> /workspace/modules/perception/detection_ws/install/autoware_bytetrack/share/autoware_bytetrack/launch

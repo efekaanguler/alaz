@@ -1,1 +1,1 @@
-/workspace/modules/detection/detection_ws/src/autoware_detection_autoware_bridge/setup.py
+/workspace/modules/perception/detection_ws/src/autoware_detection_autoware_bridge/setup.py

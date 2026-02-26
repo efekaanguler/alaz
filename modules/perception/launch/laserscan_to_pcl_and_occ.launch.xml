@@ -2,12 +2,12 @@
 <!--
   laserscan_to_pcl_and_occ.launch.xml
 
-  Converts LaserScan data to PointCloud2 and OccupancyGrid for the
-  planning module's costmap.
+  Converts LaserScan data to PointCloud2 for LiDAR clustering / ROI fusion and
+  planner fallback occupancy generation.
 
   Pipeline:
-    /scan (LaserScan) → laserscan_to_pointcloud → /points (PointCloud2)
-                      → pointcloud_to_laserscan → occupancy grid
+    /scan (LaserScan) → laserscan_to_pointcloud → /perception/lidar/pointcloud
+    (OccupancyGrid fallback is launched by scripts/nuc_docker_perception.sh)
 
   Usage:
     ros2 launch perception laserscan_to_pcl_and_occ.launch.xml
@@ -15,13 +15,13 @@
 <launch>
   <!-- Arguments -->
   <arg name="scan_topic" default="/scan" description="Input LaserScan topic"/>
-  <arg name="points_topic" default="/perception/points" description="Output PointCloud2 topic"/>
+  <arg name="points_topic" default="/perception/lidar/pointcloud" description="Output PointCloud2 topic"/>
   <arg name="frame_id" default="base_link" description="Target frame for transform"/>
 
   <!-- LaserScan → PointCloud2 conversion -->
-  <node pkg="laser_geometry" exec="laserscan_to_pointcloud_node" name="laserscan_to_pcl"
+  <node pkg="pointcloud_to_laserscan" exec="laserscan_to_pointcloud_node" name="laserscan_to_pcl"
         output="screen">
-    <remap from="scan" to="$(var scan_topic)"/>
+    <remap from="scan_in" to="$(var scan_topic)"/>
     <remap from="cloud" to="$(var points_topic)"/>
     <param name="target_frame" value="$(var frame_id)"/>
     <param name="tolerance" value="0.01"/>

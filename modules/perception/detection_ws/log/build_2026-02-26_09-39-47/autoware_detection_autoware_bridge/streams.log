@@ -1,0 +1,17 @@
+[0.823s] Invoking command in '/workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge': PYTHONPATH=/workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge/build --no-deps symlink_data
+[1.062s] running develop
+[1.259s] running egg_info
+[1.260s] writing autoware_detection_autoware_bridge.egg-info/PKG-INFO
+[1.262s] writing dependency_links to autoware_detection_autoware_bridge.egg-info/dependency_links.txt
+[1.265s] writing entry points to autoware_detection_autoware_bridge.egg-info/entry_points.txt
+[1.266s] writing requirements to autoware_detection_autoware_bridge.egg-info/requires.txt
+[1.267s] writing top-level names to autoware_detection_autoware_bridge.egg-info/top_level.txt
+[1.271s] reading manifest file 'autoware_detection_autoware_bridge.egg-info/SOURCES.txt'
+[1.275s] writing manifest file 'autoware_detection_autoware_bridge.egg-info/SOURCES.txt'
+[1.277s] running build_ext
+[1.280s] Creating /workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/lib/python3.10/site-packages/autoware-detection-autoware-bridge.egg-link (link to .)
+[1.281s] Installing detection_autoware_bridge_node script to /workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/lib/autoware_detection_autoware_bridge
+[1.283s] 
+[1.284s] Installed /workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge
+[1.284s] running symlink_data
+[1.340s] Invoked command in '/workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge' returned '0': PYTHONPATH=/workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/workspace/modules/perception/detection_ws/install/autoware_detection_autoware_bridge/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /workspace/modules/perception/detection_ws/build/autoware_detection_autoware_bridge/build --no-deps symlink_data

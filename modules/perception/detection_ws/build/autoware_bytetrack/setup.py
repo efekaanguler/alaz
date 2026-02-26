@@ -1,1 +1,1 @@
-/workspace/modules/detection/detection_ws/src/autoware_bytetrack/setup.py
+/workspace/modules/perception/detection_ws/src/autoware_bytetrack/setup.py

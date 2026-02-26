@@ -1,0 +1,26 @@
+[1.341s] Invoking command in '/workspace/modules/perception/detection_ws/build/autoware_bytetrack': PYTHONPATH=/workspace/modules/perception/detection_ws/build/autoware_bytetrack/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/workspace/modules/perception/detection_ws/install/autoware_bytetrack/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /workspace/modules/perception/detection_ws/build/autoware_bytetrack/build --no-deps symlink_data
+[1.669s] running develop
+[1.854s] running egg_info
+[1.855s] creating autoware_bytetrack.egg-info
+[1.858s] writing autoware_bytetrack.egg-info/PKG-INFO
+[1.859s] writing dependency_links to autoware_bytetrack.egg-info/dependency_links.txt
+[1.863s] writing entry points to autoware_bytetrack.egg-info/entry_points.txt
+[1.866s] writing requirements to autoware_bytetrack.egg-info/requires.txt
+[1.867s] writing top-level names to autoware_bytetrack.egg-info/top_level.txt
+[1.870s] writing manifest file 'autoware_bytetrack.egg-info/SOURCES.txt'
+[1.883s] reading manifest file 'autoware_bytetrack.egg-info/SOURCES.txt'
+[1.886s] writing manifest file 'autoware_bytetrack.egg-info/SOURCES.txt'
+[1.887s] running build_ext
+[1.887s] Creating /workspace/modules/perception/detection_ws/install/autoware_bytetrack/lib/python3.10/site-packages/autoware-bytetrack.egg-link (link to .)
+[1.888s] Installing bytetrack_node script to /workspace/modules/perception/detection_ws/install/autoware_bytetrack/lib/autoware_bytetrack
+[1.889s] 
+[1.889s] Installed /workspace/modules/perception/detection_ws/build/autoware_bytetrack
+[1.890s] running symlink_data
+[1.891s] creating /workspace/modules/perception/detection_ws/install/autoware_bytetrack/share/ament_index
+[1.892s] creating /workspace/modules/perception/detection_ws/install/autoware_bytetrack/share/ament_index/resource_index
+[1.892s] creating /workspace/modules/perception/detection_ws/install/autoware_bytetrack/share/ament_index/resource_index/packages
+[1.894s] symbolically linking /workspace/modules/perception/detection_ws/build/autoware_bytetrack/resource/autoware_bytetrack -> /workspace/modules/perception/detection_ws/install/autoware_bytetrack/share/ament_index/resource_index/packages
+[1.895s] symbolically linking /workspace/modules/perception/detection_ws/build/autoware_bytetrack/package.xml -> /workspace/modules/perception/detection_ws/install/autoware_bytetrack/share/autoware_bytetrack
+[1.895s] creating /workspace/modules/perception/detection_ws/install/autoware_bytetrack/share/autoware_bytetrack/launch
+[1.897s] symbolically linking /workspace/modules/perception/detection_ws/build/autoware_bytetrack/launch/bytetrack.launch.xml -> /workspace/modules/perception/detection_ws/install/autoware_bytetrack/share/autoware_bytetrack/launch
+[2.003s] Invoked command in '/workspace/modules/perception/detection_ws/build/autoware_bytetrack' returned '0': PYTHONPATH=/workspace/modules/perception/detection_ws/build/autoware_bytetrack/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/workspace/modules/perception/detection_ws/install/autoware_bytetrack/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /workspace/modules/perception/detection_ws/build/autoware_bytetrack/build --no-deps symlink_data

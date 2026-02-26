@@ -1,0 +1,36 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /workspace/modules/perception/detection_ws/build/tier4_perception_launch
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/tier4_perception_launch/launch/detection_module.launch.xml
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/ament_index/resource_index/package_run_dependencies/tier4_perception_launch
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/ament_index/resource_index/parent_prefix_path/tier4_perception_launch
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/tier4_perception_launch/environment/ament_prefix_path.sh
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/tier4_perception_launch/environment/ament_prefix_path.dsv
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/tier4_perception_launch/environment/path.sh
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/tier4_perception_launch/environment/path.dsv
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/tier4_perception_launch/local_setup.bash
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/tier4_perception_launch/local_setup.sh
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/tier4_perception_launch/local_setup.zsh
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/tier4_perception_launch/local_setup.dsv
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/tier4_perception_launch/package.dsv
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/ament_index/resource_index/packages/tier4_perception_launch
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/tier4_perception_launch/cmake/tier4_perception_launchConfig.cmake
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/tier4_perception_launch/cmake/tier4_perception_launchConfig-version.cmake
+-- Symlinking: /workspace/modules/perception/detection_ws/install/tier4_perception_launch/share/tier4_perception_launch/package.xml
