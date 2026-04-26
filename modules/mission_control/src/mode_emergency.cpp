@@ -20,13 +20,24 @@ EmergencyMode::EmergencyMode(rclcpp::Node::SharedPtr node) : node_(node) {
     
     localization_subscriber = node->create_subscription<autoware_adapi_v1_msgs::msg::LocalizationInitializationState>("/localization/initialization_state", 10, std::bind(&EmergencyMode::localization_callback, this, std::placeholders::_1));
 
+    emergency_publisher_ = node_->create_publisher<std_msgs::msg::Bool>(EMERGENCY_PUBLISHER_TOPIC, 10);
 }
 
 
 unsigned int EmergencyMode::execute() {
+    auto msg = std_msgs::msg::Bool();
     
-    if(checkState()) return MODE_PAUSE;
+    if(checkState()) {
+        // Sensors are OK, clear emergency flag and return to PAUSE
+        msg.data = false;
+        emergency_publisher_->publish(msg);
+        RCLCPP_INFO(node_->get_logger(), "Sensors are back online. Clearing emergency and switching to PAUSE mode.");
+        return MODE_PAUSE;
+    }
 
+    // Still in emergency, publish emergency flag
+    msg.data = true;
+    emergency_publisher_->publish(msg);
     return MODE_EMERGENCY;
 };
 
@@ -72,8 +83,8 @@ bool EmergencyMode::checkState() {
     }
 
     if(last_localized.nanoseconds()==0 || (now-last_localized).seconds() > TIMEOUT) {
-        //RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: Localization Failed");
-        //state = false;
+        RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: Localization Failed");
+        state = false;
     }
 
     return state;

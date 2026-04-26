@@ -26,7 +26,7 @@ class MissionController: public rclcpp::Node {
         modes[MODE_START] = std::make_shared<StartMode>(shared_this);
         modes[MODE_RUN] = std::make_shared<RunMode>(shared_this);
         modes[MODE_PAUSE] = std::make_shared<PauseMode>(shared_this);
-        modes[MODE_PARK] = std::make_shared<ParkMode>();
+        modes[MODE_PARK] = std::make_shared<ParkMode>(shared_this);
         modes[MODE_EMERGENCY] = std::make_shared<EmergencyMode>(shared_this);
 
         CURRENT_MODE = MODE_START;

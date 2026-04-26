@@ -6,6 +6,7 @@
 #include <sensor_msgs/msg/image.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include "autoware_adapi_v1_msgs/msg/localization_initialization_state.hpp"
+#include <std_msgs/msg/bool.hpp>
 
 class EmergencyMode : public ModeBase {
 public:
@@ -14,6 +15,7 @@ public:
     std::string IMU_TOPIC="";
     std::string CAMERA_TOPIC="/carla/ego_vehicle/front_camera/image";
     std::string ODOM_TOPIC="/odom";
+    std::string EMERGENCY_PUBLISHER_TOPIC="/mission_control/emergency_stop";
 
     EmergencyMode(rclcpp::Node::SharedPtr node);
     unsigned int execute() override;
@@ -36,6 +38,8 @@ public:
     rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr camera_subscriber;
     rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_subscriber;
     rclcpp::Subscription<autoware_adapi_v1_msgs::msg::LocalizationInitializationState>::SharedPtr localization_subscriber;
+    
+    rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr emergency_publisher_;
 
     void lidar_callback(sensor_msgs::msg::PointCloud2::SharedPtr msg);
     void gnss_callback(sensor_msgs::msg::NavSatFix::SharedPtr msg);
