@@ -31,7 +31,7 @@ unsigned int EmergencyMode::execute() {
         // Sensors are OK, clear emergency flag and return to PAUSE
         msg.data = false;
         emergency_publisher_->publish(msg);
-        RCLCPP_INFO(node_->get_logger(), "Sensors are back online. Clearing emergency and switching to PAUSE mode.");
+        //RCLCPP_INFO(node_->get_logger(), "Sensors are back online. Clearing emergency and switching to PAUSE mode.");
         return MODE_PAUSE;
     }
 
@@ -118,5 +118,6 @@ void EmergencyMode::odom_callback(nav_msgs::msg::Odometry::SharedPtr msg) {
 }
 
 void EmergencyMode::localization_callback(autoware_adapi_v1_msgs::msg::LocalizationInitializationState::SharedPtr msg) {
-    if(msg->state == autoware_adapi_v1_msgs::msg::LocalizationInitializationState::INITIALIZED) last_localized=node_->now();
+    RCLCPP_DEBUG(node_->get_logger(), "Localization message receieved.");
+    if(msg->state == 2/*autoware_adapi_v1_msgs::msg::LocalizationInitializationState::INITIALIZED*/) last_localized=node_->now();
 }

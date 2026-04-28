@@ -214,3 +214,66 @@ source install/setup.bash
 **S: Araç hedeflere gitmiyorsa?**
 - A: `GOAL_PUBLISHER_TOPIC` ve `ENGAGE_PUBLISHER_TOPIC` isimlerinin Autoware konfigürasyonu ile eşleşip eşleşmediğini kontrol edin.
 
+
+
+
+
+--
+
+## Test Etmek için
+
+1. Terminal: modülü çalıştır
+```bash
+ros2 run mission_control mission_control_launch
+```
+
+
+### Eğer sensör verileri yoksa taklit etmek için
+
+2. Terminal: (lidar verisi için)
+```bash
+ros2 topic pub /carla/ego_vehicle/lidar_2d sensor_msgs/msg/PointCloud2 "{header: {stamp: {sec: 0, nanosec: 0}, frame_id: 'map'}, height: 0, width: 0, fields: [], is_bigendian: false, point_step: 0, row_step: 0, data: [], is_dense: false}"
+```
+
+3. Terminal: (kamera verisi için)
+```bash
+ros2 topic pub /carla/ego_vehicle/front_camera/image sensor_msgs/msg/Image "{header: {stamp: {sec: 0, nanosec: 0}, frame_id: 'camera_link'}, height: 0, width: 0, encoding: 'rgb8', is_bigendian: 0, step: 0, data: []}"
+```
+
+4. Terminal: (odometri verisi için)
+```bash
+ros2 topic pub /odom nav_msgs/msg/Odometry "{
+  header: {stamp: {sec: 0, nanosec: 0}, frame_id: 'odom'},
+  child_frame_id: 'base_link',
+  pose: {
+    pose: {
+      position: {x: 0.0, y: 0.0, z: 0.0},
+      orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}
+    }
+  },
+  twist: {
+    twist: {
+      linear: {x: 0.0, y: 0.0, z: 0.0},
+      angular: {x: 0.0, y: 0.0, z: 0.0}
+    }
+  }
+}"
+```
+
+
+5. Terminal: (lokalizasyon verisi için)
+```bash
+ros2 topic pub /localization/initialization_state autoware_adapi_v1_msgs/msg/LocalizationInitializationState "{state: 2}"
+```
+
+
+6. Terminal: (hedef koordinat verisi)
+```bash
+ros2 topic pub /mission_control/goal_array geometry_msgs/msg/PoseArray "{ 
+  header: {stamp: {sec: 0, nanosec: 0}, frame_id: 'map'},
+  poses: [ 
+    {position: {x: 0.0, y: 0.0, z: 0.0}, orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}},
+    {position: {x: 1.0, y: 0.0, z: 0.0}, orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}
+  ]
+}" --once
+```

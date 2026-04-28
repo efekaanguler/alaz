@@ -128,9 +128,13 @@ unsigned int RunMode::execute() {
     
     // If no goals, stay in PAUSE mode
     if (goal_array_.empty()) {
+        RCLCPP_INFO(node_->get_logger(), "No goal. Switching to Pause Mode");
         return MODE_PAUSE;
     }
     
+    RCLCPP_INFO(node_->get_logger(), "Goals detected.");
+
+
     // If current goal reached, pause before next goal
     if (current_goal_reached_) {
         current_goal_index_++;

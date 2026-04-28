@@ -10,10 +10,10 @@
 
 class StartMode : public ModeBase {
     public:
-    std::string LIDAR_TOPIC="/scan";
+    std::string LIDAR_TOPIC="/carla/ego_vehicle/lidar_2d";
     std::string GNSS_TOPIC="";
     std::string IMU_TOPIC="";
-    std::string CAMERA_TOPIC="/image_raw";
+    std::string CAMERA_TOPIC="/carla/ego_vehicle/front_camera/image";
     std::string ODOM_TOPIC="/odom";
 
     StartMode(rclcpp::Node::SharedPtr node);
