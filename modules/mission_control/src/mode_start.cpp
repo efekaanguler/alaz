@@ -3,7 +3,7 @@
 StartMode::StartMode(rclcpp::Node::SharedPtr node) : node_(node) {
     
     if(!LIDAR_TOPIC.empty())
-        lidar_subscriber = node_->create_subscription<sensor_msgs::msg::PointCloud2>(LIDAR_TOPIC, 10, std::bind(&StartMode::lidar_callback, this, std::placeholders::_1));
+        lidar_subscriber = node_->create_subscription<sensor_msgs::msg::LaserScan>(LIDAR_TOPIC, 10, std::bind(&StartMode::lidar_callback, this, std::placeholders::_1));
     
     if(!GNSS_TOPIC.empty())
         gnss_subscriber = node_->create_subscription<sensor_msgs::msg::NavSatFix>(GNSS_TOPIC, 10, std::bind(&StartMode::gnss_callback, this, std::placeholders::_1));
@@ -66,7 +66,7 @@ unsigned int StartMode::execute() {
 }
 
 
-void StartMode::lidar_callback(sensor_msgs::msg::PointCloud2::SharedPtr msg) {
+void StartMode::lidar_callback(sensor_msgs::msg::LaserScan::SharedPtr msg) {
     (void)msg;
     lidar_read=true;
 }

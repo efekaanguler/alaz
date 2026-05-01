@@ -4,7 +4,7 @@
 EmergencyMode::EmergencyMode(rclcpp::Node::SharedPtr node) : node_(node) {
     
     if(!LIDAR_TOPIC.empty())
-        lidar_subscriber = node_->create_subscription<sensor_msgs::msg::PointCloud2>(LIDAR_TOPIC, 10, std::bind(&EmergencyMode::lidar_callback, this, std::placeholders::_1));
+        lidar_subscriber = node_->create_subscription<sensor_msgs::msg::LaserScan>(LIDAR_TOPIC, 10, std::bind(&EmergencyMode::lidar_callback, this, std::placeholders::_1));
     
     if(!GNSS_TOPIC.empty())
         gnss_subscriber = node_->create_subscription<sensor_msgs::msg::NavSatFix>(GNSS_TOPIC, 10, std::bind(&EmergencyMode::gnss_callback, this, std::placeholders::_1));
@@ -92,7 +92,7 @@ bool EmergencyMode::checkState() {
 }
 
 
-void EmergencyMode::lidar_callback(sensor_msgs::msg::PointCloud2::SharedPtr msg) {
+void EmergencyMode::lidar_callback(sensor_msgs::msg::LaserScan::SharedPtr msg) {
     (void)msg;
     last_lidar = node_->now();
 }
