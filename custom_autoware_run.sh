@@ -10,18 +10,8 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 SCRIPT_DIR=$(readlink -f "$(dirname "$0")")
-WORKSPACE_ROOT="$SCRIPT_DIR/.."
-
-# Determine ROS distro from environment or default to humble
+# ROS distro (env dosyalarına gerek yok, IMAGE script içinde hardcode)
 ros_distro=${ROS_DISTRO:-humble}
-if [ "$ros_distro" = "humble" ]; then
-    source "$WORKSPACE_ROOT/amd64.env"
-else
-    source "$WORKSPACE_ROOT/amd64_jazzy.env"
-fi
-if [ "$(uname -m)" = "aarch64" ]; then
-    source "$WORKSPACE_ROOT/arm64.env"
-fi
 
 # Default values
 option_no_nvidia=false
@@ -218,7 +208,7 @@ main() {
     docker run -it --rm --net=host ${GPU_FLAG} ${USER_ID} ${MOUNT_X} ${DEVICE_FLAGS} \
         -e XAUTHORITY=${XAUTHORITY} -e XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR -e NVIDIA_DRIVER_CAPABILITIES=all -e TZ="$(cat /etc/timezone)" \
         ${WORKSPACE} ${MAP} ${DATA} ${IMAGE} \
-        ${LAUNCH_CMD}
+        bash -c "sudo chown -R \$(id -u):\$(id -g) /workspace/build /workspace/install /workspace/log 2>/dev/null || true; ${LAUNCH_CMD:-/bin/bash}"
 }
 
 # Execute the main script

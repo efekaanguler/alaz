@@ -2,7 +2,7 @@
 import os
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, ExecuteProcess, TimerAction
 from launch.substitutions import LaunchConfiguration
 from launch.launch_description_sources import AnyLaunchDescriptionSource
 from launch_ros.actions import Node
@@ -129,6 +129,15 @@ def generate_launch_description():
             ],
         ),
 
+        # 3b) Relay: namespace prefix workaround for ll2_decomposer topic mismatch
+        Node(
+            package="topic_tools",
+            executable="relay",
+            name="vector_map_relay",
+            output="screen",
+            arguments=["/map/vector_map", "/ll2_decomposer/input/vector_map"],
+        ),
+
         # 4) YabLoc image processing
         IncludeLaunchDescription(
             AnyLaunchDescriptionSource(img_launch),
@@ -153,5 +162,21 @@ def generate_launch_description():
                 "camera_particle_corrector_param_path": camera_particle_corrector_param_path,
                 "gnss_particle_corrector_param_path": gnss_particle_corrector_param_path,
             }.items(),
+        ),
+
+        # 6) YabLoc'u başlatmak için initialpose3d pub (5 sn sonra, node'lar ayağa kalksın)
+        TimerAction(
+            period=5.0,
+            actions=[
+                ExecuteProcess(
+                    cmd=[
+                        "ros2", "topic", "pub", "--once",
+                        "/initialpose3d",
+                        "geometry_msgs/msg/PoseWithCovarianceStamped",
+                        '{"header": {"frame_id": "map"}, "pose": {"pose": {"position": {"x": 0.0, "y": 0.0, "z": 0.0}, "orientation": {"x": 0.0, "y": 0.0, "z": 0.0, "w": 1.0}}, "covariance": [0.25,0,0,0,0,0,0,0.25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.068]}}',
+                    ],
+                    output="screen",
+                )
+            ],
         ),
     ])
