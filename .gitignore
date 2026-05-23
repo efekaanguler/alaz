@@ -4,5 +4,3 @@ src/
 build/
 install/
 log/
-frames_*.pdf
-frames_*.gv
