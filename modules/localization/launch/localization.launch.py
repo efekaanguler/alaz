@@ -66,7 +66,7 @@ def generate_launch_description():
         DeclareLaunchArgument("lanelet2_map_path", default_value="/workspace/maps/map.osm"),
 
         # Your topics
-        DeclareLaunchArgument("odom_topic", default_value="/vehicle/odometry"),
+        DeclareLaunchArgument("odom_topic", default_value="/odom"),
         DeclareLaunchArgument("src_image", default_value="/sensing/camera/image"),
         DeclareLaunchArgument("src_info", default_value="/sensing/camera/camera_info"),
         DeclareLaunchArgument("twist_cov_topic", default_value="/localization/twist_estimator/twist_with_covariance"),
