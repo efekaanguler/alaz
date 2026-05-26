@@ -14,15 +14,14 @@
     traffic_light_signal_timeout: 1.0
 
     planning_hz: 10.0
-    slots: ["side_shift", "avoidance", "lane_change", "start_planner", "goal_planner", "pull_out", "pull_over"]
-    launch_modules: ["side_shift", "avoidance", "lane_change", "start_planner", "goal_planner", "pull_out", "pull_over"]
-    side_shift: ["side_shift"]
-    avoidance: ["avoidance"]
-    lane_change: ["lane_change"]
-    start_planner: ["start_planner"]
-    goal_planner: ["goal_planner"]
-    pull_out: ["pull_out"]
-    pull_over: ["pull_over"]
+    launch_modules: [
+      "autoware::behavior_path_planner::SideShiftModuleManager",
+      "autoware::behavior_path_planner::StaticObstacleAvoidanceModuleManager",
+      "autoware::behavior_path_planner::LaneChangeLeftModuleManager",
+      "autoware::behavior_path_planner::LaneChangeRightModuleManager",
+      "autoware::behavior_path_planner::StartPlannerModuleManager",
+      "autoware::behavior_path_planner::GoalPlannerModuleManager"
+    ]
     backward_path_length: 5.0
     forward_path_length: 300.0
     backward_length_buffer_for_end_of_pull_over: 5.0
