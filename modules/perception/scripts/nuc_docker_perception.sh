@@ -19,7 +19,13 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-MODULE_DIR="$(dirname "$SCRIPT_DIR")"
+if [[ "$SCRIPT_DIR" == *"/install/"* ]]; then
+    # Running from ROS 2 install space
+    MODULE_DIR="/workspace/modules/perception"
+else
+    # Running from source space
+    MODULE_DIR="$(dirname "$SCRIPT_DIR")"
+fi
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -396,18 +402,75 @@ source_env_safe() {
     esac
 }
 
-# ── Source ROS 2 ──
+# ── Source ROS 2 + Autoware (must be before detection_ws so vision_msgs etc. are available) ──
 source_env_safe
+
+# ── Install vision_msgs if not available (required by YOLO, ByteTrack, Bridge nodes) ──
+if ! python3 -c "import vision_msgs" 2>/dev/null; then
+    echo -e "${YELLOW}[!] vision_msgs not found — installing ros-humble-vision-msgs...${NC}"
+    apt-get update -qq && apt-get install -y -qq ros-humble-vision-msgs > /dev/null 2>&1
+    # Re-source so the newly installed package is on PYTHONPATH
+    source_env_safe
+    echo -e "${GREEN}[✓] vision_msgs installed${NC}"
+else
+    echo -e "${GREEN}[✓] vision_msgs already available${NC}"
+fi
+
+# ── Install onnxruntime if not available (required by YOLO inference) ──
+if ! python3 -c "import onnxruntime" 2>/dev/null; then
+    echo -e "${YELLOW}[!] onnxruntime not found — installing via pip3...${NC}"
+    # Ensure pip is installed first
+    apt-get update -qq && apt-get install -y -qq python3-pip > /dev/null 2>&1
+    # Pin numpy to <2.0.0 to prevent breaking ROS2/OpenCV numpy 1.x compatibility
+    pip3 install -q "numpy<2.0.0" onnxruntime
+    echo -e "${GREEN}[✓] onnxruntime installed (OpenCV fallback will be avoided)${NC}"
+else
+    echo -e "${GREEN}[✓] onnxruntime already available${NC}"
+fi
+
+# ── Force downgrade numpy if it accidentally got upgraded to 2.x ──
+if python3 -c "import numpy; import sys; sys.exit(0 if numpy.__version__.startswith('2.') else 1)" 2>/dev/null; then
+    echo -e "${YELLOW}[!] NumPy 2.x detected! Downgrading to NumPy 1.x to fix OpenCV compatibility...${NC}"
+    pip3 install -q "numpy<2.0.0"
+    echo -e "${GREEN}[✓] NumPy downgraded to 1.x${NC}"
+fi
+
+# Explicitly build and export PYTHONPATH so ALL child processes (ros2 launch nodes) inherit it
+_build_pythonpath() {
+    local py_ver
+    py_ver="$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')"
+    local paths=(
+        "/opt/ros/humble/lib/python${py_ver}/site-packages"
+        "/opt/ros/humble/local/lib/python${py_ver}/dist-packages"
+        "/autoware/install/vision_msgs/lib/python${py_ver}/site-packages"
+        "/autoware/install/vision_msgs/local/lib/python${py_ver}/dist-packages"
+        "/opt/autoware/lib/python${py_ver}/site-packages"
+        "/opt/autoware/local/lib/python${py_ver}/dist-packages"
+    )
+    local extra=""
+    for p in "${paths[@]}"; do
+        [ -d "$p" ] && extra="${extra}:${p}"
+    done
+    export PYTHONPATH="${PYTHONPATH:-}${extra}"
+}
+_build_pythonpath
+echo -e "${GREEN}[✓] PYTHONPATH exported (vision_msgs accessible to child processes)${NC}"
 
 # Check if detection_ws is built
 if [ -d "$MODULE_DIR/detection_ws/install" ]; then
     set +u
+    source /opt/ros/humble/setup.bash > /dev/null 2>&1 || true
+    source /autoware/install/setup.bash > /dev/null 2>&1 || true
     source "$MODULE_DIR/detection_ws/install/setup.bash"
     set -u
     echo -e "${GREEN}[✓] detection_ws sourced${NC}"
 else
     echo -e "${YELLOW}[!] detection_ws not built yet — building...${NC}"
     cd "$MODULE_DIR/detection_ws"
+    set +u
+    source /opt/ros/humble/setup.bash > /dev/null 2>&1 || true
+    source /autoware/install/setup.bash > /dev/null 2>&1 || true
+    set -u
     if ! colcon build --symlink-install; then
         echo -e "${RED}[✗] detection_ws build failed${NC}"
         exit 1
@@ -425,7 +488,7 @@ if [ "$FORCE_DUMMY_CAMERA" = true ]; then
         cam_topic="/sensing/camera/camera${i}/image_raw"
         cam_frame="camera${i}_link"
         phase="$(awk -v idx="$i" 'BEGIN { printf "%.3f", idx * 0.7 }')"
-        python3 "$SCRIPT_DIR/dummy_camera_publisher.py" \
+        python3 "$SCRIPT_DIR/../test_scripts/dummy_camera_publisher.py" \
             --node-name "dummy_camera_publisher_${i}" \
             --topic "$cam_topic" \
             --frame-id "$cam_frame" \
@@ -613,7 +676,7 @@ POINTCLOUD_FOR_COSTMAP_TOPIC="$LIDAR_POINTCLOUD_TOPIC"
 
 if [ "$HAS_REAL_LIDAR" = false ]; then
     echo -e "${YELLOW}  No real LiDAR — starting dummy LaserScan for costmap/fallback testing...${NC}"
-    python3 "$SCRIPT_DIR/dummy_lidar_publisher.py" --rate 10 --obstacle &
+    python3 "$SCRIPT_DIR/../test_scripts/dummy_lidar_publisher.py" --rate 10 --obstacle &
     CLEANUP_PIDS+=($!)
     sleep 1
     LIDAR_MODE="scan"

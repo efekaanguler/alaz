@@ -46,7 +46,7 @@ modules/perception/
 │   ├── dummy_camera_publisher.py      # Sahte kamera (test için)
 │   ├── mjpeg_to_ros.py                # Mac webcam → ROS Image bridge
 │   ├── visualize_detections.py        # Detection görüntüleyici
-│   ├── docker_pipeline_start.sh       # Docker'da tüm pipeline (lidar auto-detect!)
+│   ├── mac_docker_start.sh            # Mac'te test icin docker baslatici
 │   ├── test_detection_e2e.sh          # E2E test
 │   ├── test_planner_integration.sh    # Planner entegrasyon testi
 │   ├── test_perception_pipeline.sh    # Pipeline testi
@@ -101,16 +101,16 @@ python3 scripts/webcam_detect_standalone.py --no-tl             # TL algılamas�
 ```bash
 # 1. Docker Desktop'u aç
 # 2. Pipeline'ı başlat (lidar yoksa otomatik dummy başlar)
-./scripts/docker_pipeline_start.sh
+./scripts/mac_docker_start.sh
 
-# Veya: dummy lidar zorla
-./scripts/docker_pipeline_start.sh --dummy-lidar
+# Sadece sahte lidar (Dummy Lidar) ile test etmek istersen:
+./scripts/mac_docker_start.sh --dummy-lidar
 
-# Veya: lidar olmadan
-./scripts/docker_pipeline_start.sh --no-lidar
+# Lidar olmadan (sadece kamera) test etmek istersen:
+./scripts/mac_docker_start.sh --no-lidar
 
-# Görüntüleme olmadan
-./scripts/docker_pipeline_start.sh --no-viz
+# Gorsellestirmeyi (viz) kapatmak istersen (daha hizli calisir):
+./scripts/mac_docker_start.sh --no-viz
 ```
 
 Pipeline otomatik olarak:
@@ -124,13 +124,13 @@ Pipeline otomatik olarak:
 
 ```bash
 # Kapsamlı test (90 test)
-python3 scripts/comprehensive_test.py
+python3 test_scripts/comprehensive_test.py
 
-# Sensor fusion + Autoware bridge testi (80 test)  
-python3 scripts/test_sensor_fusion_autoware.py
+# Spesifik testler:
+python3 test_scripts/test_sensor_fusion_autoware.py
+python3 scripts/mjpeg_to_ros.py  # Doğrudan kamerayı test etmek için
 
-# Pipeline testi (dummy publisher'lar ile)
-bash scripts/test_perception_pipeline.sh --local
+bash test_scripts/test_perception_pipeline.sh --local
 ```
 
 ---

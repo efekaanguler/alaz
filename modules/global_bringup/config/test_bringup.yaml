@@ -4,11 +4,23 @@ packages:
     launch_file: "vehicle.launch.xml"
   
   ros2_can_bridge:
-    enabled: true
+    enabled: false
     launch_file: "ros2_can_bridge.launch.py"
+    
+  pseudo_vehicle_data:
+    enabled: true
+    launch_file: "pseudo_vehicle_data.launch.py"
+
+  dummy_camera:
+    enabled: true
+    launch_file: "dummy_camera.launch.py"
+    
+  dummy_lidar:
+    enabled: true
+    launch_file: "dummy_lidar.launch.py"
   
   rdw_sensor_kit_launch:
-    enabled: true
+    enabled: false
     launch_file: "sensing.launch.xml"
 
   odometry:
@@ -32,9 +44,9 @@ packages:
     launch_file: "planning.launch.py"
     
   control:
-    enabled: true
+    enabled: false
     launch_file: "control.launch.py"
     
   mission_control:
-    enabled: true
+    enabled: false
     launch_file: "mission_control.launch.xml"

@@ -83,8 +83,8 @@ assert len(out) > 0
 # Test 5: Detection script syntax
 echo -e "\n${YELLOW}[5] Script Syntax${NC}"
 run_test "webcam_detect_standalone.py syntax" "python3 -m py_compile $SCRIPT_DIR/webcam_detect_standalone.py"
-run_test "mjpeg_to_ros.py syntax" "python3 -m py_compile $SCRIPT_DIR/mjpeg_to_ros.py"
-run_test "visualize_detections.py syntax" "python3 -m py_compile $SCRIPT_DIR/visualize_detections.py"
+run_test "mjpeg_to_ros.py syntax" "python3 -m py_compile $SCRIPT_DIR/../scripts/mjpeg_to_ros.py"
+run_test "visualize_detections.py syntax" "python3 -m py_compile $SCRIPT_DIR/../scripts/visualize_detections.py"
 
 # Summary
 echo -e "\n${GREEN}═══════════════════════════════════════════════════${NC}"

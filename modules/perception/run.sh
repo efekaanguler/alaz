@@ -88,12 +88,12 @@ case $MODE in
         setup_venv
         check_model
         echo -e "\n${GREEN}Starting Docker pipeline...${NC}\n"
-        bash "$SCRIPT_DIR/scripts/docker_pipeline_start.sh"
+        bash "$SCRIPT_DIR/scripts/mac_docker_start.sh"
         ;;
     test)
         setup_venv
         check_model
         echo -e "\n${GREEN}Running tests...${NC}\n"
-        bash "$SCRIPT_DIR/scripts/test_detection_e2e.sh"
+        bash "$SCRIPT_DIR/test_scripts/test_detection_e2e.sh"
         ;;
 esac

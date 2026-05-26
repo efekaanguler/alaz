@@ -13,6 +13,7 @@
 <launch>
   <!-- Arguments -->
   <arg name="enable_viz" default="true" description="Enable detection visualizer"/>
+  <arg name="enable_ai_pipeline" default="true" description="Automatically start the NUC AI pipeline (YOLO+Fusion)"/>
   <arg name="camera_device" default="0" description="Camera device index"/>
   <arg name="image_topic" default="/camera/image_raw" description="Camera topic"/>
   <arg name="detection_topic" default="/perception/detections" description="Detection output topic"/>
@@ -25,6 +26,11 @@
     <param name="height" value="480"/>
     <param name="fps" value="30.0"/>
   </node>
+
+  <!-- NUC AI Pipeline (YOLO + Lidar Fusion) -->
+  <group if="$(var enable_ai_pipeline)">
+    <executable cmd="bash $(find-pkg-share perception)/../../lib/perception/nuc_docker_perception.sh" output="screen" />
+  </group>
 
   <!-- Detection visualizer (optional) -->
   <group if="$(var enable_viz)">

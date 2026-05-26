@@ -62,6 +62,7 @@ def section(title):
 # ═══════════════════════════════════════════════════════════════
 MODULE_DIR = Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = MODULE_DIR / "scripts"
+TEST_SCRIPTS_DIR = MODULE_DIR / "test_scripts"
 MODELS_DIR = MODULE_DIR / "models"
 LAUNCH_DIR = MODULE_DIR / "launch"
 DETECTION_WS = MODULE_DIR / "detection_ws" / "src"
@@ -79,15 +80,15 @@ def test_file_structure():
         "CMakeLists.txt": MODULE_DIR / "CMakeLists.txt",
         "README.md": MODULE_DIR / "README.md",
         # Scripts
-        "webcam_detect_standalone.py": SCRIPTS_DIR / "webcam_detect_standalone.py",
+        "webcam_detect_standalone.py": TEST_SCRIPTS_DIR / "webcam_detect_standalone.py",
         "mjpeg_to_ros.py": SCRIPTS_DIR / "mjpeg_to_ros.py",
         "visualize_detections.py": SCRIPTS_DIR / "visualize_detections.py",
-        "dummy_lidar_publisher.py": SCRIPTS_DIR / "dummy_lidar_publisher.py",
-        "dummy_camera_publisher.py": SCRIPTS_DIR / "dummy_camera_publisher.py",
-        "docker_pipeline_start.sh": SCRIPTS_DIR / "docker_pipeline_start.sh",
-        "test_detection_e2e.sh": SCRIPTS_DIR / "test_detection_e2e.sh",
-        "test_planner_integration.sh": SCRIPTS_DIR / "test_planner_integration.sh",
-        "test_perception_pipeline.sh": SCRIPTS_DIR / "test_perception_pipeline.sh",
+        "dummy_lidar_publisher.py": TEST_SCRIPTS_DIR / "dummy_lidar_publisher.py",
+        "dummy_camera_publisher.py": TEST_SCRIPTS_DIR / "dummy_camera_publisher.py",
+        "mac_docker_start.sh": SCRIPTS_DIR / "mac_docker_start.sh",
+        "test_detection_e2e.sh": TEST_SCRIPTS_DIR / "test_detection_e2e.sh",
+        "test_planner_integration.sh": TEST_SCRIPTS_DIR / "test_planner_integration.sh",
+        "test_perception_pipeline.sh": TEST_SCRIPTS_DIR / "test_perception_pipeline.sh",
         # Models
         "yolov8n.onnx": MODELS_DIR / "yolov8n.onnx",
         "labels.txt": MODELS_DIR / "labels.txt",
@@ -258,7 +259,7 @@ def test_traffic_light_detection():
     try:
         # We need to import from webcam_detect_standalone
         spec = importlib.util.spec_from_file_location(
-            "webcam_detect", str(SCRIPTS_DIR / "webcam_detect_standalone.py"))
+            "webcam_detect", str(TEST_SCRIPTS_DIR / "webcam_detect_standalone.py"))
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
         detect_fn = mod.detect_traffic_lights
@@ -449,7 +450,7 @@ def test_sensor_fusion():
 
     # Check dummy publishers
     for dp in ["dummy_lidar_publisher.py", "dummy_camera_publisher.py"]:
-        dp_path = SCRIPTS_DIR / dp
+        dp_path = TEST_SCRIPTS_DIR / dp
         if dp_path.exists():
             ok(f"Dummy publisher: {dp}")
         else:
@@ -462,7 +463,7 @@ def test_sensor_fusion():
 def test_standalone():
     section("8. STANDALONE DETECTION SCRIPT")
 
-    script = SCRIPTS_DIR / "webcam_detect_standalone.py"
+    script = TEST_SCRIPTS_DIR / "webcam_detect_standalone.py"
     if not script.exists():
         fail("webcam_detect_standalone.py missing")
         return

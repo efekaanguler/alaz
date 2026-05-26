@@ -82,22 +82,22 @@ Options:
 
 Examples:
   # Check an already-running pipeline
-  bash scripts/test_nuc_perception_runtime.sh
+  bash test_scripts/test_nuc_perception_runtime.sh
 
   # Start pipeline and test it (inside Docker)
-  bash scripts/test_nuc_perception_runtime.sh --start --cameras 1
+  bash test_scripts/test_nuc_perception_runtime.sh --start --cameras 1
 
   # Start pipeline with dummy camera + dummy lidar (no real sensors)
-  bash scripts/test_nuc_perception_runtime.sh --start --dummy-sensors --cameras 1
+  bash test_scripts/test_nuc_perception_runtime.sh --start --dummy-sensors --cameras 1
 
   # Pre-race hard gate (warnings fail)
-  bash scripts/test_nuc_perception_runtime.sh --start --strict --cameras 1
+  bash test_scripts/test_nuc_perception_runtime.sh --start --strict --cameras 1
 
   # Deep stress gate (recommended before race)
-  bash scripts/test_nuc_perception_runtime.sh --start --deep --cameras 1
+  bash test_scripts/test_nuc_perception_runtime.sh --start --deep --cameras 1
 
   # Pass extra args to nuc_docker_perception.sh
-  bash scripts/test_nuc_perception_runtime.sh --start -- --cameras 1 --scan /scan
+  bash test_scripts/test_nuc_perception_runtime.sh --start -- --cameras 1 --scan /scan
 EOF
 }
 
@@ -577,7 +577,7 @@ check_script_syntax_smoke() {
   local sh py
 
   for sh in \
-    "$SCRIPT_DIR/nuc_docker_perception.sh" \
+    "$SCRIPT_DIR/../scripts/nuc_docker_perception.sh" \
     "$SCRIPT_DIR/test_nuc_perception_runtime.sh"; do
     if bash -n "$sh" >/dev/null 2>&1; then
       pass "bash -n OK: $(basename "$sh")"
@@ -589,10 +589,10 @@ check_script_syntax_smoke() {
   for py in \
     "$SCRIPT_DIR/dummy_camera_publisher.py" \
     "$SCRIPT_DIR/dummy_lidar_publisher.py" \
-    "$SCRIPT_DIR/camera_info_fallback_publisher.py" \
-    "$SCRIPT_DIR/scan_static_tf_fallback.py" \
-    "$SCRIPT_DIR/pointcloud_to_occupancy_grid.py" \
-    "$SCRIPT_DIR/detection2d_to_tier4_rois.py"; do
+    "$SCRIPT_DIR/../scripts/camera_info_fallback_publisher.py" \
+    "$SCRIPT_DIR/../scripts/scan_static_tf_fallback.py" \
+    "$SCRIPT_DIR/../scripts/pointcloud_to_occupancy_grid.py" \
+    "$SCRIPT_DIR/../scripts/detection2d_to_tier4_rois.py"; do
     if python3 -c "compile(open('$py','rb').read(), '$py', 'exec')" >/dev/null 2>&1; then
       pass "Python parse OK: $(basename "$py")"
     else
@@ -1269,7 +1269,7 @@ start_pipeline_if_requested() {
   section "Starting Pipeline"
   PIPELINE_LOG="$TEMP_DIR/nuc_docker_perception.log"
 
-  local cmd=(bash "$SCRIPT_DIR/nuc_docker_perception.sh")
+  local cmd=(bash "$SCRIPT_DIR/../scripts/nuc_docker_perception.sh")
   if [ "${#PIPELINE_ARGS[@]}" -gt 0 ]; then
     cmd+=("${PIPELINE_ARGS[@]}")
   else

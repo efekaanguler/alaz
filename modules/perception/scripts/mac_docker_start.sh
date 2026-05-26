@@ -116,7 +116,7 @@ elif [ "$LIDAR_MODE" = "dummy" ]; then
     echo -e "${YELLOW}  Starting dummy lidar publisher...${NC}"
     docker exec -d "$CONTAINER_NAME" bash -c \
         "source /opt/ros/humble/setup.bash && \
-         python3 /workspace/modules/perception/scripts/dummy_lidar_publisher.py --rate 10 --obstacle"
+         python3 /workspace/modules/perception/test_scripts/dummy_lidar_publisher.py --rate 10 --obstacle"
     sleep 1
     echo -e "${GREEN}  ✓ Dummy lidar running (10 Hz, with obstacle)${NC}"
 else
@@ -131,7 +131,7 @@ else
         echo -e "${YELLOW}  ⚠ No /scan topic found — starting dummy lidar fallback${NC}"
         docker exec -d "$CONTAINER_NAME" bash -c \
             "source /opt/ros/humble/setup.bash && \
-             python3 /workspace/modules/perception/scripts/dummy_lidar_publisher.py --rate 10 --obstacle"
+             python3 /workspace/modules/perception/test_scripts/dummy_lidar_publisher.py --rate 10 --obstacle"
         sleep 1
         echo -e "${GREEN}  ✓ Dummy lidar running as fallback${NC}"
     fi
