@@ -14,14 +14,82 @@
     traffic_light_signal_timeout: 1.0
 
     planning_hz: 10.0
-    launch_modules: [
-      "autoware::behavior_path_planner::SideShiftModuleManager",
-      "autoware::behavior_path_planner::StaticObstacleAvoidanceModuleManager",
-      "autoware::behavior_path_planner::LaneChangeLeftModuleManager",
-      "autoware::behavior_path_planner::LaneChangeRightModuleManager",
-      "autoware::behavior_path_planner::StartPlannerModuleManager",
-      "autoware::behavior_path_planner::GoalPlannerModuleManager"
-    ]
+    
+    # Module manager parameters (replaces old launch_modules)
+    slots:
+      - slot1
+      - slot2
+      - slot3
+      - slot4
+    slot1:
+      - "start_planner"
+    slot2:
+      - "side_shift"
+      - "avoidance_by_lane_change"
+      - "static_obstacle_avoidance"
+      - "lane_change_left"
+      - "lane_change_right"
+      - "external_request_lane_change_left"
+      - "external_request_lane_change_right"
+    slot3:
+      - "goal_planner"
+    slot4:
+      - "dynamic_obstacle_avoidance"
+
+    external_request_lane_change_left:
+      enable_rtc: false
+      enable_simultaneous_execution_as_approved_module: false
+      enable_simultaneous_execution_as_candidate_module: true
+
+    external_request_lane_change_right:
+      enable_rtc: false
+      enable_simultaneous_execution_as_approved_module: false
+      enable_simultaneous_execution_as_candidate_module: true
+
+    lane_change_left:
+      enable_rtc: false
+      enable_simultaneous_execution_as_approved_module: true
+      enable_simultaneous_execution_as_candidate_module: true
+
+    lane_change_right:
+      enable_rtc: false
+      enable_simultaneous_execution_as_approved_module: true
+      enable_simultaneous_execution_as_candidate_module: true
+
+    start_planner:
+      enable_rtc: false
+      enable_simultaneous_execution_as_approved_module: true
+      enable_simultaneous_execution_as_candidate_module: false
+
+    side_shift:
+      enable_rtc: false
+      enable_simultaneous_execution_as_approved_module: false
+      enable_simultaneous_execution_as_candidate_module: false
+
+    goal_planner:
+      enable_rtc: false
+      enable_simultaneous_execution_as_approved_module: true
+      enable_simultaneous_execution_as_candidate_module: false
+
+    static_obstacle_avoidance:
+      enable_rtc: false
+      enable_simultaneous_execution_as_approved_module: true
+      enable_simultaneous_execution_as_candidate_module: false
+
+    avoidance_by_lane_change:
+      enable_rtc: false
+      enable_simultaneous_execution_as_approved_module: false
+      enable_simultaneous_execution_as_candidate_module: false
+
+    dynamic_obstacle_avoidance:
+      enable_rtc: false
+      enable_simultaneous_execution_as_approved_module: true
+      enable_simultaneous_execution_as_candidate_module: true
+
+    sampling_planner:
+      enable_rtc: false
+      enable_simultaneous_execution_as_approved_module: false
+      enable_simultaneous_execution_as_candidate_module: false
     backward_path_length: 5.0
     forward_path_length: 300.0
     backward_length_buffer_for_end_of_pull_over: 5.0
