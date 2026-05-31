@@ -5,7 +5,7 @@ autoware:
   enabled: false
   use_sim_time: false
   pose_source: "yabloc"  # Options: yabloc, ndt, ekf
-  map_path: ""  # Harita dosyasının tam yolu
+  map_path: "/workspace/maps"  # Harita dosyasının tam yolu
   vehicle_model: ""  # Araç modeli adı
   sensor_model: ""  # Sensör modeli adı
   

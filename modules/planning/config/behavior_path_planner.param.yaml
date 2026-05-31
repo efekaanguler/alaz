@@ -1,5 +1,6 @@
 /**:
   ros__parameters:
+    launch_modules: []
     wheel_radius: 0.2916
     wheel_width: 0.175
     wheel_base: 1.55

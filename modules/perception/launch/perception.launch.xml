@@ -11,6 +11,7 @@
     ros2 launch perception perception.launch.xml enable_viz:=false
 -->
 <launch>
+  <arg name="use_sim_time" default="false"/>
   <!-- Arguments -->
   <arg name="enable_viz" default="true" description="Enable detection visualizer"/>
   <arg name="enable_ai_pipeline" default="true" description="Automatically start the NUC AI pipeline (YOLO+Fusion)"/>
@@ -19,7 +20,8 @@
   <arg name="detection_topic" default="/perception/detections" description="Detection output topic"/>
 
   <!-- Webcam → ROS bridge -->
-  <node pkg="perception" exec="mjpeg_to_ros.py" name="webcam_publisher" output="screen">
+  <node pkg="perception" exec="mjpeg_to_ros.py" name="webcam_publisher" output="screen"
+    unless="$(var use_sim_time)">
     <param name="device" value="$(var camera_device)"/>
     <param name="topic" value="$(var image_topic)"/>
     <param name="width" value="640"/>

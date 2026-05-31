@@ -16,6 +16,19 @@
 #   bash /workspace/modules/perception/scripts/nuc_docker_perception.sh --cameras 2
 #   bash /workspace/modules/perception/scripts/nuc_docker_perception.sh --no-fusion
 
+set -e
+
+# Graceful shutdown
+_cleanup() {
+    echo ""
+    echo "Stopping NUC perception pipeline..."
+    # Alt process'leri durdur
+    jobs -p | xargs -r kill 2>/dev/null
+    wait
+    exit 0
+}
+trap '_cleanup' SIGINT SIGTERM
+
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -1033,4 +1046,7 @@ echo ""
 echo -e "  ${YELLOW}Press Ctrl+C to stop all nodes.${NC}"
 echo -e "${CYAN}══════════════════════════════════════════════════════════${NC}"
 
-wait
+while true; do
+    wait -n 2>/dev/null || true
+    sleep 0.5
+done
