@@ -6,6 +6,6 @@
     <param name="video_device" value="$(var camera_device)"/>
     <param name="pixel_format" value="YUYV"/>
     <param name="image_size" value="[1280,720]"/>
-    <param name="output_encoding" value="yuv422_yuy2"/>
+    <param name="output_encoding" value="bgr8"/>
   </node>
 </launch>

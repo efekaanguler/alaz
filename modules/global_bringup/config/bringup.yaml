@@ -26,6 +26,8 @@ packages:
   perception:
     enabled: true
     launch_file: "perception.launch.xml"
+    arguments:
+      image_topic: "/sensing/image_raw"
 
   planning:
     enabled: true
