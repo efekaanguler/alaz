@@ -110,7 +110,7 @@ class DetectionVisualizer(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = MyNode()   # kendi node class adın
+    node = DetectionVisualizer()   # kendi node class adın
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:

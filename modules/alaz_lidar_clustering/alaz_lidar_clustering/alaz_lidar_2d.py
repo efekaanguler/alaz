@@ -105,7 +105,7 @@ class AlazLidar2D(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = MyNode()   # kendi node class adın
+    node = AlazLidar2D()   # kendi node class adın
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:

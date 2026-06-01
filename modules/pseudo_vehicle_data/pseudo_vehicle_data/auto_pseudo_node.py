@@ -43,7 +43,7 @@ class AutoPseudoPublisher(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = MyNode()   # kendi node class adın
+    node = AutoPseudoPublisher()   # kendi node class adın
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:

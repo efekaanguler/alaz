@@ -18,17 +18,6 @@
 
 set -e
 
-# Graceful shutdown
-_cleanup() {
-    echo ""
-    echo "Stopping NUC perception pipeline..."
-    # Alt process'leri durdur
-    jobs -p | xargs -r kill 2>/dev/null
-    wait
-    exit 0
-}
-trap '_cleanup' SIGINT SIGTERM
-
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -1048,5 +1037,6 @@ echo -e "${CYAN}═════════════════════�
 
 while true; do
     wait -n 2>/dev/null || true
-    sleep 0.5
+    sleep 0.5 &
+    wait $!
 done

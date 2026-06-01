@@ -40,7 +40,7 @@ packages:
     launch_file: "perception.launch.xml"
 
   planning:
-    enabled: true
+    enabled: false #deneme amaçlı false yaptım(izzet)
     launch_file: "planning.launch.py"
     
   control:

@@ -34,10 +34,17 @@ class MapProjectorInfoPub(Node):
     def _tick(self):
         self.pub.publish(self.msg)
 
-def main():
-    rclpy.init()
-    rclpy.spin(MapProjectorInfoPub())
-    rclpy.shutdown()
+def main(args=None):
+    rclpy.init(args=args)
+    node = MapProjectorInfoPub()
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        node.destroy_node()
+        if rclpy.ok():
+            rclpy.shutdown()
 
 if __name__ == "__main__":
     main()
