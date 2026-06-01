@@ -48,14 +48,20 @@ fi
 
 echo "Sourcing ROS and workspace setups..."
 if [[ -f "/opt/ros/${ROS_DISTRO}/setup.bash" ]]; then
+  # Some setup scripts reference variables that may be unset; temporarily
+  # disable nounset to avoid "unbound variable" failures.
+  set +u
   # shellcheck disable=SC1090
   source "/opt/ros/${ROS_DISTRO}/setup.bash"
+  set -u
 else
   echo "Warning: /opt/ros/${ROS_DISTRO}/setup.bash not found" >&2
 fi
 if [[ -f "${WORKSPACE}/install/setup.bash" ]]; then
+  set +u
   # shellcheck disable=SC1090
   source "${WORKSPACE}/install/setup.bash"
+  set -u
 fi
 
 if ! $SKIP_SENSOR; then
@@ -79,13 +85,17 @@ if ! $SKIP_SENSOR; then
 
   # source sllidar install if present
   if [[ -f "/sllidar/install/setup.bash" ]]; then
+    set +u
     # shellcheck disable=SC1090
     source /sllidar/install/setup.bash
+    set -u
   fi
   # re-source workspace setup in case sensor build installed packages there
   if [[ -f "${WORKSPACE}/install/setup.bash" ]]; then
+    set +u
     # shellcheck disable=SC1090
     source "${WORKSPACE}/install/setup.bash"
+    set -u
   fi
 fi
 
