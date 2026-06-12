@@ -166,7 +166,7 @@ def generate_launch_description():
 
         # 6) YabLoc'u başlatmak için initialpose3d pub (5 sn sonra, node'lar ayağa kalksın)
         TimerAction(
-            period=10.0,
+            period=5.0,
             actions=[
                 ExecuteProcess(
                     cmd=[
