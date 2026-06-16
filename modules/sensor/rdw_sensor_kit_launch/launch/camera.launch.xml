@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-  <arg name="camera_device" default="0" description="Center camera device index"/>
+  <arg name="camera_device" default="/dev/center_camera" description="Center camera device path or index"/>
   <arg name="image_topic" default="/sensing/image_raw" description="Camera topic"/>
 
   <!-- v4l2_camera yerine perception paketindeki mjpeg_to_ros.py kullanılıyor -->

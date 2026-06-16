@@ -24,13 +24,20 @@ class WebcamPublisher(Node):
         super().__init__('webcam_publisher')
 
         # Parameters
-        self.declare_parameter('device', 0)
+        self.declare_parameter('device', '0')
         self.declare_parameter('width', 640)
         self.declare_parameter('height', 480)
         self.declare_parameter('fps', 30.0)
         self.declare_parameter('topic', '/camera/image_raw')
 
-        device = self.get_parameter('device').value
+        raw_device = self.get_parameter('device').value
+        try:
+            # Eğer sayıysa (0, 1 gibi) int'e çevir
+            device = int(raw_device)
+        except ValueError:
+            # Eğer yazıysa (/dev/video0 gibi) olduğu gibi bırak
+            device = raw_device
+
         width = self.get_parameter('width').value
         height = self.get_parameter('height').value
         fps = self.get_parameter('fps').value
