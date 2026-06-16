@@ -19,7 +19,8 @@
   <arg name="image_topic" default="/camera/image_raw" description="Camera topic"/>
   <arg name="detection_topic" default="/perception/detections" description="Detection output topic"/>
 
-  <!-- Webcam → ROS bridge -->
+  <!-- Webcam → ROS bridge (rdw_sensor_kit_launch içinde zaten başlatıldığı için kapatıldı) -->
+  <!--
   <node pkg="perception" exec="mjpeg_to_ros.py" name="webcam_publisher" output="screen"
     unless="$(var use_sim_time)">
     <param name="device" value="$(var camera_device)"/>
@@ -28,6 +29,12 @@
     <param name="height" value="480"/>
     <param name="fps" value="30.0"/>
   </node>
+  -->
+
+  <!-- CameraInfo Fallback Publisher (YabLoc için gerekli) -->
+  <node pkg="perception" exec="camera_info_fallback_publisher.py" name="camera_info_publisher" output="screen"
+    args="--image-topic $(var image_topic) --camera-info-topic /sensing/camera_info --width 640 --height 480"
+    unless="$(var use_sim_time)"/>
 
   <!-- NUC AI Pipeline (YOLO + Lidar Fusion) -->
   <group if="$(var enable_ai_pipeline)">
