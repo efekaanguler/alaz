@@ -331,6 +331,14 @@ def test_01_node_alive(node):
         PASS("ControlModeReport yayınlanıyor")
     else:
         FAIL("ControlModeReport YOK")
+    if len(node.turn_reports) > 0:
+        PASS("TurnIndicatorsReport yayınlanıyor")
+    else:
+        FAIL("TurnIndicatorsReport YOK")
+    if len(node.hazard_reports) > 0:
+        PASS("HazardLightsReport yayınlanıyor")
+    else:
+        FAIL("HazardLightsReport YOK")
 
     return True
 

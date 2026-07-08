@@ -463,6 +463,8 @@ def test_autoware_integration():
     required_subs = [
         ("/control/command/control_cmd", "Control command"),
         ("/control/command/gear_cmd", "Gear command"),
+        ("/control/command/turn_indicators_cmd", "Turn indicators command"),
+        ("/control/command/hazard_lights_cmd", "Hazard lights command"),
         ("/from_can_bus", "CAN bus input"),
     ]
     for topic, desc in required_subs:
@@ -477,6 +479,8 @@ def test_autoware_integration():
         ("/vehicle/status/steering_status", "Steering report"),
         ("/vehicle/status/gear_status", "Gear report"),
         ("/vehicle/status/control_mode", "Control mode"),
+        ("/vehicle/status/turn_indicators_status", "Turn indicators report"),
+        ("/vehicle/status/hazard_lights_status", "Hazard lights report"),
         ("/to_can_bus", "CAN bus output"),
     ]
     for topic, desc in required_pubs:
