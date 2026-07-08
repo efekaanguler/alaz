@@ -7,7 +7,7 @@ from geometry_msgs.msg import TwistWithCovarianceStamped
 class OdomToTwistCov(Node):
     def __init__(self):
         super().__init__("odom_to_twist_cov")
-        self.declare_parameter("odom_topic", "/vehicle/odometry")
+        self.declare_parameter("odom_topic", "/odom")
         self.declare_parameter("twist_topic", "/localization/twist_estimator/twist_with_covariance")
 
         odom_topic = self.get_parameter("odom_topic").value
