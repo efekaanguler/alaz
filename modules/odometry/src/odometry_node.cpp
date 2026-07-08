@@ -63,8 +63,22 @@ void OdometryNode::publish_odometry() {
 
     // set the velocity
     odom_.child_frame_id = "base_link";
-    odom_.twist.twist.linear.x = speed;
-    odom_.twist.twist.angular.z = steering;
+    odom_.twist.twist.linear.x = vx;
+    odom_.twist.twist.angular.z = vth;
+
+    odom_.pose.covariance[0]  = 0.05;
+    odom_.pose.covariance[7]  = 0.05;
+    odom_.pose.covariance[14] = 0.05;
+    odom_.pose.covariance[21] = 0.01;
+    odom_.pose.covariance[28] = 0.01;
+    odom_.pose.covariance[35] = 0.05;
+
+    odom_.twist.covariance[0]  = 0.02;
+    odom_.twist.covariance[7]  = 0.02;
+    odom_.twist.covariance[14] = 0.02;
+    odom_.twist.covariance[21] = 0.01;
+    odom_.twist.covariance[28] = 0.01;
+    odom_.twist.covariance[35] = 0.02;
 
     odom_publisher->publish(odom_);
     RCLCPP_INFO(this->get_logger(), "Odometry published");
