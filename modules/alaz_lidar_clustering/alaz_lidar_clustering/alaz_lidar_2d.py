@@ -55,7 +55,24 @@ class AlazLidar2D(Node):
             if len(current_cluster) >= self.min_size:
                 clusters.append(np.array(current_cluster))
 
+        # 2. Dairesel tarama birleşimi (Wrap-around boundary check)
+        if len(clusters) >= 2:
+            first_pt = clusters[0][0]
+            last_pt = clusters[-1][-1]
+            if np.linalg.norm(first_pt - last_pt) < self.tolerance:
+                # Son kümeyi ilk kümenin başına ekleyip birleştiriyoruz
+                clusters[0] = np.concatenate((clusters[-1], clusters[0]), axis=0)
+                clusters.pop()
+
         marker_array = MarkerArray()
+        
+        # 1. Hayalet marker'ları engellemek için önce ekranı temizle
+        clear_marker = Marker()
+        clear_marker.header = msg.header
+        clear_marker.ns = "obstacles"
+        clear_marker.action = Marker.DELETEALL
+        marker_array.markers.append(clear_marker)
+
         autoware_msg = DetectedObjects()
         autoware_msg.header = msg.header
 

@@ -73,8 +73,8 @@ class PointCloudToOccupancyGrid(Node):
             if z < self._args.min_z or z > self._args.max_z:
                 continue
 
-            gx = int((x - self._args.origin_x) / self._args.resolution)
-            gy = int((y - self._args.origin_y) / self._args.resolution)
+            gx = math.floor((x - self._args.origin_x) / self._args.resolution)
+            gy = math.floor((y - self._args.origin_y) / self._args.resolution)
             if 0 <= gx < self._args.width and 0 <= gy < self._args.height:
                 idx = gy * self._args.width + gx
                 grid[idx] = 100

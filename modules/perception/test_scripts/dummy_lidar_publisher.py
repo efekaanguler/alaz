@@ -22,17 +22,35 @@ import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
+import yaml
+import os
+
+def get_default_topic():
+    default_topic = '/sensing/lidar/top/scan'
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    yaml_path = os.path.join(script_dir, "../../global_bringup/config/topics.yaml")
+    try:
+        with open(yaml_path, 'r') as f:
+            data = yaml.safe_load(f)
+            topics = data.get('topics', {})
+            if 'input_laserscan' in topics:
+                return topics['input_laserscan']
+            return default_topic
+    except Exception:
+        return default_topic
 
 
 class DummyLidarPublisher(Node):
-    def __init__(self, rate=10.0, add_obstacle=False):
+    def __init__(self, rate=10.0, add_obstacle=False, topic=None):
         super().__init__('dummy_lidar_publisher')
-        self.pub = self.create_publisher(LaserScan, '/scan', 10)
+        if topic is None:
+            topic = get_default_topic()
+        self.pub = self.create_publisher(LaserScan, topic, 10)
         self.timer = self.create_timer(1.0 / rate, self.publish_scan)
         self.add_obstacle = add_obstacle
         self.frame_count = 0
         self.get_logger().info(
-            f'Dummy lidar publisher started at {rate} Hz, '
+            f'Dummy lidar publisher started at {rate} Hz on {topic}, '
             f'obstacle={"on" if add_obstacle else "off"}'
         )
 
@@ -94,10 +112,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--rate', type=float, default=10.0, help='Publish rate in Hz')
     ap.add_argument('--obstacle', action='store_true', help='Add moving obstacle')
+    ap.add_argument('--topic', type=str, default=None, help='ROS 2 topic to publish to')
     args = ap.parse_args()
 
     rclpy.init()
-    node = DummyLidarPublisher(rate=args.rate, add_obstacle=args.obstacle)
+    node = DummyLidarPublisher(rate=args.rate, add_obstacle=args.obstacle, topic=args.topic)
     try:
         rclpy.spin(node)
     except (KeyboardInterrupt, ExternalShutdownException):

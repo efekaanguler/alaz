@@ -26,7 +26,12 @@ def get_default_topic():
     try:
         with open(yaml_path, 'r') as f:
             data = yaml.safe_load(f)
-            return data['topics']['camera']['image_raw']
+            topics = data.get('topics', {})
+            if 'camera_center_image' in topics:
+                return topics['camera_center_image']
+            elif 'camera' in topics and 'image_raw' in topics['camera']:
+                return topics['camera']['image_raw']
+            return default_topic
     except Exception:
         return default_topic
 
