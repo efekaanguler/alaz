@@ -166,7 +166,7 @@ def generate_launch_description():
 
         # 6) YabLoc'u başlatmak için initialpose3d pub (5 sn sonra, node'lar ayağa kalksın)
         TimerAction(
-            period=10.0,
+            period=5.0,
             actions=[
                 ExecuteProcess(
                     cmd=[
@@ -174,7 +174,7 @@ def generate_launch_description():
                         "--wait-matching-subscriptions", "1",
                         "/initialpose3d",
                         "geometry_msgs/msg/PoseWithCovarianceStamped",
-                        '{"header": {"frame_id": "map"}, "pose": {"pose": {"position": {"x": 0.0, "y": 0.0, "z": 0.0}, "orientation": {"x": 0.0, "y": 0.0, "z": 0.0, "w": 1.0}}, "covariance": [0.25,0,0,0,0,0,0,0.25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.068]}}',
+                        '{"header": {"frame_id": "map"}, "pose": {"pose": {"position": {"x": 63.5139, "y": 2.6648, "z": 0.0}, "orientation": {"x": 0.0, "y": 0.0, "z": 1.0, "w": 0.0}}, "covariance": [0.25,0,0,0,0,0,0,0.25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.068]}}',
                     ],
                     output="screen",
                 )

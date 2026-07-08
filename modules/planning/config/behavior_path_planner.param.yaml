@@ -22,20 +22,16 @@
       - slot2
       - slot3
       - slot4
-    slot1:
-      - "start_planner"
-    slot2:
-      - "side_shift"
-      - "avoidance_by_lane_change"
-      - "static_obstacle_avoidance"
-      - "lane_change_left"
-      - "lane_change_right"
-      - "external_request_lane_change_left"
-      - "external_request_lane_change_right"
-    slot3:
-      - "goal_planner"
-    slot4:
-      - "dynamic_obstacle_avoidance"
+    slot1: ["autoware_behavior_path_planner::StartPlannerModule"]
+    slot2: [
+      "autoware_behavior_path_planner::SideShiftModule",
+      "autoware_behavior_path_planner::AvoidanceByLaneChangeModule",
+      "autoware_behavior_path_planner::StaticObstacleAvoidanceModule",
+      "autoware_behavior_path_planner::LaneChangeLeftModule",
+      "autoware_behavior_path_planner::LaneChangeRightModule"
+    ]
+    slot3: ["autoware_behavior_path_planner::GoalPlannerModule"]
+    slot4: ["autoware_behavior_path_planner::DynamicObstacleAvoidanceModule"]
 
     external_request_lane_change_left:
       enable_rtc: false
