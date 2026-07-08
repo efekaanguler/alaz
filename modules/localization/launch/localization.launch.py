@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import yaml
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, ExecuteProcess, TimerAction
@@ -7,6 +8,17 @@ from launch.substitutions import LaunchConfiguration
 from launch.launch_description_sources import AnyLaunchDescriptionSource
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
+
+
+def get_default_topic(key):
+    try:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        yaml_path = os.path.join(script_dir, "../../../global_bringup/config/topics.yaml")
+        with open(yaml_path, 'r') as f:
+            data = yaml.safe_load(f)
+            return data['topics']['camera'][key]
+    except Exception:
+        return f'/sensing/camera/camera0/{key}'
 
 
 def generate_launch_description():
@@ -67,8 +79,8 @@ def generate_launch_description():
 
         # Your topics
         DeclareLaunchArgument("odom_topic", default_value="/odom"),
-        DeclareLaunchArgument("src_image", default_value="/sensing/image_raw"),
-        DeclareLaunchArgument("src_info", default_value="/sensing/camera/camera_info"),
+        DeclareLaunchArgument("src_image", default_value=get_default_topic('image_raw')),
+        DeclareLaunchArgument("src_info", default_value=get_default_topic('camera_info')),
         DeclareLaunchArgument("twist_cov_topic", default_value="/localization/twist_estimator/twist_with_covariance"),
 
         # Params: image_processing

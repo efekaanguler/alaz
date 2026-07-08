@@ -14,7 +14,7 @@ Aracın harita üzerindeki konumunu **YabLoc** (Visual Localization) algoritmas�
 localization:
   topics:
     # ⚠️ Kendi kamera topic'inizi yazın
-    camera: /sensing/camera/image              # Örnek: /sensing/camera/traffic_light/image_raw
+    camera: /sensing/camera/camera0/image_raw              # Örnek: /sensing/camera/camera0/image_raw
     
     # ⚠️ Kendi odometri topic'inizi yazın  
     wheel_odom: /vehicle/odometry              # Örnek: /localization/kinematic_state
@@ -41,7 +41,7 @@ localization:
 
 ### Veri Akışı
 ```
-Kamera (/sensing/camera/image) ──┐
+Kamera (/sensing/camera/camera0/image_raw) ──┐
                                   ├──> YabLoc ──> Pose (/localization/pose_estimator/pose)
 Odometri (/vehicle/odometry) ────┘
 ```
@@ -117,8 +117,8 @@ downsample_ratio: 4
 
 ### Kamera Gelmiyor
 ```bash
-ros2 topic hz /sensing/camera/image
-ros2 topic echo /sensing/camera/image --once
+ros2 topic hz /sensing/camera/camera0/image_raw
+ros2 topic echo /sensing/camera/camera0/image_raw --once
 ```
 **Çözüm:** `localization.yaml`'da `camera` topic'ini düzeltin.
 

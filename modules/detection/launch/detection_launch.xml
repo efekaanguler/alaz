@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
   <arg name="base_path" default="/workspace/modules/detection"/>
-  <arg name="image_topic" default="/sensing/camera/camera_center/image_raw"/>
-  <arg name="camera_info_topic" default="/sensing/camera/camera_center/camera_info"/>
-  <arg name="scan_topic" default="/sensing/lidar/top/scan"/>
+  <arg name="image_topic" default="$(command 'python3 $(var base_path)/../global_bringup/scripts/get_topic.py camera.image_raw')"/>
+  <arg name="camera_info_topic" default="$(command 'python3 $(var base_path)/../global_bringup/scripts/get_topic.py camera.camera_info')"/>
+  <arg name="scan_topic" default="$(command 'python3 $(var base_path)/../global_bringup/scripts/get_topic.py lidar.scan')"/>
 
   <!-- ==================== YOLOX: Kamera Nesne Tespiti ==================== -->
   <node pkg="autoware_tensorrt_yolox" exec="yolox_node" name="tensorrt_yolo_main" output="screen">

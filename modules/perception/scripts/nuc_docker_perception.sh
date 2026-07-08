@@ -832,8 +832,8 @@ fi
 # ══════════════════════════════════════
 echo -e "\n${BLUE}[5/6] ROI Cluster Fusion...${NC}"
 
-CAM0_IMAGE_TOPIC="${CAMERA_TOPICS[0]:-/sensing/camera/camera0/image_raw}"
-CAM0_INFO_TOPIC="${CAMERA_INFO_TOPICS[0]:-/sensing/camera/camera0/camera_info}"
+CAM0_IMAGE_TOPIC="${CAMERA_TOPICS[0]:-$(python3 "$MODULE_DIR/../global_bringup/scripts/get_topic.py" camera.image_raw 2>/dev/null || echo "/sensing/camera/camera0/image_raw")}"
+CAM0_INFO_TOPIC="${CAMERA_INFO_TOPICS[0]:-$(python3 "$MODULE_DIR/../global_bringup/scripts/get_topic.py" camera.camera_info 2>/dev/null || echo "/sensing/camera/camera0/camera_info")}"
 
 if [ "$HAS_LIDAR" = true ] && [ "$SKIP_FUSION" = false ]; then
     if pkg_available "autoware_image_projection_based_fusion"; then

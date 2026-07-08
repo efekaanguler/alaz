@@ -87,7 +87,8 @@ fi
 echo -e "\n${YELLOW}[4/5] Verifying ROS topics...${NC}"
 sleep 2
 
-EXPECTED_TOPICS="/scan /sensing/camera/camera0/image_raw"
+CAM0_IMAGE_TOPIC=$(python3 "$MODULE_DIR/../global_bringup/scripts/get_topic.py" camera.image_raw 2>/dev/null || echo "/sensing/camera/camera0/image_raw")
+EXPECTED_TOPICS="/scan $CAM0_IMAGE_TOPIC"
 for topic in $EXPECTED_TOPICS; do
     if ros2 topic list 2>/dev/null | grep -q "$topic"; then
         echo -e "${GREEN}  ✓ $topic${NC}"
@@ -102,8 +103,8 @@ echo -e "\n${YELLOW}[5/5] Checking data flow...${NC}"
 echo "  Checking /scan data..."
 timeout 3 ros2 topic hz /scan 2>/dev/null | head -1 || echo "  (no data within 3s)"
 
-echo "  Checking /sensing/camera/camera0/image_raw data..."
-timeout 3 ros2 topic hz /sensing/camera/camera0/image_raw 2>/dev/null | head -1 || echo "  (no data within 3s)"
+echo "  Checking $CAM0_IMAGE_TOPIC data..."
+timeout 3 ros2 topic hz $CAM0_IMAGE_TOPIC 2>/dev/null | head -1 || echo "  (no data within 3s)"
 
 # If in Docker mode, also launch the detection pipeline
 if [ "$MODE" = "docker" ]; then

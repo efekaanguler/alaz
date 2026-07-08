@@ -17,6 +17,19 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 import cv2
 import numpy as np
+import yaml
+import os
+
+def get_default_topic():
+    default_topic = '/sensing/camera/camera0/image_raw'
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    yaml_path = os.path.join(script_dir, "../../global_bringup/config/topics.yaml")
+    try:
+        with open(yaml_path, 'r') as f:
+            data = yaml.safe_load(f)
+            return data['topics']['camera']['image_raw']
+    except Exception:
+        return default_topic
 
 
 class WebcamPublisher(Node):
@@ -28,7 +41,7 @@ class WebcamPublisher(Node):
         self.declare_parameter('width', 640)
         self.declare_parameter('height', 480)
         self.declare_parameter('fps', 30.0)
-        self.declare_parameter('topic', '/camera/image_raw')
+        self.declare_parameter('topic', get_default_topic())
 
         raw_device = self.get_parameter('device').value
         try:

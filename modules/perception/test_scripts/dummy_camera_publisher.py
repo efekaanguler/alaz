@@ -18,6 +18,8 @@ import time
 
 import cv2
 import numpy as np
+import yaml
+import os
 import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
@@ -114,12 +116,24 @@ class DummyCameraPublisher(Node):
             self.get_logger().info(f'Published {self.frame_count} frames')
 
 
+def get_default_topic():
+    default_topic = '/sensing/camera/camera0/image_raw'
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    yaml_path = os.path.join(script_dir, "../../global_bringup/config/topics.yaml")
+    try:
+        with open(yaml_path, 'r') as f:
+            data = yaml.safe_load(f)
+            return data['topics']['camera']['image_raw']
+    except Exception:
+        return default_topic
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--width', type=int, default=640)
     ap.add_argument('--height', type=int, default=480)
     ap.add_argument('--fps', type=float, default=15.0)
-    ap.add_argument('--topic', type=str, default='/sensing/camera/camera0/image_raw')
+    ap.add_argument('--topic', type=str, default=get_default_topic())
     ap.add_argument('--frame-id', type=str, default='camera0')
     ap.add_argument('--node-name', type=str, default='dummy_camera_publisher')
     ap.add_argument('--phase', type=float, default=0.0, help='Animation phase offset (radians)')

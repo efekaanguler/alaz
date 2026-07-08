@@ -15,13 +15,27 @@ from std_msgs.msg import String
 import cv2
 import numpy as np
 import json
+import yaml
+import os
+
+
+def get_default_topic():
+    default_topic = '/sensing/camera/camera0/image_raw'
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    yaml_path = os.path.join(script_dir, "../../global_bringup/config/topics.yaml")
+    try:
+        with open(yaml_path, 'r') as f:
+            data = yaml.safe_load(f)
+            return data['topics']['camera']['image_raw']
+    except Exception:
+        return default_topic
 
 
 class DetectionVisualizer(Node):
     def __init__(self):
         super().__init__('detection_visualizer')
 
-        self.declare_parameter('image_topic', '/camera/image_raw')
+        self.declare_parameter('image_topic', get_default_topic())
         self.declare_parameter('detection_topic', '/perception/detections')
 
         image_topic = self.get_parameter('image_topic').value

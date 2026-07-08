@@ -1,41 +1,46 @@
 topics:
   # ========== SENSORS ==========
-  input_pointcloud: "/sensing/lidar/concatenated/pointcloud"        # alaz_lidar_clustering, perception_module
-  input_laserscan: "/sensing/lidar/top/scan"                        # perception_module, odometry
-  camera_center_image: "/sensing/camera/camera_center/image_raw"    # perception_module
-  camera_left_image: "/sensing/camera/camera_left/image_raw"        # perception_module
-  camera_right_image: "/sensing/camera/camera_right/image_raw"      # perception_module
+  camera:
+    image_raw: "/sensing/camera/camera0/image_raw"
+    camera_info: "/sensing/camera/camera0/camera_info"
+  lidar:
+    pointcloud: "/sensing/lidar/concatenated/pointcloud"
+    scan: "/sensing/lidar/top/scan"
 
   # ========== VEHICLE STATUS ==========
-  vehicle_velocity: "/vehicle/status/velocity_status"                # odometry, localization, control, mission_control
-  vehicle_steering: "/vehicle/status/steering_status"                # control, mission_control
-  vehicle_gear: "/vehicle/status/gear_status"                        # control, mission_control
-  vehicle_control_mode: "/vehicle/status/control_mode"               # mission_control
+  vehicle:
+    velocity: "/vehicle/status/velocity_status"
+    steering: "/vehicle/status/steering_status"
+    gear: "/vehicle/status/gear_status"
+    control_mode: "/vehicle/status/control_mode"
 
   # ========== CONTROL COMMANDS ==========
-  control_cmd: "/control/command/control_cmd"                        # control, my_vehicle_interface
-  gear_cmd: "/control/command/gear_cmd"                              # my_vehicle_interface
-  turn_signal_cmd: "/control/command/turn_indicators_cmd"            # my_vehicle_interface
-  hazard_cmd: "/control/command/hazard_lights_cmd"                   # my_vehicle_interface
+  control:
+    cmd: "/control/command/control_cmd"
+    gear_cmd: "/control/command/gear_cmd"
+    turn_signal_cmd: "/control/command/turn_indicators_cmd"
+    hazard_cmd: "/control/command/hazard_lights_cmd"
 
-  # ========== ODOMETRY ==========
-  odometry_output: "/localization/kinematic_state"                   # localization, planning, control
-  wheel_odometry: "/odometry/wheel_odom"                             # odometry, localization
-
-  # ========== LOCALIZATION ==========
-  localization_pose: "/localization/pose_with_covariance"            # localization, planning, perception_module
-  localization_twist: "/localization/twist_with_covariance"          # localization, planning
+  # ========== ODOMETRY & LOCALIZATION ==========
+  localization:
+    odometry_output: "/localization/kinematic_state"
+    wheel_odometry: "/odometry/wheel_odom"
+    pose: "/localization/pose_with_covariance"
+    twist: "/localization/twist_with_covariance"
 
   # ========== PERCEPTION ==========
-  detected_objects: "/perception/object_recognition/objects"         # perception_module, planning
-  occupancy_grid: "/perception/occupancy_grid_map/map"               # perception_module, planning
-  lidar_clusters: "/perception/lidar_clustering/clusters"            # alaz_lidar_clustering, perception_module
+  perception:
+    detected_objects: "/perception/object_recognition/objects"
+    occupancy_grid: "/perception/occupancy_grid_map/map"
+    lidar_clusters: "/perception/lidar_clustering/clusters"
 
   # ========== PLANNING ==========
-  planned_trajectory: "/planning/scenario_planning/trajectory"       # planning, control
-  goal_pose: "/planning/mission_planning/goal"                       # planning, mission_control
-  route: "/planning/mission_planning/route"                          # planning, mission_control
+  planning:
+    trajectory: "/planning/scenario_planning/trajectory"
+    goal_pose: "/planning/mission_planning/goal"
+    route: "/planning/mission_planning/route"
 
   # ========== MISSION CONTROL ==========
-  mission_state: "/mission_control/state"                            # mission_control
-  emergency_stop: "/mission_control/emergency_stop"                  # mission_control, control
+  mission_control:
+    state: "/mission_control/state"
+    emergency_stop: "/mission_control/emergency_stop"
