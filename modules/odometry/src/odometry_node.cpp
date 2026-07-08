@@ -9,7 +9,7 @@ OdometryNode::OdometryNode() : Node("odometry_node"), odom(now()){
     throttle_subscriber = create_subscription<std_msgs::msg::Float32>(THROTTLE_TOPIC, 10, std::bind(&OdometryNode::throttle_callback, this, std::placeholders::_1));
 
     odom_publisher = create_publisher<nav_msgs::msg::Odometry>(ODOM_TOPIC, 10);
-    publish_timer = create_wall_timer(500ms, std::bind(&OdometryNode::publish_odometry, this));
+    publish_timer = create_wall_timer(50ms, std::bind(&OdometryNode::publish_odometry, this));
 }
 
 float OdometryNode::simulate_speed() {
