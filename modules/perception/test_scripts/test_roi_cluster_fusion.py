@@ -221,6 +221,7 @@ def test_nuc_docker_script():
         "ROS 2 workspace sourcing": "source /opt/ros/humble/setup.bash" in content,
         "detection_ws build": "colcon build" in content,
         "Traffic signals topic": "traffic_signals" in content,
+        "Topics YAML integration (get_topic.py)": "get_topic.py" in content,
     }
 
     for name, passed in checks.items():
@@ -401,12 +402,12 @@ def test_bytetrack_roi():
 def test_sensor_kit():
     section("7. SENSOR KIT COMPATIBILITY (NUC)")
 
-    sensor_kit = MODULE_DIR.parent / "sensor" / "my_sensor_kit_launch"
+    sensor_kit = MODULE_DIR.parent / "sensor" / "rdw_sensor_kit_launch"
     if not sensor_kit.exists():
-        fail("my_sensor_kit_launch not found")
+        fail("rdw_sensor_kit_launch not found")
         return
 
-    ok("my_sensor_kit_launch exists")
+    ok("rdw_sensor_kit_launch exists")
 
     launch_files = {
         "sensing.launch.xml": "Master sensing launch",
@@ -434,7 +435,7 @@ def test_sensor_kit():
             warn(f"Config: {cf} — missing")
 
     # Calibration
-    desc_kit = MODULE_DIR.parent / "sensor" / "my_sensor_kit_description"
+    desc_kit = MODULE_DIR.parent / "sensor" / "rdw_sensor_kit_description"
     if desc_kit.exists():
         cal_files = ["sensor_kit_calibration.yaml", "sensors_calibration.yaml"]
         for cal in cal_files:
@@ -442,6 +443,50 @@ def test_sensor_kit():
                 ok(f"Calibration: {cal}")
             else:
                 warn(f"Calibration: {cal} — missing")
+
+
+# ══════════════════════════════════════════════════════════════
+# TEST 8: YAML TOPIC CENTRALIZATION
+# ══════════════════════════════════════════════════════════════
+
+def test_yaml_topic_centralization():
+    section("8. YAML TOPIC CENTRALIZATION")
+
+    import subprocess
+    import yaml
+
+    topics_yaml_path = MODULE_DIR.parent / "global_bringup" / "config" / "topics.yaml"
+    get_topic_script = MODULE_DIR.parent / "global_bringup" / "scripts" / "get_topic.py"
+
+    if not topics_yaml_path.exists():
+        fail(f"topics.yaml not found at {topics_yaml_path}")
+        return
+    ok("topics.yaml exists")
+
+    if not get_topic_script.exists():
+        fail(f"get_topic.py not found at {get_topic_script}")
+        return
+    ok("get_topic.py exists")
+
+    try:
+        with open(topics_yaml_path, 'r') as f:
+            yaml.safe_load(f)
+        ok("topics.yaml is valid YAML")
+    except Exception as e:
+        fail(f"topics.yaml is invalid YAML: {e}")
+
+    try:
+        result = subprocess.run(
+            ["python3", str(get_topic_script), "camera.image_raw"],
+            capture_output=True, text=True, check=True
+        )
+        topic = result.stdout.strip()
+        if topic == "/sensing/camera/camera0/image_raw":
+            ok(f"get_topic.py resolved camera.image_raw correctly: {topic}")
+        else:
+            fail(f"get_topic.py returned unexpected topic: {topic}")
+    except subprocess.CalledProcessError as e:
+        fail(f"get_topic.py execution failed: {e.stderr}")
 
 
 # ══════════════════════════════════════════════════════════════
@@ -462,6 +507,7 @@ if __name__ == "__main__":
     test_planner_fused_compatibility()
     test_bytetrack_roi()
     test_sensor_kit()
+    test_yaml_topic_centralization()
 
     total = PASS_COUNT + FAIL_COUNT + WARN_COUNT
     print(f"\n{BOLD}{'═'*60}{NC}")

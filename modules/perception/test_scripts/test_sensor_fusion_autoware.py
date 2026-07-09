@@ -94,7 +94,7 @@ def subsection(title):
 def load_standalone():
     """Load webcam_detect_standalone.py functions."""
     spec = importlib.util.spec_from_file_location(
-        "webcam_detect", str(SCRIPTS_DIR / "webcam_detect_standalone.py"))
+        "webcam_detect", str(MODULE_DIR / "test_scripts" / "webcam_detect_standalone.py"))
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
@@ -191,7 +191,7 @@ def test_lidar_pipeline():
     # Verify costmap compatibility
     # Autoware's behavior_velocity needs OccupancyGrid on /perception/occupancy_grid
     # or PointCloud2 on /perception/obstacle/pointcloud
-    sensor_kit = MODULE_DIR.parent / "sensor" / "my_sensor_kit_launch"
+    sensor_kit = MODULE_DIR.parent / "sensor" / "rdw_sensor_kit_launch"
     if sensor_kit.exists():
         ok("Sensor kit launch available for pointcloud preprocessing")
     else:
@@ -716,6 +716,50 @@ def test_e2e_data_flow():
 
 
 # ══════════════════════════════════════════════════════════════
+# TEST 7: YAML TOPIC CENTRALIZATION
+# ══════════════════════════════════════════════════════════════
+
+def test_yaml_topic_centralization():
+    section("7. YAML TOPIC CENTRALIZATION")
+
+    import subprocess
+    import yaml
+
+    topics_yaml_path = MODULE_DIR.parent / "global_bringup" / "config" / "topics.yaml"
+    get_topic_script = MODULE_DIR.parent / "global_bringup" / "scripts" / "get_topic.py"
+
+    if not topics_yaml_path.exists():
+        fail(f"topics.yaml not found at {topics_yaml_path}")
+        return
+    ok("topics.yaml exists")
+
+    if not get_topic_script.exists():
+        fail(f"get_topic.py not found at {get_topic_script}")
+        return
+    ok("get_topic.py exists")
+
+    try:
+        with open(topics_yaml_path, 'r') as f:
+            yaml.safe_load(f)
+        ok("topics.yaml is valid YAML")
+    except Exception as e:
+        fail(f"topics.yaml is invalid YAML: {e}")
+
+    try:
+        result = subprocess.run(
+            ["python3", str(get_topic_script), "camera.image_raw"],
+            capture_output=True, text=True, check=True
+        )
+        topic = result.stdout.strip()
+        if topic == "/sensing/camera/camera0/image_raw":
+            ok(f"get_topic.py resolved camera.image_raw correctly: {topic}")
+        else:
+            fail(f"get_topic.py returned unexpected topic: {topic}")
+    except subprocess.CalledProcessError as e:
+        fail(f"get_topic.py execution failed: {e.stderr}")
+
+
+# ══════════════════════════════════════════════════════════════
 # MAIN
 # ══════════════════════════════════════════════════════════════
 
@@ -732,6 +776,7 @@ if __name__ == "__main__":
     test_bridge_transformation()
     test_planner_compatibility()
     test_e2e_data_flow()
+    test_yaml_topic_centralization()
 
     # Summary
     total = PASS_COUNT + FAIL_COUNT + WARN_COUNT
