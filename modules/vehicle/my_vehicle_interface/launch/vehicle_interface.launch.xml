@@ -5,14 +5,16 @@
   <!-- Arguments -->
   <arg name="vehicle_id" default="$(env VEHICLE_ID sdc_kart)"/>
   <arg name="config_file" default="$(find-pkg-share my_vehicle_interface)/config/vehicle_interface.param.yaml"/>
+  <arg name="use_sim_time" default="false"/>
   
   <!-- Vehicle Interface Node -->
   <node pkg="my_vehicle_interface" exec="my_vehicle_interface_node" name="vehicle_interface_node" output="screen">
     <param from="$(var config_file)"/>
+    <param name="use_sim_time" value="$(var use_sim_time)"/>
   </node>
   
-  <!-- 
-    NOTE: ros2_socketcan should be launched separately or included here.
+  <!--
+    NOTE: ros2_can_bridge should be launched separately by global_bringup.
     CAN interface setup: The kart uses USB-CAN adapter with slcand driver.
     
     Before launching, ensure CAN interface is up:
@@ -22,10 +24,7 @@
     
     Or use the TinCanService systemd service.
     
-    Then launch ros2_socketcan:
-    <include file="$(find-pkg-share ros2_socketcan)/launch/socket_can_bridge.launch.xml">
-      <arg name="interface" value="can0"/>
-    </include>
+    VehicleInterface publishes /to_can_bus and subscribes /from_can_bus.
   -->
   
 </launch>

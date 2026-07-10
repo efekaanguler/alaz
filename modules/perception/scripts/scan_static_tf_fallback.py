@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Publish a fallback static TF for the LaserScan frame.
 
-This helps `laserscan_to_pointcloud_node` transform `/scan` into `base_link`
+This helps `laserscan_to_pointcloud_node` transform `/sensing/scan` into `base_link`
 when the sensor kit TF tree is missing.
 """
 
@@ -105,7 +105,7 @@ class ScanStaticTfFallback(Node):
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--scan-topic", default="/scan")
+    ap.add_argument("--scan-topic", default="/sensing/scan")
     ap.add_argument("--base-frame", default="base_link")
     ap.add_argument("--child-frame", default="", help="Optional; if empty uses first scan header.frame_id")
     ap.add_argument("--x", type=float, default=1.36)

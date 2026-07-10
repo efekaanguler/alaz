@@ -178,7 +178,7 @@ def test_lidar_pipeline():
     if launch_file.exists():
         content = launch_file.read_text()
         checks = {
-            "scan input topic": "/scan" in content,
+            "scan input topic": "/sensing/scan" in content,
             "points output topic": "points" in content.lower(),
             "target_frame configured": "target_frame" in content or "frame_id" in content,
         }

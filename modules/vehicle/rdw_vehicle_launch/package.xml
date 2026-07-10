@@ -9,6 +9,10 @@
 
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
 
+  <exec_depend>my_vehicle_interface</exec_depend>
+  <exec_depend>rdw_vehicle_description</exec_depend>
+  <exec_depend>autoware_global_parameter_loader</exec_depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Dummy Camera Image publisher for testing the detection pipeline.
 
-Publishes synthetic camera images on /sensing/camera/camera0/image_raw
+Publishes synthetic camera images on /sensing/image_raw
 so that the YOLOv8 detection pipeline can be tested without real hardware.
 
 Generates a simple test pattern with colored rectangles that simulate
@@ -30,8 +30,8 @@ class DummyCameraPublisher(Node):
         width=640,
         height=480,
         fps=15.0,
-        topic='/sensing/camera/camera0/image_raw',
-        frame_id='camera0',
+        topic='/sensing/image_raw',
+        frame_id='camera_center_link',
         node_name='dummy_camera_publisher',
         phase=0.0,
     ):
@@ -119,8 +119,8 @@ def main():
     ap.add_argument('--width', type=int, default=640)
     ap.add_argument('--height', type=int, default=480)
     ap.add_argument('--fps', type=float, default=15.0)
-    ap.add_argument('--topic', type=str, default='/sensing/camera/camera0/image_raw')
-    ap.add_argument('--frame-id', type=str, default='camera0')
+    ap.add_argument('--topic', type=str, default='/sensing/image_raw')
+    ap.add_argument('--frame-id', type=str, default='camera_center_link')
     ap.add_argument('--node-name', type=str, default='dummy_camera_publisher')
     ap.add_argument('--phase', type=float, default=0.0, help='Animation phase offset (radians)')
     args = ap.parse_args()

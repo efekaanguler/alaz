@@ -14,6 +14,7 @@
 
 #include "my_vehicle_interface/vehicle_interface_node.hpp"
 
+#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <functional>

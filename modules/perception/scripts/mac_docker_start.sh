@@ -3,9 +3,9 @@
 #
 # Pipeline:
 #   Mac Webcam → MJPEG → ROS Image → YOLOv8 → ByteTrack → Autoware Bridge
-#   LiDAR (real /scan) or Dummy LaserScan → PointCloud2 → OccupancyGrid
+#   LiDAR (real /sensing/scan) or Dummy LaserScan → PointCloud2 → OccupancyGrid
 #
-# Auto-detects if a real /scan topic is available (NUC with LiDAR).
+# Auto-detects if a real /sensing/scan topic is available (NUC with LiDAR).
 # If not, starts the dummy lidar publisher as fallback.
 #
 # Usage:
@@ -32,6 +32,8 @@ NO_VIZ=false
 LIDAR_MODE="auto"   # auto | dummy | none
 NUC_MODE=false
 CAMERA_COUNT=1
+SCAN_TOPIC="/sensing/scan"
+CAMERA_TOPIC="/sensing/image_raw"
 
 for arg in "$@"; do
     case $arg in
@@ -103,7 +105,10 @@ else
         "source /opt/ros/humble/setup.bash && \
          source /autoware/install/setup.bash && \
          python3 /workspace/modules/perception/scripts/mjpeg_to_ros.py \
-           --url http://host.docker.internal:8090/video"
+           --ros-args \
+           -p device:=http://host.docker.internal:8090/video \
+           -p topic:=$CAMERA_TOPIC \
+           -p frame_id:=camera_center_link"
     sleep 1
     echo -e "${GREEN}  ✓ MJPEG → ROS bridge started in Docker${NC}"
 fi
@@ -116,22 +121,22 @@ elif [ "$LIDAR_MODE" = "dummy" ]; then
     echo -e "${YELLOW}  Starting dummy lidar publisher...${NC}"
     docker exec -d "$CONTAINER_NAME" bash -c \
         "source /opt/ros/humble/setup.bash && \
-         python3 /workspace/modules/perception/test_scripts/dummy_lidar_publisher.py --rate 10 --obstacle"
+         python3 /workspace/modules/perception/test_scripts/dummy_lidar_publisher.py --rate 10 --obstacle --topic $SCAN_TOPIC --frame-id lidar_link"
     sleep 1
     echo -e "${GREEN}  ✓ Dummy lidar running (10 Hz, with obstacle)${NC}"
 else
-    # Auto-detect: check if /scan topic exists
-    echo -e "${YELLOW}  Auto-detecting /scan topic...${NC}"
+    # Auto-detect: check if /sensing/scan topic exists
+    echo -e "${YELLOW}  Auto-detecting $SCAN_TOPIC topic...${NC}"
     SCAN_EXISTS=$(docker exec "$CONTAINER_NAME" bash -c \
-        "source /opt/ros/humble/setup.bash && timeout 3 ros2 topic list 2>/dev/null | grep -c '/scan'" 2>/dev/null || echo "0")
+        "source /opt/ros/humble/setup.bash && timeout 3 ros2 topic list 2>/dev/null | grep -c '$SCAN_TOPIC'" 2>/dev/null || echo "0")
 
     if [ "$SCAN_EXISTS" -gt 0 ]; then
-        echo -e "${GREEN}  ✓ Real /scan topic detected — using real LiDAR${NC}"
+        echo -e "${GREEN}  ✓ Real $SCAN_TOPIC topic detected — using real LiDAR${NC}"
     else
-        echo -e "${YELLOW}  ⚠ No /scan topic found — starting dummy lidar fallback${NC}"
+        echo -e "${YELLOW}  ⚠ No $SCAN_TOPIC topic found — starting dummy lidar fallback${NC}"
         docker exec -d "$CONTAINER_NAME" bash -c \
             "source /opt/ros/humble/setup.bash && \
-             python3 /workspace/modules/perception/test_scripts/dummy_lidar_publisher.py --rate 10 --obstacle"
+             python3 /workspace/modules/perception/test_scripts/dummy_lidar_publisher.py --rate 10 --obstacle --topic $SCAN_TOPIC --frame-id lidar_link"
         sleep 1
         echo -e "${GREEN}  ✓ Dummy lidar running as fallback${NC}"
     fi
@@ -140,7 +145,7 @@ else
     docker exec -d "$CONTAINER_NAME" bash -c \
         "source /opt/ros/humble/setup.bash && \
          source /autoware/install/setup.bash && \
-         ros2 launch perception laserscan_to_pcl_and_occ.launch.xml" 2>/dev/null || true
+         ros2 launch perception laserscan_to_pcl_and_occ.launch.xml scan_topic:=$SCAN_TOPIC" 2>/dev/null || true
     echo -e "${GREEN}  ✓ LaserScan → PointCloud2 pipeline launched${NC}"
 fi
 
@@ -150,7 +155,7 @@ docker exec -d "$CONTAINER_NAME" bash -c \
     "source /opt/ros/humble/setup.bash && \
      source /autoware/install/setup.bash && \
      ros2 launch tier4_perception_launch detection_module.launch.xml \
-       image_number:=$CAMERA_COUNT"
+       image_number:=$CAMERA_COUNT image_raw0:=$CAMERA_TOPIC"
 sleep 2
 echo -e "${GREEN}  ✓ Detection pipeline launched:${NC}"
 echo -e "${GREEN}    YOLOv8 detector → ROIs${NC}"

@@ -5,6 +5,9 @@ ParkMode::ParkMode(rclcpp::Node::SharedPtr node) : node_(node) {
         GEAR_PUBLISHER_TOPIC, 10);
     engage_publisher_ = node_->create_publisher<std_msgs::msg::Bool>(
         ENGAGE_PUBLISHER_TOPIC, 10);
+    change_to_stop_client_ =
+        node_->create_client<autoware_adapi_v1_msgs::srv::ChangeOperationMode>(
+            CHANGE_TO_STOP_SERVICE);
 }
 
 unsigned int ParkMode::execute() {
@@ -13,6 +16,19 @@ unsigned int ParkMode::execute() {
         auto engage_msg = std_msgs::msg::Bool();
         engage_msg.data = false;
         engage_publisher_->publish(engage_msg);
+        if (!stop_mode_request_sent_) {
+            if (change_to_stop_client_->service_is_ready()) {
+                auto request =
+                    std::make_shared<autoware_adapi_v1_msgs::srv::ChangeOperationMode::Request>();
+                change_to_stop_client_->async_send_request(request);
+                stop_mode_request_sent_ = true;
+                RCLCPP_INFO(node_->get_logger(), "Requested Autoware stop operation mode");
+            } else {
+                RCLCPP_WARN_THROTTLE(
+                    node_->get_logger(), *node_->get_clock(), 5000,
+                    "Autoware stop operation-mode service is not ready; legacy disengage was published");
+            }
+        }
         
         // Publish PARK gear command
         auto gear_msg = autoware_vehicle_msgs::msg::GearCommand();
@@ -41,6 +57,7 @@ unsigned int ParkMode::execute() {
         gear_publisher_->publish(gear_msg);
 
         park_started_ = false; // Reset for future
+        stop_mode_request_sent_ = false;
         return MODE_RUN;
     }
     

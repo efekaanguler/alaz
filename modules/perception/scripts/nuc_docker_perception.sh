@@ -3,7 +3,7 @@
 #
 # Runs INSIDE Docker on the NUC with real LiDAR + real camera.
 # Handles:
-#   1. Auto-detection of /scan and /points_raw topics (real LiDAR)
+#   1. Auto-detection of /sensing/scan and /points_raw topics (real LiDAR)
 #   2. Auto-detection of camera image topics
 #   3. Fallback camera_info + static TF (only when sensor kit calibration is missing)
 #   4. ROI Cluster Fusion (LiDAR clusters + Camera 2D detection ROIs)
@@ -40,7 +40,8 @@ CAMERA_COUNT=1
 SKIP_FUSION=false
 ENABLE_VIZ=false
 LIDAR_TOPIC="/points_raw"
-SCAN_TOPIC="/scan"
+SCAN_TOPIC="/sensing/scan"
+PRIMARY_CAMERA_TOPIC="/sensing/image_raw"
 BASE_FRAME="base_link"
 
 ENABLE_FALLBACK_CAMERA_INFO=true
@@ -52,6 +53,7 @@ FORCE_DUMMY_LIDAR=false
 DUMMY_CAMERA_WIDTH=1280
 DUMMY_CAMERA_HEIGHT=720
 DUMMY_CAMERA_FPS=15.0
+EXIT_AFTER_VERIFY=false
 
 LIDAR_POINTCLOUD_TOPIC="/perception/lidar/pointcloud"
 LIDAR_CLUSTER_TOPIC="/perception/lidar/clusters"
@@ -113,9 +115,23 @@ cleanup() {
     fi
     echo -e "\n${YELLOW}Stopping NUC perception pipeline...${NC}"
     for pid in "${CLEANUP_PIDS[@]:-}"; do
+        if command -v pkill >/dev/null 2>&1; then
+            pkill -TERM -P "$pid" 2>/dev/null || true
+        fi
         kill "$pid" 2>/dev/null || true
     done
-    wait 2>/dev/null || true
+    sleep 2
+    for pid in "${CLEANUP_PIDS[@]:-}"; do
+        if kill -0 "$pid" 2>/dev/null; then
+            if command -v pkill >/dev/null 2>&1; then
+                pkill -KILL -P "$pid" 2>/dev/null || true
+            fi
+            kill -KILL "$pid" 2>/dev/null || true
+        fi
+    done
+    for pid in "${CLEANUP_PIDS[@]:-}"; do
+        wait "$pid" 2>/dev/null || true
+    done
 }
 trap cleanup EXIT INT TERM
 
@@ -243,7 +259,8 @@ Options:
   --no-fusion                        Camera-only mode (skip ROI fusion)
   --viz                              Enable detection visualizer
   --lidar TOPIC | --lidar=TOPIC      LiDAR PointCloud2 topic (default: /points_raw)
-  --scan TOPIC | --scan=TOPIC        LiDAR LaserScan topic (default: /scan)
+  --scan TOPIC | --scan=TOPIC        LiDAR LaserScan topic (default: /sensing/scan)
+  --camera-topic TOPIC               Primary camera image topic (default: /sensing/image_raw)
   --base-frame FRAME                 Target/base frame for fallback TF (default: base_link)
   --camera-info-yaml PATH            ROS camera_info YAML for fallback publisher
   --dummy-camera                     Start dummy camera publisher(s) for local/Docker tests
@@ -251,6 +268,7 @@ Options:
   --dummy-camera-width PX            Dummy camera width (default: 1280)
   --dummy-camera-height PX           Dummy camera height (default: 720)
   --dummy-camera-fps FPS             Dummy camera FPS (default: 15.0)
+  --exit-after-verify | --smoke-test Exit after output-topic verification
   --no-fallback-camera-info          Do not publish fallback CameraInfo
   --no-fallback-tf                   Do not publish fallback static TF
   --no-fallback-occupancy            Do not run fallback PointCloud2->OccupancyGrid node
@@ -290,6 +308,14 @@ while [ $# -gt 0 ]; do
             ;;
         --scan=*)
             SCAN_TOPIC="${1#--scan=}"
+            shift
+            ;;
+        --camera-topic)
+            PRIMARY_CAMERA_TOPIC="${2:-}"
+            shift 2
+            ;;
+        --camera-topic=*)
+            PRIMARY_CAMERA_TOPIC="${1#--camera-topic=}"
             shift
             ;;
         --base-frame)
@@ -338,6 +364,10 @@ while [ $# -gt 0 ]; do
             ;;
         --dummy-camera-fps=*)
             DUMMY_CAMERA_FPS="${1#--dummy-camera-fps=}"
+            shift
+            ;;
+        --exit-after-verify|--smoke-test)
+            EXIT_AFTER_VERIFY=true
             shift
             ;;
         --no-fallback-camera-info)
@@ -458,37 +488,101 @@ _build_pythonpath() {
 _build_pythonpath
 echo -e "${GREEN}[✓] PYTHONPATH exported (vision_msgs accessible to child processes)${NC}"
 
-# Check if detection_ws is built
-if [ -d "$MODULE_DIR/detection_ws/install" ]; then
+DETECTION_WS_DIR="$MODULE_DIR/detection_ws"
+DETECTION_WS_INSTALL="$DETECTION_WS_DIR/install"
+DETECTION_WS_RUNTIME_BUILD="${DETECTION_WS_RUNTIME_BUILD:-/tmp/alaz_detection_ws_build}"
+DETECTION_WS_RUNTIME_INSTALL="${DETECTION_WS_RUNTIME_INSTALL:-/tmp/alaz_detection_ws_install}"
+DETECTION_WS_RUNTIME_LOG="${DETECTION_WS_RUNTIME_LOG:-/tmp/alaz_detection_ws_log}"
+DETECTION_REQUIRED_PACKAGES=(
+    "tier4_perception_launch"
+    "autoware_tensorrt_yolox"
+    "autoware_bytetrack"
+    "autoware_detection_autoware_bridge"
+    "autoware_traffic_light_classifier"
+)
+
+source_detection_ws_safe() {
+    local setup_file="$DETECTION_WS_INSTALL/setup.bash"
+    [ -f "$setup_file" ] || return 1
+
+    local flags="$-"
+    set +e
     set +u
-    source /opt/ros/humble/setup.bash > /dev/null 2>&1 || true
-    source /autoware/install/setup.bash > /dev/null 2>&1 || true
-    source "$MODULE_DIR/detection_ws/install/setup.bash"
-    set -u
-    echo -e "${GREEN}[✓] detection_ws sourced${NC}"
+    source "$setup_file" >/dev/null 2>&1
+    local rc=$?
+    case "$flags" in
+        *u*) set -u ;;
+    esac
+    case "$flags" in
+        *e*) set -e ;;
+    esac
+    return "$rc"
+}
+
+detection_ws_ready() {
+    local missing=()
+    local pkg
+    for pkg in "${DETECTION_REQUIRED_PACKAGES[@]}"; do
+        if ! pkg_available "$pkg"; then
+            missing+=("$pkg")
+        fi
+    done
+
+    if [ "${#missing[@]}" -eq 0 ]; then
+        return 0
+    fi
+
+    echo -e "${YELLOW}[!] detection_ws missing package(s): ${missing[*]}${NC}"
+    return 1
+}
+
+# Check whether detection_ws is usable, not just whether install/ exists.
+DETECTION_WS_NEEDS_BUILD=true
+if source_detection_ws_safe; then
+    if detection_ws_ready; then
+        DETECTION_WS_NEEDS_BUILD=false
+        echo -e "${GREEN}[✓] detection_ws sourced and package index verified${NC}"
+    else
+        echo -e "${YELLOW}[!] detection_ws install exists but is incomplete/stale — rebuilding...${NC}"
+    fi
 else
     echo -e "${YELLOW}[!] detection_ws not built yet — building...${NC}"
-    cd "$MODULE_DIR/detection_ws"
-    set +u
-    source /opt/ros/humble/setup.bash > /dev/null 2>&1 || true
-    source /autoware/install/setup.bash > /dev/null 2>&1 || true
-    set -u
-    if ! colcon build --symlink-install; then
+fi
+
+if [ "$DETECTION_WS_NEEDS_BUILD" = true ]; then
+    source_env_safe
+
+    if ! colcon \
+        --log-base "$DETECTION_WS_RUNTIME_LOG" \
+        build \
+        --base-paths "$DETECTION_WS_DIR/src" \
+        --build-base "$DETECTION_WS_RUNTIME_BUILD" \
+        --install-base "$DETECTION_WS_RUNTIME_INSTALL"; then
         echo -e "${RED}[✗] detection_ws build failed${NC}"
         exit 1
     fi
-    set +u
-    source install/setup.bash
-    set -u
-    echo -e "${GREEN}[✓] detection_ws built and sourced${NC}"
+
+    DETECTION_WS_INSTALL="$DETECTION_WS_RUNTIME_INSTALL"
+    source_env_safe
+    if ! source_detection_ws_safe || ! detection_ws_ready; then
+        echo -e "${RED}[✗] detection_ws build completed but required ROS packages are still unavailable${NC}"
+        exit 1
+    fi
+
+    echo -e "${GREEN}[✓] detection_ws built, sourced, and package index verified${NC}"
 fi
 
 # Optional: start dummy camera(s) before sensor detection so topics are visible.
 if [ "$FORCE_DUMMY_CAMERA" = true ]; then
     echo -e "${YELLOW}[dummy] Starting $CAMERA_COUNT dummy camera publisher(s)...${NC}"
     for i in $(seq 0 $((CAMERA_COUNT - 1))); do
-        cam_topic="/sensing/camera/camera${i}/image_raw"
-        cam_frame="camera${i}_link"
+        if [ "$i" -eq 0 ]; then
+            cam_topic="$PRIMARY_CAMERA_TOPIC"
+            cam_frame="camera_center_link"
+        else
+            cam_topic="/sensing/camera/camera${i}/image_raw"
+            cam_frame="camera${i}_link"
+        fi
         phase="$(awk -v idx="$i" 'BEGIN { printf "%.3f", idx * 0.7 }')"
         python3 "$SCRIPT_DIR/../test_scripts/dummy_camera_publisher.py" \
             --node-name "dummy_camera_publisher_${i}" \
@@ -504,7 +598,11 @@ if [ "$FORCE_DUMMY_CAMERA" = true ]; then
     done
     echo -e "${YELLOW}  Waiting for dummy camera topics to appear in ROS graph...${NC}"
     for i in $(seq 0 $((CAMERA_COUNT - 1))); do
-        cam_topic="/sensing/camera/camera${i}/image_raw"
+        if [ "$i" -eq 0 ]; then
+            cam_topic="$PRIMARY_CAMERA_TOPIC"
+        else
+            cam_topic="/sensing/camera/camera${i}/image_raw"
+        fi
         if wait_for_topic "$cam_topic" 8; then
             echo -e "${GREEN}  ✓ Dummy camera topic visible: $cam_topic${NC}"
         else
@@ -528,7 +626,7 @@ TOPICS="$(timeout 3 ros2 topic list 2>/dev/null || echo "")"
 
 # Check for LiDAR (prefer explicit pointcloud, then scan)
 if [ "$FORCE_DUMMY_LIDAR" = true ]; then
-    echo -e "${YELLOW}  ⚠ --dummy-lidar set: ignoring real LiDAR topics and forcing dummy /scan${NC}"
+    echo -e "${YELLOW}  ⚠ --dummy-lidar set: ignoring real LiDAR topics and forcing dummy $SCAN_TOPIC${NC}"
 elif echo "$TOPICS" | grep -Fxq "$LIDAR_TOPIC"; then
     HAS_LIDAR=true
     HAS_REAL_LIDAR=true
@@ -558,7 +656,7 @@ else
             echo -e "${GREEN}  ✓ LiDAR pointcloud detected: $AUTO_LIDAR_TOPIC${NC}"
         fi
     else
-        echo -e "${YELLOW}  ⚠ No LiDAR topic found (will use dummy /scan for costmap)${NC}"
+        echo -e "${YELLOW}  ⚠ No LiDAR topic found (will use dummy $SCAN_TOPIC for costmap)${NC}"
     fi
 fi
 
@@ -568,9 +666,13 @@ declare -a CAMERA_INFO_FOUND=()
 
 # Check cameras
 for i in $(seq 0 $((CAMERA_COUNT - 1))); do
-    cam_topic="/sensing/camera/camera${i}/image_raw"
+    if [ "$i" -eq 0 ]; then
+        cam_topic="$PRIMARY_CAMERA_TOPIC"
+    else
+        cam_topic="/sensing/camera/camera${i}/image_raw"
+    fi
     if ! echo "$TOPICS" | grep -Fxq "$cam_topic"; then
-        alt="$(echo "$TOPICS" | grep -E "/camera${i}/image_raw$|^/camera/image_raw$" | head -1 || true)"
+        alt="$(echo "$TOPICS" | grep -E "^/sensing/image_raw$|/sensing/camera/camera${i}/image_raw$|/camera${i}/image_raw$|^/camera/image_raw$" | head -1 || true)"
         if [ -n "$alt" ]; then
             cam_topic="$alt"
         fi
@@ -594,7 +696,7 @@ for i in $(seq 0 $((CAMERA_COUNT - 1))); do
         CAMERA_TOPICS[$i]=""
         CAMERA_INFO_TOPICS[$i]=""
         CAMERA_INFO_FOUND[$i]="false"
-        echo -e "${YELLOW}  ⚠ Camera $i not found (/sensing/camera/camera${i}/image_raw)${NC}"
+        echo -e "${YELLOW}  ⚠ Camera $i not found ($cam_topic)${NC}"
     fi
 done
 
@@ -678,7 +780,7 @@ POINTCLOUD_FOR_COSTMAP_TOPIC="$LIDAR_POINTCLOUD_TOPIC"
 
 if [ "$HAS_REAL_LIDAR" = false ]; then
     echo -e "${YELLOW}  No real LiDAR — starting dummy LaserScan for costmap/fallback testing...${NC}"
-    python3 "$SCRIPT_DIR/../test_scripts/dummy_lidar_publisher.py" --rate 10 --obstacle &
+    python3 "$SCRIPT_DIR/../test_scripts/dummy_lidar_publisher.py" --rate 10 --obstacle --topic "$SCAN_TOPIC" --frame-id "lidar_link" &
     CLEANUP_PIDS+=($!)
     sleep 1
     LIDAR_MODE="scan"
@@ -758,31 +860,31 @@ fi
 # ══════════════════════════════════════
 echo -e "\n${BLUE}[4/6] Detection pipeline (YOLOv8 -> ByteTrack -> Bridge)...${NC}"
 
-MODEL_DIR="/workspace/modules/detection/models"
-if [ ! -f "$MODEL_DIR/yolov8n.onnx" ]; then
-    MODEL_DIR="$MODULE_DIR/models"
-fi
+MODEL_DIR="$MODULE_DIR/models"
 if ! python3 -c "import onnxruntime" >/dev/null 2>&1; then
     echo -e "${YELLOW}  ⚠ onnxruntime Python package not found. YOLOv8 will fall back to OpenCV DNN and may fail for this model.${NC}"
 fi
 
 DETECTION_LAUNCH_SOURCE="$MODULE_DIR/detection_ws/src/tier4_perception_launch/launch/detection_module.launch.xml"
+DETECTION_ARGS=(
+    image_number:="$CAMERA_COUNT"
+    camera_2d_detector/model_path:="$MODEL_DIR/yolov8n.onnx"
+    camera_2d_detector/label_path:="$MODEL_DIR/labels.txt"
+    camera_2d_detector/color_map_path:="$MODEL_DIR/color_map.json"
+    enable_visualizer:="$ENABLE_VIZ"
+)
+for i in $(seq 0 $((CAMERA_COUNT - 1))); do
+    cam_topic="${CAMERA_TOPICS[$i]:-}"
+    if [ -n "$cam_topic" ]; then
+        DETECTION_ARGS+=("image_raw${i}:=$cam_topic")
+    fi
+done
 if [ -f "$DETECTION_LAUNCH_SOURCE" ]; then
     echo -e "${GREEN}  ✓ Using local detection launch file: $DETECTION_LAUNCH_SOURCE${NC}"
-    ros2 launch "$DETECTION_LAUNCH_SOURCE" \
-        image_number:="$CAMERA_COUNT" \
-        camera_2d_detector/model_path:="$MODEL_DIR/yolov8n.onnx" \
-        camera_2d_detector/label_path:="$MODEL_DIR/labels.txt" \
-        camera_2d_detector/color_map_path:="$MODEL_DIR/color_map.json" \
-        enable_visualizer:="$ENABLE_VIZ" &
+    ros2 launch "$DETECTION_LAUNCH_SOURCE" "${DETECTION_ARGS[@]}" &
 else
     echo -e "${YELLOW}  ⚠ Local detection launch file not found; falling back to package share${NC}"
-    ros2 launch tier4_perception_launch detection_module.launch.xml \
-        image_number:="$CAMERA_COUNT" \
-        camera_2d_detector/model_path:="$MODEL_DIR/yolov8n.onnx" \
-        camera_2d_detector/label_path:="$MODEL_DIR/labels.txt" \
-        camera_2d_detector/color_map_path:="$MODEL_DIR/color_map.json" \
-        enable_visualizer:="$ENABLE_VIZ" &
+    ros2 launch tier4_perception_launch detection_module.launch.xml "${DETECTION_ARGS[@]}" &
 fi
 CLEANUP_PIDS+=($!)
 sleep 3
@@ -832,8 +934,8 @@ fi
 # ══════════════════════════════════════
 echo -e "\n${BLUE}[5/6] ROI Cluster Fusion...${NC}"
 
-CAM0_IMAGE_TOPIC="${CAMERA_TOPICS[0]:-/sensing/camera/camera0/image_raw}"
-CAM0_INFO_TOPIC="${CAMERA_INFO_TOPICS[0]:-/sensing/camera/camera0/camera_info}"
+CAM0_IMAGE_TOPIC="${CAMERA_TOPICS[0]:-$PRIMARY_CAMERA_TOPIC}"
+CAM0_INFO_TOPIC="${CAMERA_INFO_TOPICS[0]:-/sensing/camera_info}"
 
 if [ "$HAS_LIDAR" = true ] && [ "$SKIP_FUSION" = false ]; then
     if pkg_available "autoware_image_projection_based_fusion"; then
@@ -1034,6 +1136,11 @@ echo "    ros2 topic echo /perception/traffic_light_recognition/traffic_signals 
 echo ""
 echo -e "  ${YELLOW}Press Ctrl+C to stop all nodes.${NC}"
 echo -e "${CYAN}══════════════════════════════════════════════════════════${NC}"
+
+if [ "$EXIT_AFTER_VERIFY" = true ]; then
+    echo -e "${GREEN}Smoke verification complete; exiting after cleanup.${NC}"
+    exit 0
+fi
 
 while true; do
     wait -n 2>/dev/null || true

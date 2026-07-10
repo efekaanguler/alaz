@@ -22,4 +22,4 @@
 
     # --- Genel Araç Bilgileri ---
     vehicle_height: 1.0     # Araç yüksekliği (metre)
-    max_steer_angle: 0.215 # Maksimum direksiyon açısı (yaklaşık 30 derece)
+    max_steer_angle: 0.5236 # Maksimum direksiyon açısı (yaklaşık 30 derece)

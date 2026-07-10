@@ -1,5 +1,7 @@
 #include <mission_control/mode_run.hpp>
 
+#include <cmath>
+
 RunMode::RunMode(rclcpp::Node::SharedPtr node) : node_(node) {
     
     // Publishers to command autoware
@@ -8,6 +10,10 @@ RunMode::RunMode(rclcpp::Node::SharedPtr node) : node_(node) {
     
     engage_publisher_ = node_->create_publisher<std_msgs::msg::Bool>(
         ENGAGE_PUBLISHER_TOPIC, 10);
+
+    change_to_autonomous_client_ =
+        node_->create_client<autoware_adapi_v1_msgs::srv::ChangeOperationMode>(
+            CHANGE_TO_AUTONOMOUS_SERVICE);
     
     // Subscribe to goal array
     goal_array_subscriber_ = node_->create_subscription<geometry_msgs::msg::PoseArray>(
@@ -27,6 +33,10 @@ RunMode::RunMode(rclcpp::Node::SharedPtr node) : node_(node) {
     kinematics_subscriber_ = node_->create_subscription<geometry_msgs::msg::Twist>(
         KINEMATICS_SUBSCRIBER_TOPIC, 10,
         std::bind(&RunMode::kinematics_callback, this, std::placeholders::_1));
+
+    odom_subscriber_ = node_->create_subscription<nav_msgs::msg::Odometry>(
+        ODOM_SUBSCRIBER_TOPIC, 10,
+        std::bind(&RunMode::odom_callback, this, std::placeholders::_1));
     
     // TODO: Subscribe to velocity and steering topics when proper control message types are available
     // velocity_subscriber_ = node_->create_subscription<autoware_control_msgs::msg::LongitudinalOutput>(
@@ -61,7 +71,20 @@ void RunMode::engage_autoware() {
         auto engage_msg = std_msgs::msg::Bool();
         engage_msg.data = true;
         engage_publisher_->publish(engage_msg);
-        RCLCPP_INFO(node_->get_logger(), "Autoware engaged - autonomous driving started");
+        if (!operation_mode_request_sent_) {
+            if (change_to_autonomous_client_->service_is_ready()) {
+                auto request =
+                    std::make_shared<autoware_adapi_v1_msgs::srv::ChangeOperationMode::Request>();
+                change_to_autonomous_client_->async_send_request(request);
+                operation_mode_request_sent_ = true;
+                RCLCPP_INFO(node_->get_logger(), "Requested Autoware autonomous operation mode");
+            } else {
+                RCLCPP_WARN_THROTTLE(
+                    node_->get_logger(), *node_->get_clock(), 5000,
+                    "Autoware operation-mode service is not ready; legacy /autoware/engage was published");
+            }
+        }
+        RCLCPP_INFO(node_->get_logger(), "Autoware engage command published");
         engaged_ = true;
     }
 }
@@ -94,6 +117,12 @@ void RunMode::kinematics_callback(const geometry_msgs::msg::Twist::SharedPtr msg
     vehicle_kinematics_ = *msg;
 }
 
+void RunMode::odom_callback(const nav_msgs::msg::Odometry::SharedPtr msg) {
+    current_pose_ = msg->pose.pose;
+    has_current_pose_ = true;
+    update_goal_reached();
+}
+
 // TODO: Implement velocity and steering callbacks when proper control message types are available
 // void RunMode::velocity_callback(const autoware_control_msgs::msg::LongitudinalOutput::SharedPtr msg) {
 //     target_velocity_ = *msg;
@@ -116,6 +145,26 @@ void RunMode::emergency_callback(const std_msgs::msg::Bool::SharedPtr msg) {
 //     }
 // }
 
+void RunMode::update_goal_reached() {
+    if (!goal_sent_current_ || current_goal_reached_ || !has_current_pose_) {
+        return;
+    }
+    if (current_goal_index_ >= goal_array_.size()) {
+        return;
+    }
+
+    const auto &goal = goal_array_[current_goal_index_];
+    const double dx = current_pose_.position.x - goal.position.x;
+    const double dy = current_pose_.position.y - goal.position.y;
+    const double distance = std::hypot(dx, dy);
+
+    if (distance <= goal_reach_distance_m_) {
+        current_goal_reached_ = true;
+        RCLCPP_INFO(node_->get_logger(), "Reached goal %zu/%zu (distance %.2f m)",
+                    current_goal_index_ + 1, goal_array_.size(), distance);
+    }
+}
+
 unsigned int RunMode::execute() {
     // Engage autoware on first execution
     engage_autoware();
@@ -134,18 +183,19 @@ unsigned int RunMode::execute() {
     
     RCLCPP_INFO(node_->get_logger(), "Goals detected.");
 
+    update_goal_reached();
 
     // If current goal reached, pause before next goal
     if (current_goal_reached_) {
         current_goal_index_++;
         goal_sent_current_ = false;
         
-        // If all goals completed, switch to PAUSE
+        // If all goals completed, park once before returning to idle flow.
         if (current_goal_index_ >= goal_array_.size()) {
-            RCLCPP_INFO(node_->get_logger(), "All goals completed! Switching to PAUSE mode");
+            RCLCPP_INFO(node_->get_logger(), "All goals completed! Switching to PARK mode");
             goal_array_.clear();
             current_goal_index_ = 0;
-            return MODE_PAUSE;
+            return MODE_PARK;
         }
 
         // Pause after each goal

@@ -27,6 +27,7 @@ class StartMode : public ModeBase {
     bool camera_read=false;
     bool odom_read=false;
     bool localized=false;
+    bool localization_seen=false;
     
     rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr lidar_subscriber;
     rclcpp::Subscription<sensor_msgs::msg::NavSatFix>::SharedPtr gnss_subscriber;

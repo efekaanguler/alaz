@@ -19,6 +19,7 @@ public:
 
     EmergencyMode(rclcpp::Node::SharedPtr node);
     unsigned int execute() override;
+    bool isHealthy();
 
     private:
 
@@ -30,7 +31,8 @@ public:
     rclcpp::Time last_imu;
     rclcpp::Time last_camera;
     rclcpp::Time last_odom;
-    rclcpp::Time last_localized;
+    bool localization_seen=false;
+    bool localization_initialized=false;
     
     rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr lidar_subscriber;
     rclcpp::Subscription<sensor_msgs::msg::NavSatFix>::SharedPtr gnss_subscriber;

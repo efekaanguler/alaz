@@ -18,11 +18,18 @@ class LidarClusterNode(Node):
         self.get_logger().info('Alaz Lidar Real Data Mode Active')
 
     def listener_callback(self, msg):
+        marker_array = MarkerArray()
+        clear_marker = Marker()
+        clear_marker.header = msg.header
+        clear_marker.action = Marker.DELETEALL
+        marker_array.markers.append(clear_marker)
+
         # Veriyi Oku
         gen = pc2.read_points(msg, field_names=['x', 'y', 'z'], skip_nans=True)
         points_list = list(gen)
         
         if len(points_list) == 0:
+            self.marker_pub.publish(marker_array)
             return
 
         # Downsampling (Hız için)
@@ -33,6 +40,7 @@ class LidarClusterNode(Node):
         points = points[np.isfinite(points).all(axis=1)]
 
         if len(points) == 0:
+            self.marker_pub.publish(marker_array)
             return
 
         # Kümeleme
@@ -40,10 +48,10 @@ class LidarClusterNode(Node):
             clustering = DBSCAN(eps=0.7, min_samples=15).fit(points)
         except Exception as e:
             self.get_logger().warn(f'Clustering error: {e}')
+            self.marker_pub.publish(marker_array)
             return
 
         labels = clustering.labels_
-        marker_array = MarkerArray()
         unique_labels = set(labels)
         
         cluster_id = 0
@@ -68,7 +76,7 @@ class LidarClusterNode(Node):
             dim_z = float(max(max_pt[2] - min_pt[2], 0.1))
             
             marker = Marker()
-            marker.header.frame_id = "velodyne_top"
+            marker.header.frame_id = "lidar_link"
             marker.header.stamp = self.get_clock().now().to_msg()
             marker.ns = "obstacles"
             marker.id = cluster_id

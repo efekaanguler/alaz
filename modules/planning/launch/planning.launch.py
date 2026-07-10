@@ -8,6 +8,7 @@ import os
 
 
 def generate_launch_description():
+    use_sim_time = LaunchConfiguration("use_sim_time")
     behavior_param_path = os.path.join(
         get_package_share_directory("planning"), "config", "behavior_path_planner.param.yaml"
     )
@@ -17,6 +18,11 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
+            DeclareLaunchArgument(
+                name="use_sim_time",
+                default_value="false",
+                description="Use simulation clock",
+            ),
             DeclareLaunchArgument(
                 name="behavior_path_planner_params",
                 default_value=behavior_param_path,
@@ -36,7 +42,10 @@ def generate_launch_description():
                 package="autoware_behavior_path_planner",
                 executable="autoware_behavior_path_planner_node",
                 name="autoware_behavior_path_planner",
-                parameters=[LaunchConfiguration("behavior_path_planner_params")],
+                parameters=[
+                    LaunchConfiguration("behavior_path_planner_params"),
+                    {"use_sim_time": use_sim_time},
+                ],
                 remappings=[],
                 output="screen",
             ),
@@ -44,7 +53,10 @@ def generate_launch_description():
                 package="autoware_velocity_smoother",
                 executable="velocity_smoother_node",
                 name="velocity_smoother",
-                parameters=[LaunchConfiguration("velocity_smoother_params")],
+                parameters=[
+                    LaunchConfiguration("velocity_smoother_params"),
+                    {"use_sim_time": use_sim_time},
+                ],
                 remappings=[],
                 output="screen",
             ),

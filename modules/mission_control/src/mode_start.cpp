@@ -19,7 +19,6 @@ StartMode::StartMode(rclcpp::Node::SharedPtr node) : node_(node) {
     
     localization_subscriber = node->create_subscription<autoware_adapi_v1_msgs::msg::LocalizationInitializationState>("/localization/initialization_state", 10, std::bind(&StartMode::localization_callback, this, std::placeholders::_1));
 
-    localized = true;
 }
 
 
@@ -52,9 +51,13 @@ unsigned int StartMode::execute() {
 
     if(!returnStart) RCLCPP_DEBUG(node_->get_logger(), "All Sensors Checked");
 
-    if(!localized) {
+    if(localization_seen && !localized) {
         RCLCPP_ERROR(node_->get_logger(), "Localization Failed");
         returnStart=true;
+    } else if(!localization_seen) {
+        RCLCPP_WARN_THROTTLE(
+            node_->get_logger(), *node_->get_clock(), 5000,
+            "No localization initialization state yet; continuing with sensor and odometry checks");
     } else {
         RCLCPP_DEBUG(node_->get_logger(), "Localization Successfull");
     }
@@ -92,6 +95,7 @@ void StartMode::odom_callback(nav_msgs::msg::Odometry::SharedPtr msg) {
 }
 
 void StartMode::localization_callback(autoware_adapi_v1_msgs::msg::LocalizationInitializationState::SharedPtr msg) {
+    localization_seen=true;
     if(msg->state == autoware_adapi_v1_msgs::msg::LocalizationInitializationState::INITIALIZED) localized=true;
     else localized=false;
 }

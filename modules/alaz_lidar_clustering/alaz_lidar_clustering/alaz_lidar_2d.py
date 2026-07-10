@@ -11,7 +11,7 @@ class AlazLidar2D(Node):
         super().__init__('alaz_lidar_2d')
 
         self.declare_parameter('max_range', 6.0)
-        self.declare_parameter('scan_topic', '/sensing/lidar/top/scan')
+        self.declare_parameter('scan_topic', '/sensing/scan')
         self.declare_parameter('cluster_tolerance', 0.8)
         self.declare_parameter('min_cluster_size', 3)
 
@@ -27,10 +27,21 @@ class AlazLidar2D(Node):
         self.get_logger().info(f'Alaz 2D Lidar Aktif | Topic: {scan_topic} | Tol: {self.tolerance}m')
 
     def scan_callback(self, msg):
+        marker_array = MarkerArray()
+        clear_marker = Marker()
+        clear_marker.header = msg.header
+        clear_marker.action = Marker.DELETEALL
+        marker_array.markers.append(clear_marker)
+
+        autoware_msg = DetectedObjects()
+        autoware_msg.header = msg.header
+
         ranges = np.array(msg.ranges)
         valid_indices = np.isfinite(ranges) & (ranges > 0.2) & (ranges < self.max_range)
 
         if np.sum(valid_indices) < self.min_size:
+            self.marker_pub.publish(marker_array)
+            self.autoware_pub.publish(autoware_msg)
             return
 
         valid_ranges = ranges[valid_indices]
@@ -54,10 +65,6 @@ class AlazLidar2D(Node):
                     current_cluster = [points[i]]
             if len(current_cluster) >= self.min_size:
                 clusters.append(np.array(current_cluster))
-
-        marker_array = MarkerArray()
-        autoware_msg = DetectedObjects()
-        autoware_msg.header = msg.header
 
         for cluster_id, cluster_points in enumerate(clusters):
             min_pt = np.min(cluster_points, axis=0)
@@ -94,6 +101,7 @@ class AlazLidar2D(Node):
             p_obj.kinematics.pose_with_covariance.pose.position.x = float(center_x)
             p_obj.kinematics.pose_with_covariance.pose.position.y = float(center_y)
             p_obj.kinematics.pose_with_covariance.pose.position.z = 0.0
+            p_obj.kinematics.pose_with_covariance.pose.orientation.w = 1.0
             p_obj.shape.type = Shape.BOUNDING_BOX
             p_obj.shape.dimensions.x = float(dim_x)
             p_obj.shape.dimensions.y = float(dim_y)

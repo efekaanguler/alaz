@@ -9,8 +9,12 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_ros REQUIRED)
 find_package(autoware_trajectory_follower_node REQUIRED)
-find_package(autoware_mpc_lateral_controller REQUIRED)
-#find_package(adaptive_cruise_control REQUIRED)
+
+install(DIRECTORY
+  launch
+  config
+  DESTINATION share/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

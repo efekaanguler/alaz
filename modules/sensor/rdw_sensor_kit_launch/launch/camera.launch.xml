@@ -2,11 +2,15 @@
 <launch>
   <arg name="camera_device" default="/dev/center_camera" description="Center camera device path or index"/>
   <arg name="image_topic" default="/sensing/image_raw" description="Camera topic"/>
+  <arg name="frame_id" default="camera_center_link" description="Camera frame"/>
+  <arg name="use_sim_time" default="false"/>
 
   <!-- v4l2_camera yerine perception paketindeki mjpeg_to_ros.py kullanılıyor -->
   <node pkg="perception" exec="mjpeg_to_ros.py" name="center_camera" output="screen">
     <param name="device" value="$(var camera_device)"/>
     <param name="topic" value="$(var image_topic)"/>
+    <param name="frame_id" value="$(var frame_id)"/>
+    <param name="use_sim_time" value="$(var use_sim_time)"/>
     <param name="width" value="1280"/>
     <param name="height" value="720"/>
     <param name="fps" value="30.0"/>

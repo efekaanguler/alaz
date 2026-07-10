@@ -41,6 +41,9 @@ unsigned int EmergencyMode::execute() {
     return MODE_EMERGENCY;
 };
 
+bool EmergencyMode::isHealthy() {
+    return checkState();
+}
 
 bool EmergencyMode::checkState() {
 
@@ -82,7 +85,7 @@ bool EmergencyMode::checkState() {
         }
     }
 
-    if(last_localized.nanoseconds()==0 || (now-last_localized).seconds() > TIMEOUT) {
+    if(localization_seen && !localization_initialized) {
         RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: Localization Failed");
         state = false;
     }
@@ -119,5 +122,7 @@ void EmergencyMode::odom_callback(nav_msgs::msg::Odometry::SharedPtr msg) {
 
 void EmergencyMode::localization_callback(autoware_adapi_v1_msgs::msg::LocalizationInitializationState::SharedPtr msg) {
     RCLCPP_DEBUG(node_->get_logger(), "Localization message receieved.");
-    if(msg->state == 2/*autoware_adapi_v1_msgs::msg::LocalizationInitializationState::INITIALIZED*/) last_localized=node_->now();
+    localization_seen = true;
+    localization_initialized =
+        msg->state == autoware_adapi_v1_msgs::msg::LocalizationInitializationState::INITIALIZED;
 }

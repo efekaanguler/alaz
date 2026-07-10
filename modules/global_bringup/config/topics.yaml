@@ -1,8 +1,9 @@
 topics:
   # ========== SENSORS ==========
-  input_pointcloud: "/sensing/lidar/concatenated/pointcloud"        # alaz_lidar_clustering, perception_module
-  input_laserscan: "/sensing/lidar/top/scan"                        # perception_module, odometry
-  camera_center_image: "/sensing/camera/camera_center/image_raw"    # perception_module
+  input_pointcloud: ""                                               # no real pointcloud source in 2D lidar setup
+  input_laserscan: "/sensing/scan"                                   # alaz_lidar_clustering, mission_control
+  camera_center_image: "/sensing/image_raw"                          # perception_module, localization
+  camera_center_info: "/sensing/camera_info"                         # localization
   camera_left_image: "/sensing/camera/camera_left/image_raw"        # perception_module
   camera_right_image: "/sensing/camera/camera_right/image_raw"      # perception_module
 
@@ -19,17 +20,17 @@ topics:
   hazard_cmd: "/control/command/hazard_lights_cmd"                   # my_vehicle_interface
 
   # ========== ODOMETRY ==========
-  odometry_output: "/localization/kinematic_state"                   # localization, planning, control
-  wheel_odometry: "/odometry/wheel_odom"                             # odometry, localization
+  odometry_output: "/odom"                                           # localization, mission_control
+  wheel_odometry: "/odom"                                            # odometry, localization
 
   # ========== LOCALIZATION ==========
   localization_pose: "/localization/pose_with_covariance"            # localization, planning, perception_module
-  localization_twist: "/localization/twist_with_covariance"          # localization, planning
+  localization_twist: "/localization/twist_estimator/twist_with_covariance" # localization, planning
 
   # ========== PERCEPTION ==========
   detected_objects: "/perception/object_recognition/objects"         # perception_module, planning
   occupancy_grid: "/perception/occupancy_grid_map/map"               # perception_module, planning
-  lidar_clusters: "/perception/lidar_clustering/clusters"            # alaz_lidar_clustering, perception_module
+  lidar_clusters: "/perception/object_recognition/detection/clusters" # alaz_lidar_clustering, perception_module
 
   # ========== PLANNING ==========
   planned_trajectory: "/planning/scenario_planning/trajectory"       # planning, control

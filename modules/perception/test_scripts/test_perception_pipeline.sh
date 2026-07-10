@@ -55,7 +55,7 @@ if ! command -v ros2 &> /dev/null; then
     echo -e "${RED}    source /opt/ros/humble/setup.bash${NC}"
     exit 1
 fi
-echo -e "${GREEN}  ✓ ROS 2 found$(NC)"
+echo -e "${GREEN}  ✓ ROS 2 found${NC}"
 
 # ── Step 2: Start dummy lidar ──
 echo -e "\n${YELLOW}[2/5] Starting dummy lidar publisher...${NC}"
@@ -87,7 +87,7 @@ fi
 echo -e "\n${YELLOW}[4/5] Verifying ROS topics...${NC}"
 sleep 2
 
-EXPECTED_TOPICS="/scan /sensing/camera/camera0/image_raw"
+EXPECTED_TOPICS="/sensing/scan /sensing/image_raw"
 for topic in $EXPECTED_TOPICS; do
     if ros2 topic list 2>/dev/null | grep -q "$topic"; then
         echo -e "${GREEN}  ✓ $topic${NC}"
@@ -99,11 +99,11 @@ done
 # ── Step 5: Check data flow ──
 echo -e "\n${YELLOW}[5/5] Checking data flow...${NC}"
 
-echo "  Checking /scan data..."
-timeout 3 ros2 topic hz /scan 2>/dev/null | head -1 || echo "  (no data within 3s)"
+echo "  Checking /sensing/scan data..."
+timeout 3 ros2 topic hz /sensing/scan 2>/dev/null | head -1 || echo "  (no data within 3s)"
 
-echo "  Checking /sensing/camera/camera0/image_raw data..."
-timeout 3 ros2 topic hz /sensing/camera/camera0/image_raw 2>/dev/null | head -1 || echo "  (no data within 3s)"
+echo "  Checking /sensing/image_raw data..."
+timeout 3 ros2 topic hz /sensing/image_raw 2>/dev/null | head -1 || echo "  (no data within 3s)"
 
 # If in Docker mode, also launch the detection pipeline
 if [ "$MODE" = "docker" ]; then
@@ -113,7 +113,7 @@ if [ "$MODE" = "docker" ]; then
         docker exec -d "$CONTAINER" bash -c \
             "source /opt/ros/humble/setup.bash && \
              source /autoware/install/setup.bash && \
-             ros2 launch tier4_perception_launch detection_module.launch.xml image_number:=1"
+             ros2 launch tier4_perception_launch detection_module.launch.xml image_number:=1 image_raw0:=/sensing/image_raw"
         echo -e "${GREEN}  ✓ Detection pipeline launched in Docker${NC}"
         sleep 5
 

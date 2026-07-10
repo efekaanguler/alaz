@@ -22,6 +22,9 @@ packages:
   localization:
     enabled: true
     launch_file: "localization.launch.py"
+    arguments:
+      src_image: "/sensing/image_raw"
+      src_info: "/sensing/camera_info"
 
   perception:
     enabled: true

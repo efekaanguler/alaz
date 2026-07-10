@@ -7,6 +7,7 @@ import os
 
 
 def generate_launch_description():
+    use_sim_time = LaunchConfiguration("use_sim_time")
     control_param_path = os.path.join(
         get_package_share_directory("control"), "config", "control.yaml"
     )
@@ -16,6 +17,11 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
+            DeclareLaunchArgument(
+                name="use_sim_time",
+                default_value="false",
+                description="Use simulation clock",
+            ),
             DeclareLaunchArgument(
                 name="control_params",
                 default_value=control_param_path,
@@ -27,21 +33,14 @@ def generate_launch_description():
                 description="Path to controller parameters file",
             ),
             Node(
-                package="trajectory_follower_node",
-                executable="trajectory_follower_node",
+                package="autoware_trajectory_follower_node",
+                executable="controller_node_exe",
                 name="trajectory_follower",
                 parameters=[
                     LaunchConfiguration("control_params"),
                     LaunchConfiguration("controller_params"),
+                    {"use_sim_time": use_sim_time},
                 ],
-                remappings=[],
-                output="screen",
-            ),
-            Node(
-                package="mpc_lateral_controller",
-                executable="mpc_lateral_controller_node",
-                name="mpc_lateral_controller",
-                parameters=[LaunchConfiguration("control_params")],
                 remappings=[],
                 output="screen",
             ),

@@ -441,8 +441,8 @@ def test_sensor_fusion():
     ls_launch = LAUNCH_DIR / "laserscan_to_pcl_and_occ.launch.xml"
     if ls_launch.exists():
         content = ls_launch.read_text()
-        if "/scan" in content:
-            ok("LaserScan input topic: /scan")
+        if "/sensing/scan" in content:
+            ok("LaserScan input topic: /sensing/scan")
         if "pointcloud" in content.lower() or "points" in content.lower():
             ok("PointCloud output configured")
     else:

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
   <arg name="vehicle_id" default="$(env VEHICLE_ID default)"/>
+  <arg name="use_sim_time" default="false"/>
+
+  <include file="$(find-pkg-share my_vehicle_interface)/launch/vehicle_interface.launch.xml">
+    <arg name="vehicle_id" value="$(var vehicle_id)"/>
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+  </include>
 </launch>

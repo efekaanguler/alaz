@@ -16,13 +16,18 @@ import cv2
 import numpy as np
 import json
 
+try:
+    from vision_msgs.msg import Detection2DArray
+except Exception:  # pragma: no cover - depends on runtime image
+    Detection2DArray = None
+
 
 class DetectionVisualizer(Node):
     def __init__(self):
         super().__init__('detection_visualizer')
 
-        self.declare_parameter('image_topic', '/camera/image_raw')
-        self.declare_parameter('detection_topic', '/perception/detections')
+        self.declare_parameter('image_topic', '/sensing/image_raw')
+        self.declare_parameter('detection_topic', '/rois0')
 
         image_topic = self.get_parameter('image_topic').value
         det_topic = self.get_parameter('detection_topic').value
@@ -31,6 +36,10 @@ class DetectionVisualizer(Node):
             Image, image_topic, self.image_callback, 10)
         self.det_sub = self.create_subscription(
             String, det_topic, self.det_callback, 10)
+        self.det2d_sub = None
+        if Detection2DArray is not None:
+            self.det2d_sub = self.create_subscription(
+                Detection2DArray, det_topic, self.det2d_callback, 10)
 
         self.latest_image = None
         self.latest_dets = []
@@ -72,6 +81,35 @@ class DetectionVisualizer(Node):
             self.latest_dets = json.loads(msg.data)
         except json.JSONDecodeError:
             self.latest_dets = []
+
+    def det2d_callback(self, msg):
+        detections = []
+        for det in msg.detections:
+            label = 'unknown'
+            score = 0.0
+            if det.results:
+                hyp = det.results[0].hypothesis if hasattr(det.results[0], 'hypothesis') else det.results[0]
+                label = str(getattr(hyp, 'class_id', getattr(hyp, 'id', 'unknown')))
+                score = float(getattr(hyp, 'score', 0.0))
+
+            center = det.bbox.center
+            if hasattr(center, 'position'):
+                cx = float(center.position.x)
+                cy = float(center.position.y)
+            else:
+                cx = float(center.x)
+                cy = float(center.y)
+            w = float(det.bbox.size_x)
+            h = float(det.bbox.size_y)
+            detections.append({
+                'label': label,
+                'score': score,
+                'x1': cx - w * 0.5,
+                'y1': cy - h * 0.5,
+                'x2': cx + w * 0.5,
+                'y2': cy + h * 0.5,
+            })
+        self.latest_dets = detections
 
     def display_callback(self):
         if self.latest_image is None:

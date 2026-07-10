@@ -3,7 +3,7 @@
   perception.launch.xml — Main launch file for the perception pipeline.
 
   Launches:
-  - Camera image publisher (webcam → /camera/image_raw)
+  - CameraInfo fallback for /sensing/image_raw
   - Detection visualizer (optional)
 
   Usage:
@@ -16,8 +16,8 @@
   <arg name="enable_viz" default="true" description="Enable detection visualizer"/>
   <arg name="enable_ai_pipeline" default="true" description="Automatically start the NUC AI pipeline (YOLO+Fusion)"/>
   <arg name="camera_device" default="0" description="Camera device index"/>
-  <arg name="image_topic" default="/camera/image_raw" description="Camera topic"/>
-  <arg name="detection_topic" default="/perception/detections" description="Detection output topic"/>
+  <arg name="image_topic" default="/sensing/image_raw" description="Camera topic"/>
+  <arg name="detection_topic" default="/rois0" description="Detection output topic"/>
 
   <!-- Webcam → ROS bridge (rdw_sensor_kit_launch içinde zaten başlatıldığı için kapatıldı) -->
   <!--
@@ -33,12 +33,12 @@
 
   <!-- CameraInfo Fallback Publisher (YabLoc için gerekli) -->
   <node pkg="perception" exec="camera_info_fallback_publisher.py" name="camera_info_publisher" output="screen"
-    args="--image-topic $(var image_topic) --camera-info-topic /sensing/camera_info --width 640 --height 480"
+    args="--image-topic $(var image_topic) --camera-info-topic /sensing/camera_info --frame-id camera_center_link --width 640 --height 480"
     unless="$(var use_sim_time)"/>
 
   <!-- NUC AI Pipeline (YOLO + Lidar Fusion) -->
   <group if="$(var enable_ai_pipeline)">
-    <executable cmd="bash $(find-pkg-share perception)/../../lib/perception/nuc_docker_perception.sh" output="screen" />
+    <executable cmd="bash $(find-pkg-share perception)/../../lib/perception/nuc_docker_perception.sh --camera-topic $(var image_topic) --scan /sensing/scan" output="screen" />
   </group>
 
   <!-- Detection visualizer (optional) -->

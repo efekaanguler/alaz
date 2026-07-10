@@ -1,14 +1,14 @@
 /**:
   ros__parameters:
-    wheel_radius: 0.2916
-    wheel_width: 0.175
-    wheel_base: 1.55
-    wheel_tread: 1.40
-    front_overhang: 0.80
-    rear_overhang: 0.85
-    left_overhang: 0.0875
-    right_overhang: 0.0875
-    vehicle_height: 1.5
+    wheel_radius: 0.27
+    wheel_width: 0.18
+    wheel_base: 1.05
+    wheel_tread: 1.00
+    front_overhang: 0.40
+    rear_overhang: 0.27
+    left_overhang: 0.10
+    right_overhang: 0.10
+    vehicle_height: 1.0
     max_steer_angle: 0.5236
 
     # motion state constraints

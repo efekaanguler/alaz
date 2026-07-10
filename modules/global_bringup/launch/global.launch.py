@@ -49,6 +49,12 @@ def generate_launch_description():
         default_value="rdw_vehicle",
         description="Default vehicle model name"
     ))
+    actions.append(DeclareLaunchArgument(
+        "use_sim_time",
+        default_value="false",
+        description="Use simulation clock for all included launch files that support it"
+    ))
+    use_sim_time = LaunchConfiguration("use_sim_time")
     
     # ========== PACKAGES ==========
     for pkg_name, pkg_cfg in packages_cfg.get("packages", {}).items():
@@ -61,7 +67,8 @@ def generate_launch_description():
             pkg_share = get_package_share_directory(pkg_name)
             launch_path = os.path.join(pkg_share, "launch", launch_file)
             if os.path.exists(launch_path):
-                pkg_args = pkg_cfg.get("arguments", {})
+                pkg_args = dict(pkg_cfg.get("arguments", {}))
+                pkg_args.setdefault("use_sim_time", use_sim_time)
                 actions.append(IncludeLaunchDescription(
                     AnyLaunchDescriptionSource(launch_path),
                     launch_arguments=pkg_args.items(),

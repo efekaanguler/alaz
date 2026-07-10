@@ -3,7 +3,7 @@
 <package format="3">
   <name>my_vehicle_interface</name>
   <version>1.0.0</version>
-  <description>Autoware vehicle interface with CAN support using ros2_socketcan</description>
+  <description>Autoware vehicle interface with CAN support through can_msgs Frame topics</description>
   <maintainer email="egekksal@gmail.com">Ege Koksal</maintainer>
   <license>Apache-2.0</license>
 

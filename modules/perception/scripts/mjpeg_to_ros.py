@@ -9,7 +9,7 @@ Usage (on Mac, outside Docker):
     source /opt/ros/humble/setup.bash   # or your ROS 2 workspace
     python3 mjpeg_to_ros.py
 
-The node publishes to /camera/image_raw at ~30 fps.
+The node publishes to /sensing/image_raw at ~30 fps by default.
 """
 
 import rclpy
@@ -28,7 +28,8 @@ class WebcamPublisher(Node):
         self.declare_parameter('width', 640)
         self.declare_parameter('height', 480)
         self.declare_parameter('fps', 30.0)
-        self.declare_parameter('topic', '/camera/image_raw')
+        self.declare_parameter('topic', '/sensing/image_raw')
+        self.declare_parameter('frame_id', 'camera_center_link')
 
         raw_device = self.get_parameter('device').value
         try:
@@ -42,6 +43,7 @@ class WebcamPublisher(Node):
         height = self.get_parameter('height').value
         fps = self.get_parameter('fps').value
         topic = self.get_parameter('topic').value
+        self.frame_id = self.get_parameter('frame_id').value
 
         # Open camera
         self.cap = cv2.VideoCapture(device)
@@ -74,7 +76,7 @@ class WebcamPublisher(Node):
         # Convert OpenCV BGR frame to ROS Image message
         msg = Image()
         msg.header.stamp = self.get_clock().now().to_msg()
-        msg.header.frame_id = 'camera'
+        msg.header.frame_id = self.frame_id
         msg.height = frame.shape[0]
         msg.width = frame.shape[1]
         msg.encoding = 'bgr8'
@@ -102,7 +104,8 @@ def main(args=None):
         pass
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        if rclpy.ok():
+            rclpy.shutdown()
 
 
 if __name__ == '__main__':

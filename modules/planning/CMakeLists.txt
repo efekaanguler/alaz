@@ -15,7 +15,6 @@ find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_ros REQUIRED)
 find_package(autoware_behavior_path_planner REQUIRED)
 find_package(autoware_velocity_smoother REQUIRED)
-find_package(autoware_trajectory_follower_node REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

@@ -31,6 +31,7 @@ def generate_launch_description():
     pf_share = get_package_share_directory("yabloc_particle_filter")
     common_share = get_package_share_directory("yabloc_common")
     map_loader_share = get_package_share_directory("autoware_map_loader")
+    this_share = get_package_share_directory("localization")
 
     # Launch files
     img_launch = os.path.join(img_share, "launch", "yabloc_image_processing.launch.xml")
@@ -38,13 +39,13 @@ def generate_launch_description():
     map_launch = os.path.join(map_loader_share, "launch", "lanelet2_map_loader.launch.xml")
 
     # Default param yaml paths
-    default_undistort = os.path.join(img_share, "config", "undistort.param.yaml")
-    default_graph_seg = os.path.join(img_share, "config", "graph_segment.param.yaml")
-    default_seg_filter = os.path.join(img_share, "config", "segment_filter.param.yaml")
+    default_undistort = os.path.join(this_share, "config", "undistort_params.yaml")
+    default_graph_seg = os.path.join(this_share, "config", "graph_segment_params.yaml")
+    default_seg_filter = os.path.join(this_share, "config", "segment_filter_params.yaml")
 
-    default_predictor = os.path.join(pf_share, "config", "predictor.param.yaml")
-    default_cam_corr = os.path.join(pf_share, "config", "camera_particle_corrector.param.yaml")
-    default_gnss_corr = os.path.join(pf_share, "config", "gnss_particle_corrector.param.yaml")
+    default_predictor = os.path.join(this_share, "config", "predictor_params.yaml")
+    default_cam_corr = os.path.join(this_share, "config", "camera_particle_corrector_params.yaml")
+    default_gnss_corr = os.path.join(this_share, "config", "gnss_particle_corrector_params.yaml")
 
     default_ll2_decomposer = os.path.join(common_share, "config", "ll2_decomposer.param.yaml")
 
@@ -67,8 +68,8 @@ def generate_launch_description():
 
         # Your topics
         DeclareLaunchArgument("odom_topic", default_value="/odom"),
-        DeclareLaunchArgument("src_image", default_value="/sensing/camera/image"),
-        DeclareLaunchArgument("src_info", default_value="/sensing/camera/camera_info"),
+        DeclareLaunchArgument("src_image", default_value="/sensing/image_raw"),
+        DeclareLaunchArgument("src_info", default_value="/sensing/camera_info"),
         DeclareLaunchArgument("twist_cov_topic", default_value="/localization/twist_estimator/twist_with_covariance"),
 
         # Params: image_processing
@@ -90,6 +91,7 @@ def generate_launch_description():
             executable="map_projector_info_pub.py",
             name="map_projector_info_pub",
             output="screen",
+            parameters=[{"use_sim_time": use_sim_time}],
         ),
 
         # 1) Lanelet2 map loader -> publish exactly /map/vector_map (requires projector info)

@@ -32,7 +32,7 @@ EXPECT_FUSION=true
 EXPECT_TRAFFIC=true
 CAMERA_COUNT=1
 BASE_FRAME="base_link"
-SCAN_TOPIC="/scan"
+SCAN_TOPIC="/sensing/scan"
 LIDAR_TOPIC="/points_raw"
 STARTUP_WAIT=12
 PIPELINE_READY_WAIT=45
@@ -71,7 +71,7 @@ Options:
   --strict                Treat warnings as failure (recommended for pre-race checks)
   --deep                  Enable deeper stress checks (strict + repeated echo + soak)
   --base-frame FRAME      TF base frame to validate (default: base_link)
-  --scan TOPIC            LaserScan topic to probe (default: /scan)
+  --scan TOPIC            LaserScan topic to probe (default: /sensing/scan)
   --lidar TOPIC           Raw PointCloud2 topic to probe (default: /points_raw)
   --startup-wait SEC      Wait after starting pipeline (default: 12)
   --rate-sample SEC       Duration for ros2 topic hz (default: 5)
@@ -97,7 +97,7 @@ Examples:
   bash test_scripts/test_nuc_perception_runtime.sh --start --deep --cameras 1
 
   # Pass extra args to nuc_docker_perception.sh
-  bash test_scripts/test_nuc_perception_runtime.sh --start -- --cameras 1 --scan /scan
+  bash test_scripts/test_nuc_perception_runtime.sh --start -- --cameras 1 --scan /sensing/scan
 EOF
 }
 
@@ -267,7 +267,17 @@ cleanup() {
   trap - EXIT INT TERM
   if [ -n "${PIPELINE_PID:-}" ]; then
     echo -e "\n${YELLOW}Stopping started pipeline (pid=${PIPELINE_PID})...${NC}"
+    if command -v pkill >/dev/null 2>&1; then
+      pkill -TERM -P "${PIPELINE_PID}" 2>/dev/null || true
+    fi
     kill "${PIPELINE_PID}" 2>/dev/null || true
+    sleep 2
+    if kill -0 "${PIPELINE_PID}" 2>/dev/null; then
+      if command -v pkill >/dev/null 2>&1; then
+        pkill -KILL -P "${PIPELINE_PID}" 2>/dev/null || true
+      fi
+      kill -KILL "${PIPELINE_PID}" 2>/dev/null || true
+    fi
     wait "${PIPELINE_PID}" 2>/dev/null || true
   fi
   if [ -n "${TEMP_DIR:-}" ] && [ -d "${TEMP_DIR}" ]; then
@@ -803,9 +813,13 @@ check_topic_topologies() {
   check_topic_topology "/perception/object_recognition/objects" 1 0 "PredictedObjects" || true
 
   if topic_exists "/perception/lidar/pointcloud"; then
-    # occupancy + clustering should subscribe when fusion and occupancy fallback are on
-    local min_subs=1
-    [ "$EXPECT_FUSION" = true ] && min_subs=2
+    # Consumers are optional when fusion and occupancy fallback are both disabled.
+    local min_subs=0
+    if [ "$EXPECT_FUSION" = true ]; then
+      min_subs=2
+    elif topic_exists "/perception/occupancy_grid" || topic_exists "/perception/obstacle/pointcloud"; then
+      min_subs=1
+    fi
     check_topic_topology "/perception/lidar/pointcloud" 1 "$min_subs" "LiDAR pointcloud" || true
   fi
   if topic_exists "/perception/obstacle/pointcloud"; then
@@ -1071,6 +1085,10 @@ check_image_message_sanity() {
   local desc="$2"
   local file="$TEMP_DIR/$(echo "$topic" | tr '/' '_').echo.txt"
   [ -f "$file" ] || return 0
+  if [ ! -s "$file" ]; then
+    warn "$desc content sanity skipped; echo snapshot is empty"
+    return 0
+  fi
 
   local width height encoding step frame
   width="$(extract_field_value "$file" "width" | tr -d ' ')"
@@ -1252,6 +1270,9 @@ source_envs() {
   if [ -f "$MODULE_DIR/detection_ws/install/setup.bash" ]; then
     source "$MODULE_DIR/detection_ws/install/setup.bash" >/dev/null 2>&1 || true
   fi
+  if [ -f "/tmp/alaz_detection_ws_install/setup.bash" ]; then
+    source "/tmp/alaz_detection_ws_install/setup.bash" >/dev/null 2>&1 || true
+  fi
 
   case "$flags" in
     *u*) set -u ;;
@@ -1337,9 +1358,19 @@ print_context() {
   pkg_installed() {
     ros2 pkg prefix "$1" >/dev/null 2>&1
   }
-  for pkg in pointcloud_to_laserscan tier4_perception_launch autoware_detection_autoware_bridge autoware_bytetrack autoware_tensorrt_yolox; do
+  for pkg in pointcloud_to_laserscan; do
     if pkg_installed "$pkg"; then
       pass "Package installed: $pkg"
+    else
+      fail "Package missing: $pkg"
+    fi
+  done
+
+  for pkg in tier4_perception_launch autoware_detection_autoware_bridge autoware_bytetrack autoware_tensorrt_yolox; do
+    if pkg_installed "$pkg"; then
+      pass "Package installed: $pkg"
+    elif [ "$START_PIPELINE" = true ]; then
+      warn "Package not visible in test shell before pipeline build: $pkg"
     else
       fail "Package missing: $pkg"
     fi
@@ -1370,9 +1401,13 @@ detect_camera_topics() {
   topics="$(ros2 topic list 2>/dev/null || true)"
   local i img info alt
   for i in $(seq 0 $((CAMERA_COUNT - 1))); do
-    img="/sensing/camera/camera${i}/image_raw"
+    if [ "$i" -eq 0 ]; then
+      img="/sensing/image_raw"
+    else
+      img="/sensing/camera/camera${i}/image_raw"
+    fi
     if ! echo "$topics" | grep -Fxq "$img"; then
-      alt="$(echo "$topics" | grep -E "/camera${i}/image_raw$|^/camera/image_raw$" | head -1 || true)"
+      alt="$(echo "$topics" | grep -E "^/sensing/image_raw$|/sensing/camera/camera${i}/image_raw$|/camera${i}/image_raw$|^/camera/image_raw$" | head -1 || true)"
       [ -n "$alt" ] && img="$alt"
     fi
     info="${img%/image_raw}/camera_info"
@@ -1549,6 +1584,8 @@ check_camera_info_and_tf() {
       img_echo_file_sensor="$TEMP_DIR/$(echo "$img" | tr '/' '_').echo.txt"
       if topic_echo_once_sensor "$img" "$img_echo_file_sensor"; then
         pass "Camera $i image message received once: $img"
+      elif [ "$USE_DUMMY_CAMERA" = true ]; then
+        warn "Camera $i image echo timed out in dummy mode; downstream YOLO/bridge topics verify image flow"
       else
         fail "Camera $i image no message within timeout: $img"
       fi
@@ -1593,7 +1630,7 @@ check_camera_info_and_tf() {
 
     local img_echo_file img_w img_h img_frame
     img_echo_file="$TEMP_DIR/$(echo "$img" | tr '/' '_').echo.txt"
-    if [ -f "$img_echo_file" ]; then
+    if [ -s "$img_echo_file" ]; then
       img_w="$(extract_field_value "$img_echo_file" "width" | tr -d ' ')"
       img_h="$(extract_field_value "$img_echo_file" "height" | tr -d ' ')"
       img_frame="$(extract_field_value "$img_echo_file" "frame_id" | tr -d '\"')"

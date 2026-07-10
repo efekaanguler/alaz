@@ -27,7 +27,8 @@ class MissionController: public rclcpp::Node {
         modes[MODE_RUN] = std::make_shared<RunMode>(shared_this);
         modes[MODE_PAUSE] = std::make_shared<PauseMode>(shared_this);
         modes[MODE_PARK] = std::make_shared<ParkMode>(shared_this);
-        modes[MODE_EMERGENCY] = std::make_shared<EmergencyMode>(shared_this);
+        emergency_mode_ = std::make_shared<EmergencyMode>(shared_this);
+        modes[MODE_EMERGENCY] = emergency_mode_;
 
         CURRENT_MODE = MODE_START;
         last_mode_=CURRENT_MODE;
@@ -38,6 +39,7 @@ class MissionController: public rclcpp::Node {
     uint8_t CURRENT_MODE=MODE_START;
     uint8_t last_mode_;
     std::map<unsigned int, std::shared_ptr<ModeBase>> modes;
+    std::shared_ptr<EmergencyMode> emergency_mode_;
 
     rclcpp::Publisher<std_msgs::msg::UInt8>::SharedPtr mode_publisher_;
     rclcpp::TimerBase::SharedPtr publisher_timer_;
@@ -58,7 +60,7 @@ class MissionController: public rclcpp::Node {
         last_mode_=CURRENT_MODE;
         CURRENT_MODE = modes[CURRENT_MODE]->execute();
         
-        if(CURRENT_MODE != MODE_EMERGENCY && CURRENT_MODE != MODE_START && modes[MODE_EMERGENCY]->execute() == MODE_EMERGENCY) {
+        if(CURRENT_MODE != MODE_EMERGENCY && CURRENT_MODE != MODE_START && !emergency_mode_->isHealthy()) {
             last_mode_ = CURRENT_MODE;
             CURRENT_MODE = MODE_EMERGENCY;
         }

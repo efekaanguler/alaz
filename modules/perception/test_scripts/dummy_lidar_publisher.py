@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Dummy LaserScan publisher for testing the perception → planning pipeline.
 
-Publishes synthetic LaserScan data on /scan topic so that the
+Publishes synthetic LaserScan data on /sensing/scan topic so that the
 laserscan_to_pcl_and_occ pipeline can be tested without real hardware.
 
 Simulates a simple scene with:
@@ -25,14 +25,15 @@ from sensor_msgs.msg import LaserScan
 
 
 class DummyLidarPublisher(Node):
-    def __init__(self, rate=10.0, add_obstacle=False):
+    def __init__(self, rate=10.0, add_obstacle=False, topic="/sensing/scan", frame_id="lidar_link"):
         super().__init__('dummy_lidar_publisher')
-        self.pub = self.create_publisher(LaserScan, '/scan', 10)
+        self.pub = self.create_publisher(LaserScan, topic, 10)
         self.timer = self.create_timer(1.0 / rate, self.publish_scan)
         self.add_obstacle = add_obstacle
+        self.frame_id = frame_id
         self.frame_count = 0
         self.get_logger().info(
-            f'Dummy lidar publisher started at {rate} Hz, '
+            f'Dummy lidar publisher started at {rate} Hz on {topic}, '
             f'obstacle={"on" if add_obstacle else "off"}'
         )
 
@@ -41,7 +42,7 @@ class DummyLidarPublisher(Node):
             return
         msg = LaserScan()
         msg.header.stamp = self.get_clock().now().to_msg()
-        msg.header.frame_id = 'laser'
+        msg.header.frame_id = self.frame_id
 
         # Scan parameters (typical 2D lidar)
         msg.angle_min = -math.pi           # -180°
@@ -94,10 +95,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--rate', type=float, default=10.0, help='Publish rate in Hz')
     ap.add_argument('--obstacle', action='store_true', help='Add moving obstacle')
+    ap.add_argument('--topic', default='/sensing/scan', help='Output LaserScan topic')
+    ap.add_argument('--frame-id', default='lidar_link', help='LaserScan frame id')
     args = ap.parse_args()
 
     rclpy.init()
-    node = DummyLidarPublisher(rate=args.rate, add_obstacle=args.obstacle)
+    node = DummyLidarPublisher(
+        rate=args.rate,
+        add_obstacle=args.obstacle,
+        topic=args.topic,
+        frame_id=args.frame_id,
+    )
     try:
         rclpy.spin(node)
     except (KeyboardInterrupt, ExternalShutdownException):
