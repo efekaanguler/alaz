@@ -9,9 +9,7 @@
 #include <mission_control/mode_emergency.hpp>
 #include <string>
 #include <memory>
-
 using namespace std::chrono_literals;
-
 class MissionController: public rclcpp::Node {
     
     public:
@@ -21,51 +19,73 @@ class MissionController: public rclcpp::Node {
         publisher_timer_ = create_wall_timer(500ms, std::bind(&MissionController::publish_mode, this));
         loop_timer_ = create_wall_timer(500ms, std::bind(&MissionController::control_loop, this));
     }
-
     void init() {
         auto shared_this = shared_from_this();
-        modes[MODE_START] = std::make_shared<StartMode>(shared_this);
-        modes[MODE_RUN] = std::make_shared<RunMode>(shared_this);
-        modes[MODE_PAUSE] = std::make_shared<PauseMode>(shared_this);
-        modes[MODE_PARK] = std::make_shared<ParkMode>(shared_this);
-        modes[MODE_EMERGENCY] = std::make_shared<EmergencyMode>(shared_this);
+        auto start_mode = std::make_shared<StartMode>(shared_this);
+        auto run_mode = std::make_shared<RunMode>(shared_this);
+        auto pause_mode = std::make_shared<PauseMode>(shared_this);
+        auto park_mode = std::make_shared<ParkMode>(shared_this);
+        auto emergency_mode = std::make_shared<EmergencyMode>(shared_this);
 
-        // NEW: Subscribe to a manual parking trigger
+        modes[MODE_START] = start_mode;
+        modes[MODE_RUN] = run_mode;
+        modes[MODE_PAUSE] = pause_mode;
+        modes[MODE_PARK] = park_mode;
+        modes[MODE_EMERGENCY] = emergency_mode;
+
+        // Cache concrete pointers once instead of dynamic_pointer_cast'ing every tick
+        run_mode_ = run_mode;
+        park_mode_ = park_mode;
+        emergency_mode_ = emergency_mode;
+
+        // Manual operator overrides
         manual_park_sub_ = create_subscription<std_msgs::msg::Bool>(
-            "/mission_control/manual_park", 10, 
+            "/mission_control/manual_park", 10,
             std::bind(&MissionController::manual_park_callback, this, std::placeholders::_1)
+        );
+        manual_resume_sub_ = create_subscription<std_msgs::msg::Bool>(
+            "/mission_control/manual_resume", 10,
+            std::bind(&MissionController::manual_resume_callback, this, std::placeholders::_1)
         );
 
         CURRENT_MODE = MODE_START;
-        last_mode_=CURRENT_MODE;
+        last_mode_ = CURRENT_MODE;
+        previous_executed_mode_ = MODE_START;
         RCLCPP_INFO(this->get_logger(), "Vehicle Mode Set to %u", CURRENT_MODE);
     }
-
     private:
     uint8_t CURRENT_MODE=MODE_START;
     uint8_t last_mode_;
+    uint8_t previous_executed_mode_ = MODE_START;
     std::map<unsigned int, std::shared_ptr<ModeBase>> modes;
+
+    std::shared_ptr<RunMode> run_mode_;
+    std::shared_ptr<ParkMode> park_mode_;
+    std::shared_ptr<EmergencyMode> emergency_mode_;
     
     bool manual_park_requested_ = false;
-
     rclcpp::Publisher<std_msgs::msg::UInt8>::SharedPtr mode_publisher_;
     rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr manual_park_sub_;
+    rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr manual_resume_sub_;
     rclcpp::TimerBase::SharedPtr publisher_timer_;
     rclcpp::TimerBase::SharedPtr loop_timer_;
-
     void manual_park_callback(const std_msgs::msg::Bool::SharedPtr msg) {
         if (msg->data) {
             RCLCPP_INFO(this->get_logger(), "Manual park sequence requested by operator.");
             manual_park_requested_ = true;
         }
     }
-
+    void manual_resume_callback(const std_msgs::msg::Bool::SharedPtr msg) {
+        if (msg->data && park_mode_) {
+            RCLCPP_INFO(this->get_logger(), "Manual resume requested by operator.");
+            park_mode_->requestResume();
+        }
+    }
     void publish_mode() {
         auto message = std_msgs::msg::UInt8();
         message.data = CURRENT_MODE;
         mode_publisher_->publish(message);
     }
-
     void control_loop() {  
         if(last_mode_ != CURRENT_MODE) {
             RCLCPP_INFO(this->get_logger(), "Vehicle Mode Set to %u", CURRENT_MODE);
@@ -74,23 +94,33 @@ class MissionController: public rclcpp::Node {
 
         // 1. Check manual overrides before executing the normal state
         if (manual_park_requested_ && CURRENT_MODE != MODE_EMERGENCY && CURRENT_MODE != MODE_PARK) {
+            if (park_mode_) {
+                park_mode_->requestManualHold();
+            }
             CURRENT_MODE = MODE_PARK;
             manual_park_requested_ = false; // reset the latch
         }
 
-        // 2. Execute the current state
+        // 2. If we're entering RUN this tick from a different mode, let RunMode
+        //    know so it re-publishes engage=true rather than assuming it's
+        //    still engaged from a previous RUN session.
+        if (run_mode_ && CURRENT_MODE == MODE_RUN && previous_executed_mode_ != MODE_RUN) {
+            run_mode_->onEnter();
+        }
+
+        // 3. Execute the current state
+        unsigned int mode_being_executed = CURRENT_MODE;
         last_mode_=CURRENT_MODE;
         CURRENT_MODE = modes[CURRENT_MODE]->execute();
+        previous_executed_mode_ = mode_being_executed;
         
-        // 3. Side-effect free emergency watchdog check via dynamic cast
-        auto emergency_mode = std::dynamic_pointer_cast<EmergencyMode>(modes[MODE_EMERGENCY]);
-        if(CURRENT_MODE != MODE_EMERGENCY && CURRENT_MODE != MODE_START && emergency_mode && emergency_mode->isEmergencyTriggered()) {
+        // 4. Side-effect free emergency watchdog check
+        if(CURRENT_MODE != MODE_EMERGENCY && CURRENT_MODE != MODE_START && emergency_mode_ && emergency_mode_->isEmergencyTriggered()) {
             last_mode_ = CURRENT_MODE;
             CURRENT_MODE = MODE_EMERGENCY;
         }
     }
 };
-
 int main(int argc, char **argv) {
     rclcpp::init(argc, argv);
     auto node = std::make_shared<MissionController>();

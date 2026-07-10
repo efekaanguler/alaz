@@ -17,7 +17,6 @@ EmergencyMode::EmergencyMode(rclcpp::Node::SharedPtr node) : node_(node) {
     emergency_publisher_ = node_->create_publisher<std_msgs::msg::Bool>(EMERGENCY_PUBLISHER_TOPIC, 10);
 }
 
-// NEW METHOD: Pure read-only check without publishers or logs
 bool EmergencyMode::isEmergencyTriggered() {
     auto now = node_->now();
 

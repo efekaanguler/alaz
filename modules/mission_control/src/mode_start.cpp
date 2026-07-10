@@ -17,15 +17,11 @@ StartMode::StartMode(rclcpp::Node::SharedPtr node) : node_(node) {
     if(!ODOM_TOPIC.empty())
         odom_subscriber = node_->create_subscription<nav_msgs::msg::Odometry>(ODOM_TOPIC, 10, std::bind(&StartMode::odom_callback, this, std::placeholders::_1));
     
-    localization_subscriber = node->create_subscription<autoware_adapi_v1_msgs::msg::LocalizationInitializationState>("/localization/initialization_state", 10, std::bind(&StartMode::localization_callback, this, std::placeholders::_1));
-
-    localized = false;
+    localization_subscriber = node_->create_subscription<nav_msgs::msg::Odometry>(LOCALIZATION_TOPIC, 10, std::bind(&StartMode::localization_callback, this, std::placeholders::_1));
 }
 
-
 unsigned int StartMode::execute() {
-
-    bool returnStart=false;
+    bool returnStart = false;
     
     if(!LIDAR_TOPIC.empty() && !lidar_read) {
         RCLCPP_ERROR(node_->get_logger(), "No Lidar Data");
@@ -34,7 +30,6 @@ unsigned int StartMode::execute() {
     if(!GNSS_TOPIC.empty() && !gnss_read) {
         RCLCPP_ERROR(node_->get_logger(), "No GNSS Data");
         returnStart = true;
-
     }
     if(!IMU_TOPIC.empty() && !imu_read) {
         RCLCPP_ERROR(node_->get_logger(), "No IMU Data");
@@ -43,7 +38,6 @@ unsigned int StartMode::execute() {
     if(!CAMERA_TOPIC.empty() && !camera_read) {
         RCLCPP_ERROR(node_->get_logger(), "No Camera Data");
         returnStart = true;
-
     }
     if(!ODOM_TOPIC.empty() && !odom_read) {
         RCLCPP_ERROR(node_->get_logger(), "No Odometry Data");
@@ -64,7 +58,6 @@ unsigned int StartMode::execute() {
     RCLCPP_INFO(node_->get_logger(), "Vehicle Started, Entering Pause Mode");
     return MODE_PAUSE;
 }
-
 
 void StartMode::lidar_callback(sensor_msgs::msg::LaserScan::SharedPtr msg) {
     (void)msg;
@@ -91,7 +84,7 @@ void StartMode::odom_callback(nav_msgs::msg::Odometry::SharedPtr msg) {
     odom_read=true;
 }
 
-void StartMode::localization_callback(autoware_adapi_v1_msgs::msg::LocalizationInitializationState::SharedPtr msg) {
-    if(msg->state == autoware_adapi_v1_msgs::msg::LocalizationInitializationState::INITIALIZED) localized=true;
-    else localized=false;
+void StartMode::localization_callback(nav_msgs::msg::Odometry::SharedPtr msg) {
+    (void)msg;
+    localized = true;
 }

@@ -1,3 +1,6 @@
+#ifndef MODE_EMERGENCY_HPP
+#define MODE_EMERGENCY_HPP
+
 #include <mission_control/mode_base.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/laser_scan.hpp>
@@ -6,7 +9,6 @@
 #include <sensor_msgs/msg/image.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <std_msgs/msg/bool.hpp>
-
 class EmergencyMode : public ModeBase {
 public:
     std::string LIDAR_TOPIC="/sensing/scan";
@@ -16,17 +18,12 @@ public:
     std::string ODOM_TOPIC="/odom";
     std::string LOCALIZATION_TOPIC="/localization/kinematic_state";
     std::string EMERGENCY_PUBLISHER_TOPIC="/mission_control/emergency_stop";
-
     EmergencyMode(rclcpp::Node::SharedPtr node);
     unsigned int execute() override;
-
-    // NEW: Side-effect-free status check
+    // Side-effect-free status check (no publishing, no logging)
     bool isEmergencyTriggered();
-
     private:
-
     double TIMEOUT = 1.0;
-
     rclcpp::Node::SharedPtr node_;
     rclcpp::Time last_lidar;
     rclcpp::Time last_gnss;
@@ -43,13 +40,13 @@ public:
     rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr localization_subscriber;
     
     rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr emergency_publisher_;
-
     void lidar_callback(sensor_msgs::msg::LaserScan::SharedPtr msg);
     void gnss_callback(sensor_msgs::msg::NavSatFix::SharedPtr msg);
     void imu_callback(sensor_msgs::msg::Imu::SharedPtr msg);
     void camera_callback(sensor_msgs::msg::Image::SharedPtr msg);
     void odom_callback(nav_msgs::msg::Odometry::SharedPtr msg);
     void localization_callback(nav_msgs::msg::Odometry::SharedPtr msg);
-
     bool checkState();
 };
+
+#endif
