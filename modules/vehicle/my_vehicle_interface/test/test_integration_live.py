@@ -38,7 +38,8 @@ import os
 try:
     import rclpy
     from rclpy.node import Node
-    from rclpy.qos import QoSProfile
+    from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
+    from std_msgs.msg import Bool
     from can_msgs.msg import Frame
     from autoware_control_msgs.msg import Control
     from autoware_vehicle_msgs.msg import (
@@ -174,6 +175,15 @@ class IntegrationTestNode(Node):
             GearCommand, "/control/command/gear_cmd", QoSProfile(depth=10))
         self.can_in_pub = self.create_publisher(
             Frame, "/from_can_bus", QoSProfile(depth=100))
+        emergency_qos = QoSProfile(
+            depth=1,
+            durability=DurabilityPolicy.TRANSIENT_LOCAL,
+            reliability=ReliabilityPolicy.RELIABLE,
+        )
+        self.emergency_pub = self.create_publisher(
+            Bool, "/mission_control/emergency_stop", emergency_qos)
+        self.emergency_active = True
+        self.create_timer(0.2, self.publish_emergency_state)
 
     def _on_can_out(self, msg):
         self.can_frames_out.append(msg)
@@ -229,6 +239,13 @@ class IntegrationTestNode(Node):
         msg = GearCommand()
         msg.command = gear_value
         self.gear_pub.publish(msg)
+
+    def send_emergency(self, active):
+        self.emergency_active = active
+        self.publish_emergency_state()
+
+    def publish_emergency_state(self):
+        self.emergency_pub.publish(Bool(data=self.emergency_active))
 
     def send_fake_speed(self, speed_hmh):
         """Kart gibi speed sensor (0x440) CAN mesajı gönder."""
@@ -343,6 +360,75 @@ def test_01_node_alive(node):
     return True
 
 
+def test_safety_stop_chain(node):
+    """Emergency and command timeout must produce the physical safe command."""
+    header("SAFETY: Emergency and Command Watchdog")
+
+    def assert_safe_command(label):
+        steer = node.get_last_can_by_id(WIKI["STEER_CMD_ID"])
+        motor = node.get_last_can_by_id(WIKI["MOTOR_CMD_ID"])
+        brake = node.get_last_can_by_id(WIKI["BRAKE_CMD_ID"])
+        if not steer or not motor or not brake:
+            FAIL(f"{label}: safe CAN frame set is incomplete")
+            return
+
+        steer_value = struct.unpack("<f", bytes(steer.data[:4]))[0]
+        if (abs(steer_value) < 0.001 and motor.data[0] == 0 and
+                motor.data[2] == WIKI["GEAR_N"] and brake.data[0] == 100):
+            PASS(f"{label}: centered steering, zero throttle, neutral, full brake")
+        else:
+            FAIL(
+                f"{label}: steer={steer_value}, throttle={motor.data[0]}, "
+                f"gear={motor.data[2]}, brake={brake.data[0]}")
+
+    # The interface starts stopped until mission control reports healthy inputs.
+    node.clear_all()
+    node.spin_for(0.15)
+    assert_safe_command("Startup")
+
+    # Clearing emergency alone is insufficient without a fresh command.
+    node.clear_all()
+    node.send_emergency(False)
+    node.spin_for(0.15)
+    assert_safe_command("Healthy sensors without command")
+
+    # Fresh commands may drive after mission health is clear.
+    node.clear_all()
+    node.send_gear(GearCommand.DRIVE)
+    node.send_control_and_wait(steer_rad=0.1, accel=1.0, duration=0.15)
+    motor = node.get_last_can_by_id(WIKI["MOTOR_CMD_ID"])
+    brake = node.get_last_can_by_id(WIKI["BRAKE_CMD_ID"])
+    if motor and brake and motor.data[0] > 0 and motor.data[2] == WIKI["GEAR_F"] and brake.data[0] == 0:
+        PASS("Fresh command resumes normal actuation")
+    else:
+        FAIL("Fresh command did not clear the safety stop")
+
+    # Emergency overrides fresh commands.
+    node.clear_all()
+    node.send_emergency(True)
+    node.send_control_and_wait(steer_rad=0.1, accel=1.0, duration=0.15)
+    assert_safe_command("Emergency")
+
+    # Recovery requires both a cleared emergency and a new command.
+    node.clear_all()
+    node.send_emergency(False)
+    node.send_control_and_wait(steer_rad=0.1, accel=1.0, duration=0.15)
+    motor = node.get_last_can_by_id(WIKI["MOTOR_CMD_ID"])
+    if motor and motor.data[0] > 0:
+        PASS("Cleared emergency plus fresh command resumes actuation")
+    else:
+        FAIL("Emergency recovery did not resume actuation")
+
+    # Stop refreshing the command and wait beyond the configured 200 ms timeout.
+    node.clear_all()
+    node.spin_for(0.3)
+    assert_safe_command("Control command timeout")
+
+    # Leave the node healthy for subsequent encoding tests.
+    node.send_emergency(False)
+    node.send_control_and_wait(steer_rad=0.0, accel=0.0, duration=0.15)
+
+
 def test_02_steering_encoding(node):
     """Steering float encoding doğru mu?"""
     header("TEST 02: Steering Encoding (IEEE 754 Float)")
@@ -452,8 +538,7 @@ def test_03_motor_encoding(node):
     for aw_gear, expected_kart_gear, name in gear_tests:
         node.clear_all()
         node.send_gear(aw_gear)
-        node.send_control(steer_rad=0.0, accel=1.0)
-        node.spin_for(0.3)
+        node.send_control_and_wait(steer_rad=0.0, accel=1.0, duration=0.3)
 
         frame = node.get_last_can_by_id(WIKI["MOTOR_CMD_ID"])
         if frame:
@@ -973,6 +1058,8 @@ def main():
             rclpy.shutdown()
             return
 
+        test_safety_stop_chain(node)
+
         # TÜM TESTLERİ ÇALIŞTIR
         test_02_steering_encoding(node)
         test_03_motor_encoding(node)
@@ -993,7 +1080,11 @@ def main():
     finally:
         if node_proc:
             node_proc.send_signal(signal.SIGINT)
-            node_proc.wait(timeout=5)
+            try:
+                node_proc.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                node_proc.terminate()
+                node_proc.wait(timeout=5)
             print(f"\n  {Y}Node durduruldu{W}")
 
     # SONUÇ

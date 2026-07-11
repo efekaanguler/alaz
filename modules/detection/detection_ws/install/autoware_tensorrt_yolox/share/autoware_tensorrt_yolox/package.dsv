@@ -1,9 +1,0 @@
-source;share/autoware_tensorrt_yolox/hook/pythonpath.ps1
-source;share/autoware_tensorrt_yolox/hook/pythonpath.dsv
-source;share/autoware_tensorrt_yolox/hook/pythonpath.sh
-source;share/autoware_tensorrt_yolox/hook/ament_prefix_path.ps1
-source;share/autoware_tensorrt_yolox/hook/ament_prefix_path.dsv
-source;share/autoware_tensorrt_yolox/hook/ament_prefix_path.sh
-source;../../build/autoware_tensorrt_yolox/share/autoware_tensorrt_yolox/hook/pythonpath_develop.ps1
-source;../../build/autoware_tensorrt_yolox/share/autoware_tensorrt_yolox/hook/pythonpath_develop.dsv
-source;../../build/autoware_tensorrt_yolox/share/autoware_tensorrt_yolox/hook/pythonpath_develop.sh

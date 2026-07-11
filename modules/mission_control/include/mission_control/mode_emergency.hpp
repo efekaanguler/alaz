@@ -11,10 +11,10 @@
 #include <std_msgs/msg/bool.hpp>
 class EmergencyMode : public ModeBase {
 public:
-    std::string LIDAR_TOPIC="/sensing/scan";
+    std::string LIDAR_TOPIC="/sensing/lidar/top/scan";
     std::string GNSS_TOPIC="";
     std::string IMU_TOPIC="";
-    std::string CAMERA_TOPIC="/sensing/image_raw";
+    std::string CAMERA_TOPIC="/sensing/camera/camera0/image_raw";
     std::string ODOM_TOPIC="/odom";
     std::string LOCALIZATION_TOPIC="/localization/kinematic_state";
     std::string EMERGENCY_PUBLISHER_TOPIC="/mission_control/emergency_stop";
@@ -22,7 +22,10 @@ public:
     unsigned int execute() override;
     // Side-effect-free status check (no publishing, no logging)
     bool isEmergencyTriggered();
+    void publishEmergencyStop(bool active);
+    void requestReset();
     private:
+    bool reset_requested_ = false;
     double TIMEOUT = 1.0;
     rclcpp::Node::SharedPtr node_;
     rclcpp::Time last_lidar;

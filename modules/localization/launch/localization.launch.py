@@ -102,6 +102,9 @@ def generate_launch_description():
             executable="map_projector_info_pub.py",
             name="map_projector_info_pub",
             output="screen",
+            parameters=[{
+                "lanelet2_map_path": lanelet2_map_path,
+            }],
         ),
 
         # 1) Lanelet2 map loader -> publish exactly /map/vector_map (requires projector info)
@@ -176,20 +179,6 @@ def generate_launch_description():
             }.items(),
         ),
 
-        # 6) YabLoc'u başlatmak için initialpose3d pub (5 sn sonra, node'lar ayağa kalksın)
-        TimerAction(
-            period=5.0,
-            actions=[
-                ExecuteProcess(
-                    cmd=[
-                        "ros2", "topic", "pub", "--once",
-                        "--wait-matching-subscriptions", "1",
-                        "/initialpose3d",
-                        "geometry_msgs/msg/PoseWithCovarianceStamped",
-                        '{"header": {"frame_id": "map"}, "pose": {"pose": {"position": {"x": 63.5139, "y": 2.6648, "z": 0.0}, "orientation": {"x": 0.0, "y": 0.0, "z": 1.0, "w": 0.0}}, "covariance": [0.25,0,0,0,0,0,0,0.25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.068]}}',
-                    ],
-                    output="screen",
-                )
-            ],
-        ),
+        # 6) Removed hardcoded initialpose3d publisher
+        # Operator must provide /initialpose via RViz or mission control.
     ])

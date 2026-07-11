@@ -1,16 +1,16 @@
 #include <mission_control/mode_run.hpp>
 
 RunMode::RunMode(rclcpp::Node::SharedPtr node) : node_(node) {
-    
+
     goal_publisher_ = node_->create_publisher<geometry_msgs::msg::PoseStamped>(
         GOAL_PUBLISHER_TOPIC, 10);
-    
+
     engage_publisher_ = node_->create_publisher<std_msgs::msg::Bool>(
         ENGAGE_PUBLISHER_TOPIC, 10);
 
     route_state_debug_publisher_ = node_->create_publisher<std_msgs::msg::UInt8>(
         ROUTE_STATE_DEBUG_PUBLISHER_TOPIC, 10);
-    
+
     goal_array_subscriber_ = node_->create_subscription<geometry_msgs::msg::PoseArray>(
         GOAL_ARRAY_SUBSCRIBER_TOPIC, 10,
         std::bind(&RunMode::goal_array_callback, this, std::placeholders::_1));
@@ -75,7 +75,7 @@ void RunMode::send_next_goal() {
         goal_msg.header.stamp = node_->now();
         goal_msg.header.frame_id = "map";
         goal_msg.pose = goal_array_[current_goal_index_];
-        
+
         goal_publisher_->publish(goal_msg);
         RCLCPP_INFO(node_->get_logger(), "Sent goal %zu/%zu to autoware", 
                     current_goal_index_ + 1, goal_array_.size());
@@ -131,13 +131,13 @@ unsigned int RunMode::execute() {
         return MODE_EMERGENCY; 
     }
     
-    engage_autoware();
-    
     if (goal_array_.empty()) {
-        RCLCPP_INFO(node_->get_logger(), "No goal. Switching to Pause Mode");
+        RCLCPP_INFO_THROTTLE(node_->get_logger(), *node_->get_clock(), 2000, "No goal set. Switching to PAUSE mode");
         return MODE_PAUSE;
     }
-    
+
+    engage_autoware();
+
     if (current_goal_reached_) {
         current_goal_index_++;
         goal_sent_current_ = false;

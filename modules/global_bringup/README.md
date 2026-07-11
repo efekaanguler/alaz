@@ -2,6 +2,12 @@
 
 Global bringup, tüm sistemin merkezi başlatma paketidir. Autoware ve diğer tüm modülleri tek bir noktadan başlatmayı sağlar.
 
+## Current Production Vehicle Path
+
+The production configuration uses `my_vehicle_launch` and `my_vehicle_interface` for the team's custom car. `ros2_socketcan` is included by the vehicle interface launch. The legacy `ros2_can_bridge` and RDW vehicle launch are not part of production bringup.
+
+The vehicle interface starts in full-brake/neutral safety state. Mission control must report healthy inputs and Autoware must provide a fresh control command before actuation is released. See `modules/vehicle/my_vehicle_interface/SAFETY.md`.
+
 ## 📋 İçindekiler
 
 - [Paket Nedir?](#paket-nedir)

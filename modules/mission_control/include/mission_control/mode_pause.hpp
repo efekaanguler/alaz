@@ -7,10 +7,11 @@ public:
     
     PauseMode(rclcpp::Node::SharedPtr node);
     unsigned int execute() override;
+    void requestResume();
 
 private:
     rclcpp::Node::SharedPtr node_;
     bool pause_started_ = false;
+    bool resume_requested_ = false;
     rclcpp::Time pause_start_time_;
-    rclcpp::Duration pause_duration_ = rclcpp::Duration::from_seconds(5.0);
 };

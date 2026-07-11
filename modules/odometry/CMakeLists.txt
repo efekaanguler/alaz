@@ -12,7 +12,9 @@ find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(autoware_vehicle_msgs REQUIRED)
 find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 
 
@@ -26,7 +28,7 @@ target_include_directories(odom_launch PUBLIC
   $<INSTALL_INTERFACE:include>)
 target_compile_features(odom_launch PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 
-ament_target_dependencies(odom_launch rclcpp std_msgs sensor_msgs nav_msgs geometry_msgs tf2 tf2_geometry_msgs)
+ament_target_dependencies(odom_launch rclcpp std_msgs sensor_msgs nav_msgs geometry_msgs autoware_vehicle_msgs tf2 tf2_ros tf2_geometry_msgs)
 
 install(TARGETS odom_launch
   DESTINATION lib/${PROJECT_NAME})
@@ -40,7 +42,14 @@ if(BUILD_TESTING)
   # comment the line when this package is in a git repo and when
   # a copyright and license is added to all source files
   set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
+  # ament_lint_auto_find_test_dependencies()
+
+  find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(test_odometry test/test_odometry.cpp)
+  target_include_directories(test_odometry PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  )
+  ament_target_dependencies(test_odometry rclcpp std_msgs sensor_msgs nav_msgs geometry_msgs autoware_vehicle_msgs tf2 tf2_ros tf2_geometry_msgs)
 endif()
 install(DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}

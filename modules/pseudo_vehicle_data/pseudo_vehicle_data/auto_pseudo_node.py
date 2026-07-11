@@ -8,22 +8,28 @@ class AutoPseudoPublisher(Node):
     def __init__(self):
         super().__init__('auto_pseudo_node')
 
-        # Geri bildirim yayıncıları
-        self.speed_pub = self.create_publisher(Float32, 'vehicle_speed', 10)
-        self.steer_pub = self.create_publisher(Float32, 'steering_angle', 10)
+        self.declare_parameter('speed_topic', '/simulation/pseudo_vehicle/vehicle_speed')
+        self.declare_parameter('steering_topic', '/simulation/pseudo_vehicle/steering_angle')
+        speed_topic = self.get_parameter('speed_topic').get_parameter_value().string_value
+        steering_topic = self.get_parameter('steering_topic').get_parameter_value().string_value
+
+        self.speed_pub = self.create_publisher(Float32, speed_topic, 10)
+        self.steer_pub = self.create_publisher(Float32, steering_topic, 10)
 
         # 20 Hz'de yayın yapacak timer (saniyede 20 mesaj)
         self.timer = self.create_timer(0.05, self.timer_callback)
         self.start_time = time.time()
 
-        self.get_logger().info('Otomatik Pseudo Veri Yayını Başladı... Gerçekçi sürüş simüle ediliyor.')
+        self.get_logger().info(
+            f'Otomatik pseudo veri yayını başladı: speed={speed_topic}, steering={steering_topic}'
+        )
 
     def timer_callback(self):
         # Düğüm başladığından beri geçen süre
         current_time = time.time() - self.start_time
 
         # GERÇEKÇİ SENARYO ÜRETİMİ (Sinüs dalgaları ile yumuşak geçişler)
-        
+
         # Hız: 0 ile 15 m/s (yaklaşık 54 km/s) arasında yavaşça artıp azalır
         # math.sin(current_time / 5.0) periyodu yavaşlatır
         speed_val = 7.5 + 7.5 * math.sin(current_time / 5.0)

@@ -1,9 +1,8 @@
 # =============================================================================
-# SDC 2026 Kart Vehicle Interface Parameters
+# Alaz Custom Vehicle Interface Parameters
 # =============================================================================
 #
-# CAN IDs and protocol from SDC Wiki:
-# https://github.com/SelfDrivingChallenge/ClosedCategory/wiki/Kart
+# CAN values are provisional until verified against the final vehicle ECUs.
 #
 # =============================================================================
 
@@ -15,8 +14,10 @@
     # 25 Hz matches the wiki example sending speed (0.04s period).
     # Motor ECU times out after 200ms, so we need at least 5 Hz.
     loop_rate_hz: 25.0
-    # Motor ECU timeout is 200ms, so we use the same for command timeout
+    # Missing/stale commands cause 100% brake, neutral, and zero throttle.
     command_timeout_sec: 0.2
+    # Mission control publishes at 2 Hz. Missing state is unsafe after 1.5 s.
+    emergency_state_timeout_sec: 1.5
 
     # -------------------------------------------------------------------------
     # Steering Configuration
@@ -33,6 +34,6 @@
     # Maps m/s² to throttle/brake percentage (0.0-1.0)
     # accel_to_throttle_gain: 0.33 means 3 m/s² = 100% throttle
     # decel_to_brake_gain: 0.20 means 5 m/s² = 100% brake
-    # TODO: Tune these on the real kart
+    # Calibrate these on the final vehicle before closed-course motion tests.
     accel_to_throttle_gain: 0.33
     decel_to_brake_gain: 0.20

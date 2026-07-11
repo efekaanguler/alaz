@@ -85,6 +85,10 @@ void StartMode::odom_callback(nav_msgs::msg::Odometry::SharedPtr msg) {
 }
 
 void StartMode::localization_callback(nav_msgs::msg::Odometry::SharedPtr msg) {
-    (void)msg;
-    localized = true;
+    // Basic quality gate: variance in x and y should be relatively small
+    if (msg->pose.covariance[0] < 1.0 && msg->pose.covariance[7] < 1.0) {
+        localized = true;
+    } else {
+        localized = false; // Lose readiness if quality drops
+    }
 }

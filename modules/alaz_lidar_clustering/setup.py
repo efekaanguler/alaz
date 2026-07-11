@@ -6,7 +6,7 @@ package_name = 'alaz_lidar_clustering'
 
 setup(
     name=package_name,
-    version='0.0.0',
+    version='1.0.0',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
@@ -17,13 +17,15 @@ setup(
     install_requires=['setuptools'], 
     zip_safe=True,
     maintainer='elif',
-    maintainer_email='elif@todo.todo',
+    maintainer_email='elif@alaz.edu',
     description='Lidar Clustering Package for Alaz',
-    license='TODO: License declaration',
+    license='Apache-2.0',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'alaz_lidar_2d = alaz_lidar_clustering.alaz_lidar_2d:main',   
+            'alaz_lidar_2d = alaz_lidar_clustering.alaz_lidar_2d:main',
+            'lidar_cluster_node = alaz_lidar_clustering.lidar_cluster_node:main',
+            'dummy_lidar = alaz_lidar_clustering.dummy_lidar:main',
         ],
     },
 )

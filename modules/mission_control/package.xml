@@ -2,9 +2,9 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>mission_control</name>
-  <version>0.0.0</version>
+  <version>1.0.0</version>
   <description>Executive controller for the autonomous vehicle state machine. Manages high-level operational modes including Start, Run, Pause, and Emergency.</description>
-  <maintainer email="ardacengiz@todo.todo">ardacengiz</maintainer>
+  <maintainer email="ardacengiz@alaz.edu">ardacengiz</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

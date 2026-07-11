@@ -13,6 +13,7 @@
   <exec_depend>autoware_perception_msgs</exec_depend>
   <exec_depend>unique_identifier_msgs</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>builtin_interfaces</exec_depend>
 
   <export>

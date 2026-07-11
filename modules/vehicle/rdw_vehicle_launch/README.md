@@ -1,14 +1,9 @@
-# sample_vehicle_launch
+# rdw_vehicle_launch
 
-🗃️ This is an archived repository.
+This package provides the core vehicle launch files for the Alaz autonomous vehicle platform.
+It integrates the vehicle interface and parameter loader for Autoware.
 
-The contents of this repository are now moved to [autoware_launch](https://github.com/autowarefoundation/autoware_launch) repository.
+## Launch
 
-The packages from this repository now live under the `autoware_launch/vehicle` directory.
-
-**The reason** for this move is to consolidate all the launch files in one repository to make it easier to maintain and manage.
-
-**Related issue:** [Move launch and parameter packages into autoware_launch #5912](https://github.com/autowarefoundation/autoware/issues/5912)
-
-In the far future, the launch file structure will be updated more drastically to make them more modular and easier to use.
-But for those updates, please follow the [autoware_launch](https://github.com/autowarefoundation/autoware_launch) repository.
+This package is automatically launched by `global_bringup`.
+It executes `my_vehicle_launch/vehicle.launch.xml` which sets up the vehicle interface and Autoware global parameter loaders.

@@ -12,6 +12,8 @@ class AlazLidar2D(Node):
 
         self.declare_parameter('max_range', 6.0)
         self.declare_parameter('scan_topic', '/sensing/lidar/top/scan')
+        self.declare_parameter('output_topic', '/perception/lidar_clustering/clusters')
+        self.declare_parameter('marker_topic', '/alaz/visual_markers')
         self.declare_parameter('cluster_tolerance', 0.8)
         self.declare_parameter('min_cluster_size', 3)
 
@@ -19,12 +21,16 @@ class AlazLidar2D(Node):
         self.tolerance = self.get_parameter('cluster_tolerance').value
         self.min_size = self.get_parameter('min_cluster_size').value
         scan_topic = self.get_parameter('scan_topic').get_parameter_value().string_value
+        output_topic = self.get_parameter('output_topic').get_parameter_value().string_value
+        marker_topic = self.get_parameter('marker_topic').get_parameter_value().string_value
 
         self.create_subscription(LaserScan, scan_topic, self.scan_callback, qos_profile_sensor_data)
-        self.marker_pub = self.create_publisher(MarkerArray, '/alaz/visual_markers', 10)
-        self.autoware_pub = self.create_publisher(DetectedObjects, '/perception/object_recognition/detection/clusters', 10)
+        self.marker_pub = self.create_publisher(MarkerArray, marker_topic, 10)
+        self.autoware_pub = self.create_publisher(DetectedObjects, output_topic, 10)
 
-        self.get_logger().info(f'Alaz 2D Lidar Aktif | Topic: {scan_topic} | Tol: {self.tolerance}m')
+        self.get_logger().info(
+            f'Alaz 2D Lidar Aktif | Input: {scan_topic} | Output: {output_topic} | Tol: {self.tolerance}m'
+        )
 
     def scan_callback(self, msg):
         ranges = np.array(msg.ranges)

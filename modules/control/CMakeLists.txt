@@ -19,4 +19,8 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+# Install launch and config directories so ros2 launch can find them
+install(DIRECTORY launch/ DESTINATION share/${PROJECT_NAME}/launch)
+install(DIRECTORY config/ DESTINATION share/${PROJECT_NAME}/config)
+
 ament_package()

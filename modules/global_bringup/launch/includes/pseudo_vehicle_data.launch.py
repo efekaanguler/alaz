@@ -7,6 +7,11 @@ def generate_launch_description():
             package='pseudo_vehicle_data',
             executable='auto_pseudo',
             name='auto_pseudo_node',
-            output='screen'
+            output='screen',
+            parameters=[{
+                # Test bringup intentionally feeds legacy odometry inputs.
+                'speed_topic': '/vehicle_speed',
+                'steering_topic': '/steering_angle',
+            }],
         )
     ])

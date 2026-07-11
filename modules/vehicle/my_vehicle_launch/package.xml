@@ -3,12 +3,15 @@
 <package format="3">
   <name>my_vehicle_launch</name>
   <version>0.48.0</version>
-  <description>The sample_vehicle_launch package</description>
-  <maintainer email="ryohsuke.mitsudome@tier4.jp">Ryohsuke Mitsudome</maintainer>
-  <maintainer email="yukihiro.saito@tier4.jp">Yukihiro Saito</maintainer>
+  <description>Launch package for the Alaz custom competition vehicle.</description>
+  <maintainer email="kekecmehmet71@gmail.com">Alaz Team</maintainer>
   <license>Apache 2.0 License</license>
 
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
+
+  <exec_depend>autoware_global_parameter_loader</exec_depend>
+  <exec_depend>my_vehicle_description</exec_depend>
+  <exec_depend>my_vehicle_interface</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

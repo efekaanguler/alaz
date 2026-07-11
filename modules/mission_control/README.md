@@ -75,6 +75,12 @@ Aracı güvenli bir şekilde park etme prosedürünü gerçekleştirir.
 *(Henüz tam olarak uygulanmadı)*
 
 ### 5. **EMERGENCY Mode** (`mode_emergency`)
+
+Mission control publishes the current recoverable safety state on `/mission_control/emergency_stop` using reliable, transient-local QoS. `my_vehicle_interface` consumes this state directly. While it is `true`, the interface continuously commands zero throttle, neutral gear, centered steering, and 100% brake.
+
+The state is also published during START and before normal RUN execution. If the emergency publisher stops updating for 1.5 seconds, the vehicle interface enters the same safety stop. Per the current project decision, the emergency clears automatically after all monitored inputs recover; a fresh control command is still required before actuation resumes.
+
+The M8N GNSS is not yet monitored because `GNSS_TOPIC` is currently empty. Add it only after its driver and canonical topic are confirmed.
 Acil durum gerçekleştiğinde aracı acilen durdurur.
 
 *(Henüz tam olarak uygulanmadı)*
@@ -213,9 +219,6 @@ source install/setup.bash
 
 **S: Araç hedeflere gitmiyorsa?**
 - A: `GOAL_PUBLISHER_TOPIC` ve `ENGAGE_PUBLISHER_TOPIC` isimlerinin Autoware konfigürasyonu ile eşleşip eşleşmediğini kontrol edin.
-
-
-
 
 
 --

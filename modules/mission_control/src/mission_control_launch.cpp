@@ -35,6 +35,7 @@ class MissionController: public rclcpp::Node {
 
         // Cache concrete pointers once instead of dynamic_pointer_cast'ing every tick
         run_mode_ = run_mode;
+        pause_mode_ = pause_mode;
         park_mode_ = park_mode;
         emergency_mode_ = emergency_mode;
 
@@ -60,6 +61,7 @@ class MissionController: public rclcpp::Node {
     std::map<unsigned int, std::shared_ptr<ModeBase>> modes;
 
     std::shared_ptr<RunMode> run_mode_;
+    std::shared_ptr<PauseMode> pause_mode_;
     std::shared_ptr<ParkMode> park_mode_;
     std::shared_ptr<EmergencyMode> emergency_mode_;
     
@@ -76,9 +78,11 @@ class MissionController: public rclcpp::Node {
         }
     }
     void manual_resume_callback(const std_msgs::msg::Bool::SharedPtr msg) {
-        if (msg->data && park_mode_) {
-            RCLCPP_INFO(this->get_logger(), "Manual resume requested by operator.");
-            park_mode_->requestResume();
+        if (msg->data) {
+            RCLCPP_INFO(this->get_logger(), "Manual resume/reset requested by operator.");
+            if (park_mode_) park_mode_->requestResume();
+            if (pause_mode_) pause_mode_->requestResume();
+            if (emergency_mode_) emergency_mode_->requestReset();
         }
     }
     void publish_mode() {
@@ -101,24 +105,32 @@ class MissionController: public rclcpp::Node {
             manual_park_requested_ = false; // reset the latch
         }
 
-        // 2. If we're entering RUN this tick from a different mode, let RunMode
+        // 2. Publish health before executing RUN so the vehicle interface can
+        //    apply its safe command in the same mission-control cycle.
+        if (emergency_mode_) {
+            const bool emergency_triggered = emergency_mode_->isEmergencyTriggered();
+            const bool emergency_latched = CURRENT_MODE == MODE_EMERGENCY;
+            emergency_mode_->publishEmergencyStop(emergency_triggered || emergency_latched);
+
+            // START already owns readiness handling. All other modes are
+            // preempted immediately when a monitored input becomes stale.
+            if (emergency_triggered && CURRENT_MODE != MODE_START) {
+                CURRENT_MODE = MODE_EMERGENCY;
+            }
+        }
+
+        // 3. If we're entering RUN this tick from a different mode, let RunMode
         //    know so it re-publishes engage=true rather than assuming it's
         //    still engaged from a previous RUN session.
         if (run_mode_ && CURRENT_MODE == MODE_RUN && previous_executed_mode_ != MODE_RUN) {
             run_mode_->onEnter();
         }
 
-        // 3. Execute the current state
+        // 4. Execute the current state
         unsigned int mode_being_executed = CURRENT_MODE;
         last_mode_=CURRENT_MODE;
         CURRENT_MODE = modes[CURRENT_MODE]->execute();
         previous_executed_mode_ = mode_being_executed;
-        
-        // 4. Side-effect free emergency watchdog check
-        if(CURRENT_MODE != MODE_EMERGENCY && CURRENT_MODE != MODE_START && emergency_mode_ && emergency_mode_->isEmergencyTriggered()) {
-            last_mode_ = CURRENT_MODE;
-            CURRENT_MODE = MODE_EMERGENCY;
-        }
     }
 };
 int main(int argc, char **argv) {

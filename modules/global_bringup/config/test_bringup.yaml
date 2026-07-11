@@ -1,11 +1,9 @@
 packages:
-  rdw_vehicle_launch:
+  my_vehicle_launch:
     enabled: true
     launch_file: "vehicle.launch.xml"
-  
-  ros2_can_bridge:
-    enabled: false
-    launch_file: "ros2_can_bridge.launch.py"
+    arguments:
+      launch_can_bridge: "false"
     
   pseudo_vehicle_data:
     enabled: true

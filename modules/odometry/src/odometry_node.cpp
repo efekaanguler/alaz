@@ -6,9 +6,12 @@ OdometryNode::OdometryNode() : Node("odometry_node"), odom(now()){
 
     speed_subscriber = create_subscription<std_msgs::msg::Float32>(SPEED_TOPIC, 10, std::bind(&OdometryNode::speed_callback, this, std::placeholders::_1));
     steering_subscriber = create_subscription<std_msgs::msg::Float32>(STEERING_TOPIC, 10, std::bind(&OdometryNode::steering_callback, this, std::placeholders::_1));
+    velocity_report_subscriber = create_subscription<autoware_vehicle_msgs::msg::VelocityReport>(VELOCITY_REPORT_TOPIC, 10, std::bind(&OdometryNode::velocity_report_callback, this, std::placeholders::_1));
+    steering_report_subscriber = create_subscription<autoware_vehicle_msgs::msg::SteeringReport>(STEERING_REPORT_TOPIC, 10, std::bind(&OdometryNode::steering_report_callback, this, std::placeholders::_1));
     throttle_subscriber = create_subscription<std_msgs::msg::Float32>(THROTTLE_TOPIC, 10, std::bind(&OdometryNode::throttle_callback, this, std::placeholders::_1));
 
     odom_publisher = create_publisher<nav_msgs::msg::Odometry>(ODOM_TOPIC, 10);
+    tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
     publish_timer = create_wall_timer(50ms, std::bind(&OdometryNode::publish_odometry, this));
 }
 
@@ -34,6 +37,16 @@ void OdometryNode::steering_callback(std_msgs::msg::Float32 msg) {
     last_steering = now();
 }
 
+void OdometryNode::velocity_report_callback(autoware_vehicle_msgs::msg::VelocityReport msg) {
+    speed = msg.longitudinal_velocity;
+    last_speed = now();
+}
+
+void OdometryNode::steering_report_callback(autoware_vehicle_msgs::msg::SteeringReport msg) {
+    steering = msg.steering_tire_angle;
+    last_steering = now();
+}
+
 void OdometryNode::throttle_callback(std_msgs::msg::Float32 msg) {
     throttle = msg.data;
 }
@@ -43,7 +56,7 @@ void OdometryNode::publish_odometry() {
     if(last_speed.nanoseconds()==0 || (now_-last_speed).seconds() > TIMEOUT) return;
     if(last_steering.nanoseconds()==0 || (now_-last_steering).seconds() > TIMEOUT) return;
 
-    float vx = speed/36;
+    float vx = speed;  // Removed division by 36, assume m/s input
     float vth = convert_steering_angle_to_angular_velocity(vx, steering);
     odom.update_odometry(vx, vth, now_);
 
@@ -81,5 +94,15 @@ void OdometryNode::publish_odometry() {
     odom_.twist.covariance[35] = 0.02;
 
     odom_publisher->publish(odom_);
-    RCLCPP_INFO(this->get_logger(), "Odometry published");
+
+    // Broadcast TF
+    geometry_msgs::msg::TransformStamped t;
+    t.header.stamp = odom.stamp;
+    t.header.frame_id = "odom";
+    t.child_frame_id = "base_link";
+    t.transform.translation.x = odom.x;
+    t.transform.translation.y = odom.y;
+    t.transform.translation.z = 0.0;
+    t.transform.rotation = odom_quat;
+    tf_broadcaster_->sendTransform(t);
 }

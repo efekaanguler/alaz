@@ -1,1 +1,0 @@
-/workspace/modules/detection/detection_ws/src/autoware_detection_autoware_bridge/setup.py

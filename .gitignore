@@ -1,10 +1,22 @@
-build_pkgs.sh
-testing/
-src/
+# Colcon workspaces
 build/
 install/
 log/
+**/build/
+**/install/
+**/log/
+
+# Python
 __pycache__/
 *.pyc
-__pycache__/
-*.pyc
+**/__pycache__/
+**/*.pyc
+
+# OS generated files
+.DS_Store
+**/.DS_Store
+
+# Other
+testing/
+/src/
+build_pkgs.sh

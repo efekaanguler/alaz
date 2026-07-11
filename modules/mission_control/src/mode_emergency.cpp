@@ -14,7 +14,9 @@ EmergencyMode::EmergencyMode(rclcpp::Node::SharedPtr node) : node_(node) {
     if(!LOCALIZATION_TOPIC.empty())
         localization_subscriber = node_->create_subscription<nav_msgs::msg::Odometry>(LOCALIZATION_TOPIC, 10, std::bind(&EmergencyMode::localization_callback, this, std::placeholders::_1));
     
-    emergency_publisher_ = node_->create_publisher<std_msgs::msg::Bool>(EMERGENCY_PUBLISHER_TOPIC, 10);
+    emergency_publisher_ = node_->create_publisher<std_msgs::msg::Bool>(
+        EMERGENCY_PUBLISHER_TOPIC,
+        rclcpp::QoS(1).reliable().transient_local());
 }
 
 bool EmergencyMode::isEmergencyTriggered() {
@@ -30,18 +32,30 @@ bool EmergencyMode::isEmergencyTriggered() {
     return false;
 }
 
+void EmergencyMode::requestReset() {
+    reset_requested_ = true;
+}
+
 unsigned int EmergencyMode::execute() {
     if(checkState()) {
-        auto msg = std_msgs::msg::Bool();
-        msg.data = false;
-        emergency_publisher_->publish(msg);
-        return MODE_PAUSE;
+        if (reset_requested_) {
+            reset_requested_ = false;
+            RCLCPP_INFO(node_->get_logger(), "Emergency cleared by operator. Switching to PAUSE mode.");
+            return MODE_PAUSE;
+        } else {
+            RCLCPP_INFO_THROTTLE(node_->get_logger(), *node_->get_clock(), 2000, "Emergency topics healthy, waiting for manual reset...");
+            return MODE_EMERGENCY;
+        }
     } else {
-        auto msg = std_msgs::msg::Bool();
-        msg.data = true;
-        emergency_publisher_->publish(msg);
+        reset_requested_ = false;
         return MODE_EMERGENCY;
     }
+}
+
+void EmergencyMode::publishEmergencyStop(bool active) {
+    auto msg = std_msgs::msg::Bool();
+    msg.data = active;
+    emergency_publisher_->publish(msg);
 }
 
 bool EmergencyMode::checkState() {

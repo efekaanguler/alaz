@@ -1,14 +1,7 @@
-# sample_vehicle_launch
+# my_vehicle_launch
 
-🗃️ This is an archived repository.
+Launch package for the Alaz custom vehicle stack.
 
-The contents of this repository are now moved to [autoware_launch](https://github.com/autowarefoundation/autoware_launch) repository.
+`vehicle.launch.xml` loads the custom vehicle description, Autoware global parameters, and `my_vehicle_interface`. The production path is selected by `global_bringup/config/bringup.yaml`.
 
-The packages from this repository now live under the `autoware_launch/vehicle` directory.
-
-**The reason** for this move is to consolidate all the launch files in one repository to make it easier to maintain and manage.
-
-**Related issue:** [Move launch and parameter packages into autoware_launch #5912](https://github.com/autowarefoundation/autoware/issues/5912)
-
-In the far future, the launch file structure will be updated more drastically to make them more modular and easier to use.
-But for those updates, please follow the [autoware_launch](https://github.com/autowarefoundation/autoware_launch) repository.
+This package is not the archived upstream `sample_vehicle_launch`; it is the project-specific launch wrapper for the custom competition vehicle.

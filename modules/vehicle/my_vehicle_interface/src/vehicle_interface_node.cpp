@@ -30,6 +30,8 @@ VehicleInterfaceNode::VehicleInterfaceNode(const rclcpp::NodeOptions &options)
   // ==========================================================================
   loop_rate_hz_ = this->declare_parameter("loop_rate_hz", 25.0);
   command_timeout_sec_ = this->declare_parameter("command_timeout_sec", 0.2);
+  emergency_state_timeout_sec_ =
+      this->declare_parameter("emergency_state_timeout_sec", 1.5);
 
   // Max steering angle (radians) - needs calibration on real kart
   max_steering_angle_rad_ =
@@ -82,6 +84,11 @@ VehicleInterfaceNode::VehicleInterfaceNode(const rclcpp::NodeOptions &options)
       "/control/command/hazard_lights_cmd", rclcpp::QoS{1},
       std::bind(&VehicleInterfaceNode::onHazardLightsCmd, this, _1));
 
+  emergency_stop_sub_ = this->create_subscription<std_msgs::msg::Bool>(
+      "/mission_control/emergency_stop",
+      rclcpp::QoS{1}.reliable().transient_local(),
+      std::bind(&VehicleInterfaceNode::onEmergencyStop, this, _1));
+
   // Subscriber from CAN bus (via ros2_socketcan)
   can_frame_sub_ = this->create_subscription<can_msgs::msg::Frame>(
       "/from_can_bus", rclcpp::QoS{100},
@@ -113,6 +120,10 @@ VehicleInterfaceNode::VehicleInterfaceNode(const rclcpp::NodeOptions &options)
   hazard_lights_report_pub_ =
       this->create_publisher<autoware_vehicle_msgs::msg::HazardLightsReport>(
           "/vehicle/status/hazard_lights_status", rclcpp::QoS{1});
+
+  safety_stop_status_pub_ = this->create_publisher<std_msgs::msg::Bool>(
+      "/vehicle/status/safety_stop",
+      rclcpp::QoS{1}.reliable().transient_local());
 
   // Publisher to CAN bus (via ros2_socketcan)
   can_frame_pub_ = this->create_publisher<can_msgs::msg::Frame>(
@@ -157,6 +168,13 @@ void VehicleInterfaceNode::onTurnIndicatorsCmd(
 void VehicleInterfaceNode::onHazardLightsCmd(
     const autoware_vehicle_msgs::msg::HazardLightsCommand::ConstSharedPtr msg) {
   hazard_lights_cmd_ptr_ = msg;
+}
+
+void VehicleInterfaceNode::onEmergencyStop(
+    const std_msgs::msg::Bool::ConstSharedPtr msg) {
+  emergency_stop_active_ = msg->data;
+  has_emergency_state_ = true;
+  last_emergency_state_time_ = this->now();
 }
 
 // =============================================================================
@@ -219,18 +237,28 @@ void VehicleInterfaceNode::onCanFrame(
 // =============================================================================
 
 void VehicleInterfaceNode::onTimer() {
-  // Check for command timeout
-  double elapsed = (this->now() - last_command_time_).seconds();
-  if (elapsed > command_timeout_sec_ && control_cmd_ptr_) {
-    RCLCPP_WARN_THROTTLE(
-        this->get_logger(), *this->get_clock(), 1000,
-        "Control command timeout (%.2f sec), sending zero commands", elapsed);
+  const auto decision = currentSafetyDecision();
+  if (decision.stop_required != safety_stop_active_ ||
+      decision.reason != safety_stop_reason_) {
+    if (decision.stop_required) {
+      RCLCPP_ERROR(this->get_logger(),
+                   "Safety stop active: %s; commanding full brake and neutral",
+                   safetyStopReasonName(decision.reason));
+    } else {
+      RCLCPP_INFO(
+          this->get_logger(),
+          "Safety stop cleared: sensors healthy and control command fresh");
+    }
+    safety_stop_active_ = decision.stop_required;
+    safety_stop_reason_ = decision.reason;
   }
 
-  // Send commands to vehicle
-  sendToVehicle();
+  sendToVehicle(decision.stop_required);
 
-  // Publish vehicle status to Autoware
+  std_msgs::msg::Bool safety_status;
+  safety_status.data = decision.stop_required;
+  safety_stop_status_pub_->publish(safety_status);
+
   publishVehicleStatus();
 }
 
@@ -238,7 +266,22 @@ void VehicleInterfaceNode::onTimer() {
 // HELPER METHODS
 // =============================================================================
 
-void VehicleInterfaceNode::sendToVehicle() {
+SafetyDecision VehicleInterfaceNode::currentSafetyDecision() const {
+  const double emergency_state_age_sec =
+      has_emergency_state_
+          ? (this->now() - last_emergency_state_time_).seconds()
+          : 0.0;
+  const bool emergency_state_fresh =
+      has_emergency_state_ &&
+      emergency_state_age_sec <= emergency_state_timeout_sec_;
+  const double command_age_sec =
+      control_cmd_ptr_ ? (this->now() - last_command_time_).seconds() : 0.0;
+  return evaluateSafetyStop(emergency_stop_active_, emergency_state_fresh,
+                            static_cast<bool>(control_cmd_ptr_),
+                            command_age_sec, command_timeout_sec_);
+}
+
+void VehicleInterfaceNode::sendToVehicle(bool safety_stop_required) {
   // ==========================================================================
   // Determine command values
   // ==========================================================================
@@ -247,34 +290,33 @@ void VehicleInterfaceNode::sendToVehicle() {
   uint8_t brake_percent = 0;
   uint8_t gear = current_kart_gear_;
 
-  if (control_cmd_ptr_) {
-    double elapsed = (this->now() - last_command_time_).seconds();
-    bool timed_out = (elapsed > command_timeout_sec_);
+  if (safety_stop_required) {
+    steer_value = kSafeSteering;
+    throttle_percent = kSafeThrottlePercent;
+    brake_percent = kSafeBrakePercent;
+    gear = kSafeGear;
+  } else if (control_cmd_ptr_) {
+    // Steering: convert Autoware radians -> kart float (-1.25 to 1.25)
+    double steering_angle = control_cmd_ptr_->lateral.steering_tire_angle;
+    steer_value =
+        can_utils::radToKartSteering(steering_angle, max_steering_angle_rad_);
 
-    if (!timed_out) {
-      // Steering: convert Autoware radians -> kart float (-1.25 to 1.25)
-      double steering_angle = control_cmd_ptr_->lateral.steering_tire_angle;
-      steer_value =
-          can_utils::radToKartSteering(steering_angle, max_steering_angle_rad_);
+    // Throttle/Brake: convert Autoware acceleration -> kart percentages
+    double target_accel = control_cmd_ptr_->longitudinal.acceleration;
 
-      // Throttle/Brake: convert Autoware acceleration -> kart percentages
-      double target_accel = control_cmd_ptr_->longitudinal.acceleration;
-
-      if (target_accel > 0.0) {
-        // Positive acceleration -> throttle
-        double throttle_frac =
-            std::clamp(target_accel * accel_to_throttle_gain_, 0.0, 1.0);
-        throttle_percent = static_cast<uint8_t>(throttle_frac * 100.0);
-        brake_percent = 0;
-      } else if (target_accel < 0.0) {
-        // Negative acceleration -> brake
-        double brake_frac =
-            std::clamp(-target_accel * decel_to_brake_gain_, 0.0, 1.0);
-        throttle_percent = 0;
-        brake_percent = static_cast<uint8_t>(brake_frac * 100.0);
-      }
+    if (target_accel > 0.0) {
+      // Positive acceleration -> throttle
+      double throttle_frac =
+          std::clamp(target_accel * accel_to_throttle_gain_, 0.0, 1.0);
+      throttle_percent = static_cast<uint8_t>(throttle_frac * 100.0);
+      brake_percent = 0;
+    } else if (target_accel < 0.0) {
+      // Negative acceleration -> brake
+      double brake_frac =
+          std::clamp(-target_accel * decel_to_brake_gain_, 0.0, 1.0);
+      throttle_percent = 0;
+      brake_percent = static_cast<uint8_t>(brake_frac * 100.0);
     }
-    // If timed out: steer_value=0, throttle=0, brake=0 (safe defaults)
   }
 
   // ==========================================================================
@@ -342,7 +384,9 @@ void VehicleInterfaceNode::publishVehicleStatus() {
   {
     autoware_vehicle_msgs::msg::ControlModeReport msg;
     msg.stamp = stamp;
-    msg.mode = autoware_vehicle_msgs::msg::ControlModeReport::AUTONOMOUS;
+    msg.mode = safety_stop_active_
+                   ? autoware_vehicle_msgs::msg::ControlModeReport::NOT_READY
+                   : autoware_vehicle_msgs::msg::ControlModeReport::AUTONOMOUS;
     control_mode_report_pub_->publish(msg);
   }
 

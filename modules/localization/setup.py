@@ -4,7 +4,7 @@ package_name = 'localization'
 
 setup(
     name=package_name,
-    version='0.0.1',
+    version='1.0.0',
     packages=[],
     py_modules=[
         'initial_pose_pub',
@@ -13,8 +13,8 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='Your Name',
-    maintainer_email='you@example.com',
+    maintainer='Alaz Team',
+    maintainer_email='kekecmehmet71@gmail.com',
     description='Localization bringup/config package (YabLoc-first).',
     license='Apache-2.0',
     tests_require=['pytest'],

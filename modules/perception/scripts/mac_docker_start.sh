@@ -102,7 +102,7 @@ else
     docker exec -d "$CONTAINER_NAME" bash -c \
         "source /opt/ros/humble/setup.bash && \
          source /autoware/install/setup.bash && \
-         python3 /workspace/modules/perception/scripts/mjpeg_to_ros.py \
+         python3 $SCRIPT_DIR/mjpeg_to_ros.py \
            --url http://host.docker.internal:8090/video"
     sleep 1
     echo -e "${GREEN}  ✓ MJPEG → ROS bridge started in Docker${NC}"

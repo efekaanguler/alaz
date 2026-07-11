@@ -18,7 +18,9 @@
 #include <memory>
 
 #include "my_vehicle_interface/can_utils.hpp"
+#include "my_vehicle_interface/safety_policy.hpp"
 #include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/bool.hpp"
 
 // Autoware messages
 #include "autoware_control_msgs/msg/control.hpp"
@@ -55,6 +57,7 @@ private:
   void onHazardLightsCmd(
       const autoware_vehicle_msgs::msg::HazardLightsCommand::ConstSharedPtr
           msg);
+  void onEmergencyStop(const std_msgs::msg::Bool::ConstSharedPtr msg);
 
   // =========================================================================
   // CALLBACKS - From CAN bus (via ros2_socketcan)
@@ -69,8 +72,9 @@ private:
   // =========================================================================
   // HELPER METHODS
   // =========================================================================
-  void sendToVehicle();
+  void sendToVehicle(bool safety_stop_required);
   void publishVehicleStatus();
+  SafetyDecision currentSafetyDecision() const;
 
   /**
    * @brief Convert Autoware gear command to kart gear value
@@ -89,6 +93,7 @@ private:
       SharedPtr turn_indicators_cmd_sub_;
   rclcpp::Subscription<autoware_vehicle_msgs::msg::HazardLightsCommand>::
       SharedPtr hazard_lights_cmd_sub_;
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr emergency_stop_sub_;
 
   // Subscriber from CAN bus
   rclcpp::Subscription<can_msgs::msg::Frame>::SharedPtr can_frame_sub_;
@@ -108,6 +113,7 @@ private:
       turn_indicators_report_pub_;
   rclcpp::Publisher<autoware_vehicle_msgs::msg::HazardLightsReport>::SharedPtr
       hazard_lights_report_pub_;
+  rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr safety_stop_status_pub_;
 
   // Publisher to CAN bus
   rclcpp::Publisher<can_msgs::msg::Frame>::SharedPtr can_frame_pub_;
@@ -145,8 +151,14 @@ private:
   int16_t steer_ecu_target_angle_{0};
   bool steer_ecu_has_error_{false};
 
+  // Fail safe at startup until mission control reports healthy sensors.
+  bool emergency_stop_active_{true};
+  bool has_emergency_state_{false};
+  bool safety_stop_active_{true};
+  SafetyStopReason safety_stop_reason_{SafetyStopReason::kEmergencyStateTimeout};
+
   // Current gear for CAN commands
-  uint8_t current_kart_gear_{1}; // Default: forward
+  uint8_t current_kart_gear_{0}; // Default: neutral
 
   // =========================================================================
   // CONFIGURATION
@@ -154,10 +166,17 @@ private:
   can_utils::CanIds can_ids_;
   double loop_rate_hz_;
   double command_timeout_sec_;
+  double emergency_state_timeout_sec_;
   double max_steering_angle_rad_;
   double accel_to_throttle_gain_;
   double decel_to_brake_gain_;
   rclcpp::Time last_command_time_;
+  rclcpp::Time last_emergency_state_time_;
+
+  static constexpr uint8_t kSafeThrottlePercent = 0;
+  static constexpr uint8_t kSafeBrakePercent = 100;
+  static constexpr uint8_t kSafeGear = 0;
+  static constexpr float kSafeSteering = 0.0F;
 };
 
 } // namespace my_vehicle_interface

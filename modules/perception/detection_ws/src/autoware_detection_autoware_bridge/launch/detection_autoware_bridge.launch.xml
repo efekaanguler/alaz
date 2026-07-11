@@ -2,16 +2,23 @@
 <launch>
   <arg name="input/objects" default="rois0"/>
   <arg name="input/traffic_signals_2d" default="classified/traffic_signals"/>
+  <arg name="input/camera_info" default="/sensing/camera/camera0/camera_info"/>
 
   <arg name="output/detected_objects" default="/perception/object_recognition/detection/objects"/>
   <arg name="output/tracked_objects" default="/perception/object_recognition/tracking/objects"/>
   <arg name="output/predicted_objects" default="/perception/object_recognition/objects"/>
   <arg name="output/traffic_signals" default="/perception/traffic_light_recognition/traffic_signals"/>
 
-  <arg name="publish_detected_objects" default="true"/>
-  <arg name="publish_tracked_objects" default="true"/>
-  <arg name="publish_predicted_objects" default="true"/>
-  <arg name="publish_traffic_signals" default="true"/>
+  <arg name="publish_detected_objects" default="false"/>
+  <arg name="publish_tracked_objects" default="false"/>
+  <arg name="publish_predicted_objects" default="false"/>
+  <arg name="publish_traffic_signals" default="false"/>
+
+  <!-- Camera mounting parameters for ground-plane 3D projection -->
+  <arg name="camera_height" default="0.39" description="Camera height above ground (metres)"/>
+  <arg name="camera_pitch" default="0.0" description="Camera pitch angle (radians, positive = tilted down)"/>
+  <arg name="output_frame" default="base_link" description="Output frame_id for 3D objects"/>
+  <arg name="min_confidence" default="0.3" description="Minimum detection confidence to publish"/>
 
   <node pkg="autoware_detection_autoware_bridge" exec="detection_autoware_bridge_node" name="detection_autoware_bridge" output="screen">
     <param name="publish_detected_objects" value="$(var publish_detected_objects)"/>
@@ -19,8 +26,14 @@
     <param name="publish_predicted_objects" value="$(var publish_predicted_objects)"/>
     <param name="publish_traffic_signals" value="$(var publish_traffic_signals)"/>
 
+    <param name="camera_height" value="$(var camera_height)"/>
+    <param name="camera_pitch" value="$(var camera_pitch)"/>
+    <param name="output_frame" value="$(var output_frame)"/>
+    <param name="min_confidence" value="$(var min_confidence)"/>
+
     <remap from="~/input/tracked_detections" to="$(var input/objects)"/>
     <remap from="~/input/traffic_signals_2d" to="$(var input/traffic_signals_2d)"/>
+    <remap from="~/input/camera_info" to="$(var input/camera_info)"/>
 
     <remap from="~/output/detected_objects" to="$(var output/detected_objects)"/>
     <remap from="~/output/tracked_objects" to="$(var output/tracked_objects)"/>

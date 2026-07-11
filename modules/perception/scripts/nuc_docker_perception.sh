@@ -395,7 +395,7 @@ source_env_safe() {
     set +e
     set +u
     source /opt/ros/humble/setup.bash >/dev/null 2>&1 || true
-    source /autoware/install/setup.bash >/dev/null 2>&1 || true
+    source ${AUTOWARE_DIR:-/autoware}/install/setup.bash >/dev/null 2>&1 || true
     case "$flags" in
         *u*) set -u ;;
     esac
@@ -407,35 +407,7 @@ source_env_safe() {
 # ── Source ROS 2 + Autoware (must be before detection_ws so vision_msgs etc. are available) ──
 source_env_safe
 
-# ── Install vision_msgs if not available (required by YOLO, ByteTrack, Bridge nodes) ──
-if ! python3 -c "import vision_msgs" 2>/dev/null; then
-    echo -e "${YELLOW}[!] vision_msgs not found — installing ros-humble-vision-msgs...${NC}"
-    apt-get update -qq && apt-get install -y -qq ros-humble-vision-msgs > /dev/null 2>&1
-    # Re-source so the newly installed package is on PYTHONPATH
-    source_env_safe
-    echo -e "${GREEN}[✓] vision_msgs installed${NC}"
-else
-    echo -e "${GREEN}[✓] vision_msgs already available${NC}"
-fi
-
-# ── Install onnxruntime if not available (required by YOLO inference) ──
-if ! python3 -c "import onnxruntime" 2>/dev/null; then
-    echo -e "${YELLOW}[!] onnxruntime not found — installing via pip3...${NC}"
-    # Ensure pip is installed first
-    apt-get update -qq && apt-get install -y -qq python3-pip > /dev/null 2>&1
-    # Pin numpy to <2.0.0 to prevent breaking ROS2/OpenCV numpy 1.x compatibility
-    pip3 install -q "numpy<2.0.0" onnxruntime
-    echo -e "${GREEN}[✓] onnxruntime installed (OpenCV fallback will be avoided)${NC}"
-else
-    echo -e "${GREEN}[✓] onnxruntime already available${NC}"
-fi
-
-# ── Force downgrade numpy if it accidentally got upgraded to 2.x ──
-if python3 -c "import numpy; import sys; sys.exit(0 if numpy.__version__.startswith('2.') else 1)" 2>/dev/null; then
-    echo -e "${YELLOW}[!] NumPy 2.x detected! Downgrading to NumPy 1.x to fix OpenCV compatibility...${NC}"
-    pip3 install -q "numpy<2.0.0"
-    echo -e "${GREEN}[✓] NumPy downgraded to 1.x${NC}"
-fi
+echo -e "${GREEN}[✓] Assuming dependencies (vision_msgs, onnxruntime, numpy<2.0) are already installed or provided by the container/environment.${NC}"
 
 # Explicitly build and export PYTHONPATH so ALL child processes (ros2 launch nodes) inherit it
 _build_pythonpath() {
@@ -444,8 +416,8 @@ _build_pythonpath() {
     local paths=(
         "/opt/ros/humble/lib/python${py_ver}/site-packages"
         "/opt/ros/humble/local/lib/python${py_ver}/dist-packages"
-        "/autoware/install/vision_msgs/lib/python${py_ver}/site-packages"
-        "/autoware/install/vision_msgs/local/lib/python${py_ver}/dist-packages"
+        "${AUTOWARE_DIR:-/autoware}/install/vision_msgs/lib/python${py_ver}/site-packages"
+        "${AUTOWARE_DIR:-/autoware}/install/vision_msgs/local/lib/python${py_ver}/dist-packages"
         "/opt/autoware/lib/python${py_ver}/site-packages"
         "/opt/autoware/local/lib/python${py_ver}/dist-packages"
     )
@@ -462,7 +434,7 @@ echo -e "${GREEN}[✓] PYTHONPATH exported (vision_msgs accessible to child proc
 if [ -d "$MODULE_DIR/detection_ws/install" ]; then
     set +u
     source /opt/ros/humble/setup.bash > /dev/null 2>&1 || true
-    source /autoware/install/setup.bash > /dev/null 2>&1 || true
+    source ${AUTOWARE_DIR:-/autoware}/install/setup.bash > /dev/null 2>&1 || true
     source "$MODULE_DIR/detection_ws/install/setup.bash"
     set -u
     echo -e "${GREEN}[✓] detection_ws sourced${NC}"
@@ -471,7 +443,7 @@ else
     cd "$MODULE_DIR/detection_ws"
     set +u
     source /opt/ros/humble/setup.bash > /dev/null 2>&1 || true
-    source /autoware/install/setup.bash > /dev/null 2>&1 || true
+    source ${AUTOWARE_DIR:-/autoware}/install/setup.bash > /dev/null 2>&1 || true
     set -u
     if ! colcon build --symlink-install; then
         echo -e "${RED}[✗] detection_ws build failed${NC}"
@@ -758,7 +730,7 @@ fi
 # ══════════════════════════════════════
 echo -e "\n${BLUE}[4/6] Detection pipeline (YOLOv8 -> ByteTrack -> Bridge)...${NC}"
 
-MODEL_DIR="/workspace/modules/detection/models"
+MODEL_DIR="$MODULE_DIR/../detection/models"
 if [ ! -f "$MODEL_DIR/yolov8n.onnx" ]; then
     MODEL_DIR="$MODULE_DIR/models"
 fi

@@ -27,7 +27,7 @@ def generate_launch_description():
                 description="Path to controller parameters file",
             ),
             Node(
-                package="trajectory_follower_node",
+                package="autoware_trajectory_follower_node",
                 executable="trajectory_follower_node",
                 name="trajectory_follower",
                 parameters=[
@@ -38,7 +38,7 @@ def generate_launch_description():
                 output="screen",
             ),
             Node(
-                package="mpc_lateral_controller",
+                package="autoware_mpc_lateral_controller",
                 executable="mpc_lateral_controller_node",
                 name="mpc_lateral_controller",
                 parameters=[LaunchConfiguration("control_params")],

@@ -1,203 +1,141 @@
-# my_vehicle_interface
+# Alaz Vehicle Interface
 
-Autoware vehicle interface for the Self Driving Challenge 2026 kart with CAN support using ros2_socketcan.
+ROS 2 Humble vehicle interface for the team's custom competition car. It connects Autoware control and status messages to the car CAN bus through `ros2_socketcan`.
 
-## Overview
+The repository currently contains Autoware launch package version `0.49.0` and `ros2_socketcan` version `1.3.0`.
 
-This package bridges Autoware's control commands with the SDC 2026 kart's CAN-controlled actuators:
-- **Steering**: IEEE 754 float encoding → servo motor (CAN ID: `0x220`)
-- **Throttle**: 0-100% + gear byte → electric motor (CAN ID: `0x330`)
-- **Brake**: 0-100% → linear actuator (CAN ID: `0x110`)
+## Status
 
----
+The software path is integrated, but the car is still under construction. The CAN IDs, byte layouts, steering scale, acceleration mappings, and vehicle dimensions are **provisional** until checked against the final ECUs and measured car.
 
-## ⚠️ KRİTİK UYARI: Byte Offset (Decoder Hatası İhtimali)
+Do not perform powered vehicle tests based only on the software tests in this repository.
 
-**DİKKAT:** `src/can_utils.cpp` içindeki decoder fonksiyonları, Steering Sensor (0x1E5) hariç, verilerin `data[0]`'dan başladığını varsayar (Wiki standardı).
-Ancak, Steering Sensor'de olduğu gibi (Data[1]-Data[2]), diğer ECU'larda da dokümante edilmemiş bir "Status/Counter Byte" (Byte 0) olabilir.
+## Production Data Path
 
-**Eğer arabadan gelen veriler (Hız, Motor Feedback) anlamsızsa (örn: çok yüksek/düşük):**
-`src/can_utils.cpp` dosyasını kontrol edin ve byte indekslerini 1 kaydırarak deneyin (örn: `data[0]` yerine `data[1]`).
+```text
+Autoware control commands
+  -> my_vehicle_interface
+  -> /to_can_bus (can_msgs/Frame)
+  -> ros2_socketcan
+  -> can0
 
----
+can0
+  -> ros2_socketcan
+  -> /from_can_bus (can_msgs/Frame)
+  -> my_vehicle_interface
+  -> Autoware vehicle status
+```
 
-## Wiki Sonrası Yapılan Değişiklikler
+`global_bringup` starts this path through:
 
-### ✅ Tamamlanan İşler
+```text
+my_vehicle_launch/vehicle.launch.xml
+  -> autoware_global_parameter_loader
+  -> my_vehicle_interface/vehicle_interface.launch.xml
+     -> ros2_socketcan
+     -> my_vehicle_interface_node
+```
 
-#### CAN ID Düzeltmeleri
-| Mesaj | Eski (Yanlış) | Yeni (Wiki) |
-|-------|:---:|:---:|
-| Steering Command | `0x100` | **`0x220`** |
-| Brake Command | `0x101` | **`0x110`** |
-| Motor Command | `0x102` | **`0x330`** |
-| Speed Sensor | `0x200` | **`0x440`** |
+The legacy scalar `ros2_can_bridge` package is not part of production bringup.
 
-#### Encoding Düzeltmeleri
-- **Steering:** Integer (0.1° scale) → **IEEE 754 float** (`memcpy`, range: -1.25 to 1.25)
-- **Motor:** Sadece throttle → **throttle (byte 0) + gear (byte 2)** (0=N, 1=F, 2=R)
-- **Speed Sensor:** Little-endian → **Big-endian** uint16
+## Safety Behavior
 
-#### Yeni Eklenen Feedback Decoder'lar
-| CAN ID | İsim | Okunan Veri |
-|--------|------|-------------|
-| `0x1E5` | Steering Sensor | Direksiyon açısı (int16, bytes 1-2) |
-| `0x720` | Steering ECU FB | Mevcut açı + hedef açı + hata flag'i |
-| `0x730` | Motor ECU FB | Throttle DAC + fren + vites + idle |
-| `0x710` | Brake ECU FB | (Log amaçlı) |
+The interface starts in the safety-stop state. It releases that state only when:
 
-#### Güvenlik Mekanizmaları
-- Motor idle algılama (200ms timeout)
-- Steering ECU failsafe uyarısı
-- Gear clamping (>= 3 mesajı geçersiz kılar)
-- Command timeout (0.2s) → sıfır komut gönderme
+1. Mission control publishes `false` on `/mission_control/emergency_stop`.
+2. A control command has been received within `command_timeout_sec` (default `0.2` seconds).
+3. Mission control has refreshed its emergency state within `emergency_state_timeout_sec` (default `1.5` seconds).
 
-#### Bulunan ve Düzeltilen Bug'lar
-- **Steering Sensor byte offset:** `data[0-1]` → **`data[1-2]`** (`data_recorder.py`'dan doğrulandı)
+The safety command is transmitted continuously at 25 Hz:
 
-### ✅ Test Edilenler (79/79 PASS)
-Test scripti: `test/test_wiki_verification.py`
+| Actuator | Safety value |
+|---|---:|
+| Throttle | 0% |
+| Brake | 100% |
+| Gear | Neutral |
+| Steering | Centered |
 
-- Tüm CAN ID'leri wiki ile eşleşiyor
-- IEEE 754 float encoding doğru (wiki örnekleri ile birebir)
-- Motor byte layout doğru (motor_demo.py ile birebir)
-- Speed sensor big-endian decoding doğru
-- Steering sensor byte offset doğru (data_recorder.py ile birebir)
-- Timing: 25 Hz loop (wiki: 0.04s), 0.2s timeout (motor ECU: 200ms)
-- Autoware topic'leri doğru bağlanmış
+The safety stop is active when a monitored sensor/localization input fails, before mission control is ready, when mission control stops publishing, when no control command has arrived, or after a command timeout. Sensor emergencies DO NOT recover automatically; they require an explicit reset from the operator via `/mission_control/manual_resume` after all monitored inputs are healthy. Command timeouts recover automatically only after a new command arrives.
 
----
+The current state is published on `/vehicle/status/safety_stop`. `true` means the safety actuator command is active. The Autoware control-mode report is `NOT_READY` while stopped and `AUTONOMOUS` after release.
 
-## ❗ Hala Yapılması Gerekenler
+See [SAFETY.md](SAFETY.md) for validation and operational constraints.
 
-### 1. Docker'da Build ve Test
+## Launch
+
+Ensure the SocketCAN interface already exists and is UP. Interface provisioning is hardware-specific and intentionally not performed by ROS launch.
+
 ```bash
-cd /workspace
-colcon build --packages-select my_vehicle_interface
+source /opt/ros/humble/setup.bash
 source install/setup.bash
-# Test:
-cd src/vehicle/external/my_vehicle_interface
-./test/run_wiki_tests.sh --build
+ros2 launch my_vehicle_launch vehicle.launch.xml can_interface:=can0
 ```
 
-### 2. Arabada Kalibrasyon (ZORUNLU)
-
-| Parametre | Dosya | Varsayılan | Nasıl Ölçülecek |
-|-----------|-------|:---:|------|
-| `max_steering_angle_rad` | `param.yaml` | `0.5236` (30°) | Direksiyonu sonuna çevir, açıölçer ile gerçek açıyı ölç |
-| `accel_to_throttle_gain` | `param.yaml` | `0.33` | Throttle=50% gönder, hızlanma oranını ölç, gain'i ayarla |
-| `decel_to_brake_gain` | `param.yaml` | `0.20` | Brake=50% gönder, yavaşlama oranını ölç, gain'i ayarla |
-| Steering sensor sıfır noktası | Kod | `raw / 800` | Düz gittiğinde raw=0 mı kontrol et, değilse offset ekle |
-
-### 3. Arabada CAN Bağlantı Testi
-```bash
-# 1) CAN interface aç
-slcan_attach -f -s6 -o /dev/TinCan
-slcand -F /dev/TinCan can0
-ip link set up can0
-
-# 2) CAN trafiğini izle
-candump can0
-
-# 3) Gelen feedback mesajlarını kontrol et:
-#    0x440 → Speed sensor (geliyor mu?)
-#    0x1E5 → Steering sensor (geliyor mu?)
-#    0x720 → Steering ECU (geliyor mu?)
-#    0x730 → Motor ECU (geliyor mu?)
-```
-
-### 4. İlk Sürüş Testi Adımları
-1. **Mode 1** ile başla (max 10 km/h)
-2. Acil stop cihazı (Tyro Indus 1S) el altında olsun
-3. Önce sadece direksiyon testi (throttle=0, brake=0)
-4. Sonra düşük throttle testi (%10-20)
-5. Fren testi (düşük hızda)
-6. Tüm feedback mesajlarının geldiğini doğrula
-
-### 5. Opsiyonel İyileştirmeler
-- [ ] Steering speed desteği (DLC=8, servo hızı kontrolü)
-- [ ] Brake feedback (0x710) decoder eklenmesi
-- [ ] PID controller entegrasyonu (daha hassas kontrol)
-- [ ] Diagnostik topic'leri (motor DAC, ECU hata durumları)
-
----
-
-## Prerequisites
-
-- ROS 2 Humble
-- Autoware
-- [ros2_socketcan](https://github.com/autowarefoundation/ros2_socketcan)
-
-## Usage
-
-### With Real Hardware
+To run the interface without starting a CAN transport:
 
 ```bash
-# Terminal 1: Start CAN bridge
-ros2 launch ros2_socketcan socket_can_bridge.launch.xml interface:=can0
-
-# Terminal 2: Start vehicle interface
-ros2 launch my_vehicle_interface vehicle_interface.launch.xml
+ros2 launch my_vehicle_interface vehicle_interface.launch.xml launch_can_bridge:=false
 ```
 
-## Topics
+## ROS Interfaces
 
-### Subscribed (from Autoware)
-| Topic | Message Type |
-|-------|--------------|
-| `/control/command/control_cmd` | `Control` |
-| `/control/command/gear_cmd` | `GearCommand` |
-| `/from_can_bus` | `can_msgs/Frame` |
+### Subscriptions
 
-### Published (to Autoware)
-| Topic | Message Type |
-|-------|--------------|
-| `/vehicle/status/velocity_status` | `VelocityReport` |
-| `/vehicle/status/steering_status` | `SteeringReport` |
-| `/vehicle/status/gear_status` | `GearReport` |
-| `/vehicle/status/control_mode` | `ControlModeReport` |
-| `/to_can_bus` | `can_msgs/Frame` |
+| Topic | Type | Purpose |
+|---|---|---|
+| `/control/command/control_cmd` | `autoware_control_msgs/msg/Control` | Steering and longitudinal command |
+| `/control/command/gear_cmd` | `autoware_vehicle_msgs/msg/GearCommand` | Requested gear |
+| `/control/command/turn_indicators_cmd` | `autoware_vehicle_msgs/msg/TurnIndicatorsCommand` | Indicator request |
+| `/control/command/hazard_lights_cmd` | `autoware_vehicle_msgs/msg/HazardLightsCommand` | Hazard request |
+| `/mission_control/emergency_stop` | `std_msgs/msg/Bool` | Recoverable mission safety state |
+| `/from_can_bus` | `can_msgs/msg/Frame` | ECU feedback from `ros2_socketcan` |
 
-## CAN Protocol (SDC Wiki)
+### Publications
 
-### Komutlar (Autoware → Kart)
-| ID | İsim | Format |
-|:---:|------|--------|
-| `0x220` | Steering | IEEE 754 float, DLC=4, range: -1.25 to 1.25 |
-| `0x330` | Motor | byte[0]=throttle(0-100), byte[2]=gear(0/1/2) |
-| `0x110` | Brake | byte[0]=brake(0-100) |
+| Topic | Type | Purpose |
+|---|---|---|
+| `/to_can_bus` | `can_msgs/msg/Frame` | Commands to `ros2_socketcan` |
+| `/vehicle/status/velocity_status` | `autoware_vehicle_msgs/msg/VelocityReport` | Vehicle speed |
+| `/vehicle/status/steering_status` | `autoware_vehicle_msgs/msg/SteeringReport` | Steering feedback |
+| `/vehicle/status/gear_status` | `autoware_vehicle_msgs/msg/GearReport` | Gear feedback |
+| `/vehicle/status/control_mode` | `autoware_vehicle_msgs/msg/ControlModeReport` | Readiness/autonomous state |
+| `/vehicle/status/safety_stop` | `std_msgs/msg/Bool` | Interface safety-stop state |
 
-### Feedback (Kart → Autoware)
-| ID | İsim | Format |
-|:---:|------|--------|
-| `0x440` | Speed Sensor | Big-endian uint16, hm/h |
-| `0x1E5` | Steering Sensor | Big-endian int16, bytes[1-2], range: -800 to 800 |
-| `0x720` | Steering ECU | Current/target angle + error flag |
-| `0x730` | Motor ECU | Throttle DAC + brake + gear + idle |
+## Provisional CAN Map
 
-## File Structure
+| Direction | CAN ID | Current interpretation |
+|---|---:|---|
+| Command | `0x220` | Steering, IEEE-754 float |
+| Command | `0x330` | Throttle byte 0, gear byte 2 |
+| Command | `0x110` | Brake percentage byte 0 |
+| Feedback | `0x440` | Speed, big-endian `uint16`, hm/h |
+| Feedback | `0x1E5` | Steering sensor, bytes 1-2 |
+| Feedback | `0x720` | Steering ECU status |
+| Feedback | `0x730` | Motor ECU status |
 
-```
-my_vehicle_interface/
-├── include/my_vehicle_interface/
-│   ├── vehicle_interface_node.hpp
-│   └── can_utils.hpp
-├── src/
-│   ├── vehicle_interface_node.cpp
-│   ├── can_utils.cpp
-│   └── main.cpp
-├── launch/
-│   └── vehicle_interface.launch.xml
-├── config/
-│   └── vehicle_interface.param.yaml
-├── test/
-│   ├── test_wiki_verification.py
-│   └── run_wiki_tests.sh
-├── CMakeLists.txt
-├── package.xml
-└── README.md
+This table is an assumption for software development, not a verified specification for the final car.
+
+## Build And Test
+
+```bash
+colcon build --symlink-install --packages-up-to my_vehicle_launch mission_control
+colcon test --packages-select my_vehicle_interface mission_control
+colcon test-result --verbose
 ```
 
-## License
+The source-level protocol check can also run without pytest:
 
-Apache-2.0
+```bash
+cd modules/vehicle/my_vehicle_interface
+python3 test/test_wiki_verification.py
+```
+
+## Required Before Vehicle Motion
+
+1. Replace the provisional CAN map with the signed-off ECU specification.
+2. Measure and update `my_vehicle_description/config/vehicle_info.param.yaml`.
+3. Measure steering endpoints and update `max_steering_angle_rad`.
+4. Calibrate throttle and brake mappings at low power.
+5. Verify full brake and neutral on startup, emergency, command loss, interface crash, and CAN transport loss.
+6. Verify the physical E-stop independently of ROS, the computer, and the software CAN path.
+7. Run CAN loopback, hardware-in-the-loop, and closed-course tests with wheels safely restrained first.

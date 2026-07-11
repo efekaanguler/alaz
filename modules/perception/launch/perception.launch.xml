@@ -16,7 +16,7 @@
   <arg name="enable_viz" default="true" description="Enable detection visualizer"/>
   <arg name="enable_ai_pipeline" default="true" description="Automatically start the NUC AI pipeline (YOLO+Fusion)"/>
   <arg name="camera_device" default="0" description="Camera device index"/>
-  <arg name="image_topic" default="$(command 'python3 $(find-pkg-share global_bringup)/scripts/get_topic.py camera.image_raw')" description="Camera topic"/>
+  <arg name="image_topic" default="/sensing/camera/camera0/image_raw" description="Camera topic"/>
   <arg name="detection_topic" default="/perception/detections" description="Detection output topic"/>
 
   <!-- Webcam → ROS bridge (rdw_sensor_kit_launch içinde zaten başlatıldığı için kapatıldı) -->
@@ -33,7 +33,7 @@
 
   <!-- CameraInfo Fallback Publisher (YabLoc için gerekli) -->
   <node pkg="perception" exec="camera_info_fallback_publisher.py" name="camera_info_publisher" output="screen"
-    args="--image-topic $(var image_topic) --camera-info-topic $(command 'python3 $(find-pkg-share global_bringup)/scripts/get_topic.py camera.camera_info') --width 640 --height 480"
+    args="--image-topic $(var image_topic) --camera-info-topic /sensing/camera/camera0/camera_info --width 640 --height 480"
     unless="$(var use_sim_time)"/>
 
   <!-- NUC AI Pipeline (YOLO + Lidar Fusion) -->

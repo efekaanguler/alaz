@@ -465,6 +465,7 @@ def test_autoware_integration():
         ("/control/command/gear_cmd", "Gear command"),
         ("/control/command/turn_indicators_cmd", "Turn indicators command"),
         ("/control/command/hazard_lights_cmd", "Hazard lights command"),
+        ("/mission_control/emergency_stop", "Mission emergency state"),
         ("/from_can_bus", "CAN bus input"),
     ]
     for topic, desc in required_subs:
@@ -481,6 +482,7 @@ def test_autoware_integration():
         ("/vehicle/status/control_mode", "Control mode"),
         ("/vehicle/status/turn_indicators_status", "Turn indicators report"),
         ("/vehicle/status/hazard_lights_status", "Hazard lights report"),
+        ("/vehicle/status/safety_stop", "Fail-safe state"),
         ("/to_can_bus", "CAN bus output"),
     ]
     for topic, desc in required_pubs:
@@ -589,16 +591,35 @@ def test_safety():
     with open("src/vehicle_interface_node.cpp", "r") as f:
         content = f.read()
 
-    subheader("Timeout handling")
-    if "command_timeout_sec_" in content and "RCLCPP_WARN" in content:
-        PASS("Command timeout warning implemented")
+    with open("include/my_vehicle_interface/vehicle_interface_node.hpp", "r") as f:
+        header_content = f.read()
+
+    subheader("Timeout and emergency handling")
+    if "command_timeout_sec_" in content and "currentSafetyDecision" in content:
+        PASS("Command timeout safety decision implemented")
     else:
         FAIL("Command timeout NOT implemented")
 
-    if "steer_value = 0.0f" in content or "throttle_percent = 0" in content:
-        PASS("Timeout -> sends zero commands (safe stop)")
+    required_safe_values = [
+        "kSafeThrottlePercent = 0",
+        "kSafeBrakePercent = 100",
+        "kSafeGear = 0",
+        "kSafeSteering = 0.0F",
+    ]
+    if all(value in header_content for value in required_safe_values):
+        PASS("Fail-safe command is zero throttle, full brake, neutral, centered steering")
     else:
-        WARN("Verify that timeout sends zero commands")
+        FAIL("Fail-safe actuator command is incomplete")
+
+    if "emergency_stop_active_{true}" in header_content:
+        PASS("Interface starts in fail-safe state")
+    else:
+        FAIL("Interface does not default to fail-safe state")
+
+    if '"/mission_control/emergency_stop"' in content and "transient_local" in content:
+        PASS("Mission emergency state is connected with transient-local QoS")
+    else:
+        FAIL("Mission emergency state is not reliably connected")
 
     subheader("Motor ECU idle detection")
     if "motor_is_idle_" in content and "Motor ECU reports IDLE" in content:

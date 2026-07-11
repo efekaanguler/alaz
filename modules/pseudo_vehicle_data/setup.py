@@ -4,7 +4,7 @@ package_name = 'pseudo_vehicle_data'
 
 setup(
     name=package_name,
-    version='0.0.0',
+    version='1.0.0',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/ament_index/resource_index/packages',
@@ -15,8 +15,8 @@ setup(
     zip_safe=True,
     maintainer='kekec',
     maintainer_email='kekecmehmet71@gmail.com',
-    description='TODO: Package description',
-    license='TODO: License declaration',
+    description='Pseudo vehicle data publisher for simulation',
+    license='Apache-2.0',
     extras_require={
         'test': [
             'pytest',
@@ -24,7 +24,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
-		'auto_pseudo = pseudo_vehicle_data.auto_pseudo_node:main'
+            'auto_pseudo = pseudo_vehicle_data.auto_pseudo_node:main',
+            'vehicle_simulator_node = pseudo_vehicle_data.vehicle_simulator_node:main'
         ],
     },
 )

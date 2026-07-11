@@ -12,10 +12,10 @@
 
 class StartMode : public ModeBase {
     public:
-    std::string LIDAR_TOPIC="/sensing/scan";
+    std::string LIDAR_TOPIC="/sensing/lidar/top/scan";
     std::string GNSS_TOPIC="";
     std::string IMU_TOPIC="";
-    std::string CAMERA_TOPIC="/sensing/image_raw";
+    std::string CAMERA_TOPIC="/sensing/camera/camera0/image_raw";
     std::string ODOM_TOPIC="/odom";
     
     // FIXED: Now correctly points to the ADAPI topic matching the message type
