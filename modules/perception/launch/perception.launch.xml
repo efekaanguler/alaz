@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  perception.launch.xml — Main launch file for the perception pipeline.
+  perception.launch.xml - Main launch file for the perception pipeline.
 
   Launches:
   - CameraInfo fallback for /sensing/image_raw
@@ -13,13 +13,16 @@
 <launch>
   <arg name="use_sim_time" default="false"/>
   <!-- Arguments -->
-  <arg name="enable_viz" default="true" description="Enable detection visualizer"/>
+  <arg name="enable_viz" default="false" description="Enable detection visualizer"/>
   <arg name="enable_ai_pipeline" default="true" description="Automatically start the NUC AI pipeline (YOLO+Fusion)"/>
+  <arg name="enable_camera_info_fallback" default="true"/>
+  <arg name="enable_object_tracking" default="true" description="Track metric LiDAR detections and publish Autoware PredictedObjects"/>
+  <arg name="inference_device" default="auto" description="auto, cpu, or cuda"/>
   <arg name="camera_device" default="0" description="Camera device index"/>
   <arg name="image_topic" default="/sensing/image_raw" description="Camera topic"/>
   <arg name="detection_topic" default="/rois0" description="Detection output topic"/>
 
-  <!-- Webcam → ROS bridge (rdw_sensor_kit_launch içinde zaten başlatıldığı için kapatıldı) -->
+  <!-- The sensor-kit package owns the camera driver. -->
   <!--
   <node pkg="perception" exec="mjpeg_to_ros.py" name="webcam_publisher" output="screen"
     unless="$(var use_sim_time)">
@@ -31,14 +34,31 @@
   </node>
   -->
 
-  <!-- CameraInfo Fallback Publisher (YabLoc için gerekli) -->
-  <node pkg="perception" exec="camera_info_fallback_publisher.py" name="camera_info_publisher" output="screen"
-    args="--image-topic $(var image_topic) --camera-info-topic /sensing/camera_info --frame-id camera_center_link --width 640 --height 480"
-    unless="$(var use_sim_time)"/>
+  <!-- CameraInfo fallback is only for real sensors that do not publish calibration. -->
+  <group if="$(var enable_camera_info_fallback)">
+    <node pkg="perception" exec="camera_info_fallback_publisher.py" name="camera_info_publisher" output="screen"
+      args="--image-topic $(var image_topic) --camera-info-topic /sensing/camera_info --frame-id camera_center_link --width 0 --height 0 --camera-info-yaml $(find-pkg-share perception)/config/nuc/camera_info_logitech_720p.yaml"
+      unless="$(var use_sim_time)"/>
+  </group>
+
+  <!-- Metric LiDAR detections -> official Autoware tracking and prediction. -->
+  <group if="$(var enable_object_tracking)">
+    <include file="$(find-pkg-share autoware_multi_object_tracker)/launch/multi_object_tracker.launch.xml">
+      <arg name="input/detection01/objects" value="/perception/object_recognition/detection/objects"/>
+      <arg name="input/detection01/channel" value="lidar_clustering"/>
+      <arg name="output/objects" value="/perception/object_recognition/tracking/objects"/>
+    </include>
+    <include file="$(find-pkg-share autoware_map_based_prediction)/launch/map_based_prediction.launch.xml">
+      <arg name="input_topic" value="/perception/object_recognition/tracking/objects"/>
+      <arg name="output_topic" value="/perception/object_recognition/objects"/>
+      <arg name="vector_map_topic" value="/map/vector_map"/>
+      <arg name="traffic_signals_topic" value="/perception/traffic_light_recognition/traffic_signals"/>
+    </include>
+  </group>
 
   <!-- NUC AI Pipeline (YOLO + Lidar Fusion) -->
   <group if="$(var enable_ai_pipeline)">
-    <executable cmd="bash $(find-pkg-share perception)/../../lib/perception/nuc_docker_perception.sh --camera-topic $(var image_topic) --scan /sensing/scan" output="screen" />
+    <executable cmd="bash $(find-pkg-share perception)/../../lib/perception/nuc_docker_perception.sh --camera-topic $(var image_topic) --scan /sensing/scan --device $(var inference_device) --no-fallback-tf" output="screen" />
   </group>
 
   <!-- Detection visualizer (optional) -->

@@ -2,9 +2,11 @@
 <launch>
   <arg name="vehicle_id" default="$(env VEHICLE_ID default)"/>
   <arg name="use_sim_time" default="false"/>
+  <arg name="software_test_mode" default="false"/>
 
   <include file="$(find-pkg-share my_vehicle_interface)/launch/vehicle_interface.launch.xml">
     <arg name="vehicle_id" value="$(var vehicle_id)"/>
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
+    <arg name="software_test_mode" value="$(var software_test_mode)"/>
   </include>
 </launch>

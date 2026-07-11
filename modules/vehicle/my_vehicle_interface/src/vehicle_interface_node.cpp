@@ -18,14 +18,17 @@
 #include <chrono>
 #include <cmath>
 #include <functional>
+#include <stdexcept>
 
-namespace my_vehicle_interface {
+namespace my_vehicle_interface
+{
 
 using namespace std::chrono_literals;
 using std::placeholders::_1;
 
-VehicleInterfaceNode::VehicleInterfaceNode(const rclcpp::NodeOptions &options)
-    : Node("vehicle_interface_node", options) {
+VehicleInterfaceNode::VehicleInterfaceNode(const rclcpp::NodeOptions & options)
+: Node("vehicle_interface_node", options)
+{
   // ==========================================================================
   // PARAMETERS
   // ==========================================================================
@@ -34,103 +37,152 @@ VehicleInterfaceNode::VehicleInterfaceNode(const rclcpp::NodeOptions &options)
 
   // Max steering angle (radians) - needs calibration on real kart
   max_steering_angle_rad_ =
-      this->declare_parameter("max_steering_angle_rad", 0.5236);
+    this->declare_parameter("max_steering_angle_rad", 0.5236);
 
   // Acceleration to throttle/brake mapping gains
   accel_to_throttle_gain_ =
-      this->declare_parameter("accel_to_throttle_gain", 0.33);
+    this->declare_parameter("accel_to_throttle_gain", 0.33);
   decel_to_brake_gain_ = this->declare_parameter("decel_to_brake_gain", 0.20);
+  software_test_mode_ = this->declare_parameter("software_test_mode", false);
+  can_command_output_enabled_ =
+    this->declare_parameter("can_command_output_enabled", false);
+
+  can_ids_.steering_command = static_cast<uint32_t>(
+    this->declare_parameter<int64_t>("can_ids.steering_command", 0x220));
+  can_ids_.brake_command = static_cast<uint32_t>(
+    this->declare_parameter<int64_t>("can_ids.brake_command", 0x110));
+  can_ids_.motor_command = static_cast<uint32_t>(
+    this->declare_parameter<int64_t>("can_ids.motor_command", 0x330));
+  can_ids_.speed_sensor = static_cast<uint32_t>(
+    this->declare_parameter<int64_t>("can_ids.speed_sensor", 0x440));
+  can_ids_.steering_sensor = static_cast<uint32_t>(
+    this->declare_parameter<int64_t>("can_ids.steering_sensor", 0x1E5));
+  can_ids_.steering_ecu_feedback = static_cast<uint32_t>(
+    this->declare_parameter<int64_t>("can_ids.steering_ecu_feedback", 0x720));
+  can_ids_.motor_feedback = static_cast<uint32_t>(
+    this->declare_parameter<int64_t>("can_ids.motor_feedback", 0x730));
+  can_ids_.brake_feedback = static_cast<uint32_t>(
+    this->declare_parameter<int64_t>("can_ids.brake_feedback", 0x710));
+
+  if (loop_rate_hz_ <= 0.0 || command_timeout_sec_ <= 0.0 ||
+    max_steering_angle_rad_ <= 0.0 || accel_to_throttle_gain_ < 0.0 ||
+    decel_to_brake_gain_ < 0.0)
+  {
+    throw std::invalid_argument("Invalid vehicle interface parameters");
+  }
 
   RCLCPP_INFO(this->get_logger(), "Vehicle Interface Node starting...");
   RCLCPP_INFO(this->get_logger(), "  Loop rate: %.1f Hz", loop_rate_hz_);
-  RCLCPP_INFO(this->get_logger(), "  Command timeout: %.2f sec",
-              command_timeout_sec_);
-  RCLCPP_INFO(this->get_logger(), "  Max steering angle: %.4f rad",
-              max_steering_angle_rad_);
-  RCLCPP_INFO(this->get_logger(), "  CAN IDs (from SDC Wiki):");
-  RCLCPP_INFO(this->get_logger(), "    Steering:  0x%X",
-              can_ids_.steering_command);
-  RCLCPP_INFO(this->get_logger(), "    Brake:     0x%X",
-              can_ids_.brake_command);
-  RCLCPP_INFO(this->get_logger(), "    Motor:     0x%X",
-              can_ids_.motor_command);
+  RCLCPP_INFO(
+    this->get_logger(), "  Command timeout: %.2f sec",
+    command_timeout_sec_);
+  RCLCPP_INFO(
+    this->get_logger(), "  Max steering angle: %.4f rad",
+    max_steering_angle_rad_);
+  RCLCPP_INFO(
+    this->get_logger(), "  Software test mode: %s",
+    software_test_mode_ ? "enabled" : "disabled");
+  RCLCPP_INFO(
+    this->get_logger(), "  CAN command output: %s",
+    (can_command_output_enabled_ || software_test_mode_) ? "enabled" :
+    "disabled");
+  RCLCPP_INFO(this->get_logger(), "  Configured CAN IDs:");
+  RCLCPP_INFO(
+    this->get_logger(), "    Steering:  0x%X",
+    can_ids_.steering_command);
+  RCLCPP_INFO(
+    this->get_logger(), "    Brake:     0x%X",
+    can_ids_.brake_command);
+  RCLCPP_INFO(
+    this->get_logger(), "    Motor:     0x%X",
+    can_ids_.motor_command);
   RCLCPP_INFO(this->get_logger(), "    Speed:     0x%X", can_ids_.speed_sensor);
-  RCLCPP_INFO(this->get_logger(), "    Steer FB:  0x%X",
-              can_ids_.steering_sensor);
-  RCLCPP_INFO(this->get_logger(), "    Motor FB:  0x%X",
-              can_ids_.motor_feedback);
+  RCLCPP_INFO(
+    this->get_logger(), "    Steer FB:  0x%X",
+    can_ids_.steering_sensor);
+  RCLCPP_INFO(
+    this->get_logger(), "    Motor FB:  0x%X",
+    can_ids_.motor_feedback);
 
   // ==========================================================================
   // SUBSCRIBERS - From Autoware
   // ==========================================================================
   control_cmd_sub_ =
-      this->create_subscription<autoware_control_msgs::msg::Control>(
-          "/control/command/control_cmd", rclcpp::QoS{1},
-          std::bind(&VehicleInterfaceNode::onControlCmd, this, _1));
+    this->create_subscription<autoware_control_msgs::msg::Control>(
+    "/control/command/control_cmd", rclcpp::QoS{1},
+    std::bind(&VehicleInterfaceNode::onControlCmd, this, _1));
 
   gear_cmd_sub_ =
-      this->create_subscription<autoware_vehicle_msgs::msg::GearCommand>(
-          "/control/command/gear_cmd", rclcpp::QoS{1},
-          std::bind(&VehicleInterfaceNode::onGearCmd, this, _1));
+    this->create_subscription<autoware_vehicle_msgs::msg::GearCommand>(
+    "/control/command/gear_cmd", rclcpp::QoS{1},
+    std::bind(&VehicleInterfaceNode::onGearCmd, this, _1));
 
   turn_indicators_cmd_sub_ = this->create_subscription<
-      autoware_vehicle_msgs::msg::TurnIndicatorsCommand>(
-      "/control/command/turn_indicators_cmd", rclcpp::QoS{1},
-      std::bind(&VehicleInterfaceNode::onTurnIndicatorsCmd, this, _1));
+    autoware_vehicle_msgs::msg::TurnIndicatorsCommand>(
+    "/control/command/turn_indicators_cmd", rclcpp::QoS{1},
+    std::bind(&VehicleInterfaceNode::onTurnIndicatorsCmd, this, _1));
 
   hazard_lights_cmd_sub_ = this->create_subscription<
-      autoware_vehicle_msgs::msg::HazardLightsCommand>(
-      "/control/command/hazard_lights_cmd", rclcpp::QoS{1},
-      std::bind(&VehicleInterfaceNode::onHazardLightsCmd, this, _1));
+    autoware_vehicle_msgs::msg::HazardLightsCommand>(
+    "/control/command/hazard_lights_cmd", rclcpp::QoS{1},
+    std::bind(&VehicleInterfaceNode::onHazardLightsCmd, this, _1));
+
+  control_mode_service_ =
+    this->create_service<autoware_vehicle_msgs::srv::ControlModeCommand>(
+    "/control/control_mode_request",
+    std::bind(
+      &VehicleInterfaceNode::onControlModeRequest, this,
+      std::placeholders::_1, std::placeholders::_2));
 
   // Subscriber from CAN bus (via ros2_socketcan)
   can_frame_sub_ = this->create_subscription<can_msgs::msg::Frame>(
-      "/from_can_bus", rclcpp::QoS{100},
-      std::bind(&VehicleInterfaceNode::onCanFrame, this, _1));
+    "/from_can_bus", rclcpp::QoS{100},
+    std::bind(&VehicleInterfaceNode::onCanFrame, this, _1));
 
   // ==========================================================================
   // PUBLISHERS - To Autoware
   // ==========================================================================
   velocity_report_pub_ =
-      this->create_publisher<autoware_vehicle_msgs::msg::VelocityReport>(
-          "/vehicle/status/velocity_status", rclcpp::QoS{1});
+    this->create_publisher<autoware_vehicle_msgs::msg::VelocityReport>(
+    "/vehicle/status/velocity_status", rclcpp::QoS{1});
 
   steering_report_pub_ =
-      this->create_publisher<autoware_vehicle_msgs::msg::SteeringReport>(
-          "/vehicle/status/steering_status", rclcpp::QoS{1});
+    this->create_publisher<autoware_vehicle_msgs::msg::SteeringReport>(
+    "/vehicle/status/steering_status", rclcpp::QoS{1});
 
   gear_report_pub_ =
-      this->create_publisher<autoware_vehicle_msgs::msg::GearReport>(
-          "/vehicle/status/gear_status", rclcpp::QoS{1});
+    this->create_publisher<autoware_vehicle_msgs::msg::GearReport>(
+    "/vehicle/status/gear_status", rclcpp::QoS{1});
 
   control_mode_report_pub_ =
-      this->create_publisher<autoware_vehicle_msgs::msg::ControlModeReport>(
-          "/vehicle/status/control_mode", rclcpp::QoS{1});
+    this->create_publisher<autoware_vehicle_msgs::msg::ControlModeReport>(
+    "/vehicle/status/control_mode", rclcpp::QoS{1});
 
   turn_indicators_report_pub_ =
-      this->create_publisher<autoware_vehicle_msgs::msg::TurnIndicatorsReport>(
-          "/vehicle/status/turn_indicators_status", rclcpp::QoS{1});
+    this->create_publisher<autoware_vehicle_msgs::msg::TurnIndicatorsReport>(
+    "/vehicle/status/turn_indicators_status", rclcpp::QoS{1});
 
   hazard_lights_report_pub_ =
-      this->create_publisher<autoware_vehicle_msgs::msg::HazardLightsReport>(
-          "/vehicle/status/hazard_lights_status", rclcpp::QoS{1});
+    this->create_publisher<autoware_vehicle_msgs::msg::HazardLightsReport>(
+    "/vehicle/status/hazard_lights_status", rclcpp::QoS{1});
 
   // Publisher to CAN bus (via ros2_socketcan)
   can_frame_pub_ = this->create_publisher<can_msgs::msg::Frame>(
-      "/to_can_bus", rclcpp::QoS{100});
+    "/to_can_bus", rclcpp::QoS{100});
 
   // ==========================================================================
   // TIMER - Match wiki example sending speed of 0.04s = 25 Hz
   // ==========================================================================
   auto timer_period = std::chrono::duration<double>(1.0 / loop_rate_hz_);
   timer_ = this->create_wall_timer(
-      std::chrono::duration_cast<std::chrono::nanoseconds>(timer_period),
-      std::bind(&VehicleInterfaceNode::onTimer, this));
+    std::chrono::duration_cast<std::chrono::nanoseconds>(timer_period),
+    std::bind(&VehicleInterfaceNode::onTimer, this));
 
   last_command_time_ = this->now();
 
-  RCLCPP_INFO(this->get_logger(),
-              "Vehicle Interface Node initialized successfully!");
+  RCLCPP_INFO(
+    this->get_logger(),
+    "Vehicle Interface Node initialized successfully!");
 }
 
 // =============================================================================
@@ -138,26 +190,57 @@ VehicleInterfaceNode::VehicleInterfaceNode(const rclcpp::NodeOptions &options)
 // =============================================================================
 
 void VehicleInterfaceNode::onControlCmd(
-    const autoware_control_msgs::msg::Control::ConstSharedPtr msg) {
+  const autoware_control_msgs::msg::Control::ConstSharedPtr msg)
+{
   control_cmd_ptr_ = msg;
   last_command_time_ = this->now();
 }
 
 void VehicleInterfaceNode::onGearCmd(
-    const autoware_vehicle_msgs::msg::GearCommand::ConstSharedPtr msg) {
+  const autoware_vehicle_msgs::msg::GearCommand::ConstSharedPtr msg)
+{
   gear_cmd_ptr_ = msg;
   current_kart_gear_ = autowareGearToKartGear(msg->command);
 }
 
 void VehicleInterfaceNode::onTurnIndicatorsCmd(
-    const autoware_vehicle_msgs::msg::TurnIndicatorsCommand::ConstSharedPtr
-        msg) {
+  const autoware_vehicle_msgs::msg::TurnIndicatorsCommand::ConstSharedPtr
+  msg)
+{
   turn_indicators_cmd_ptr_ = msg;
 }
 
 void VehicleInterfaceNode::onHazardLightsCmd(
-    const autoware_vehicle_msgs::msg::HazardLightsCommand::ConstSharedPtr msg) {
+  const autoware_vehicle_msgs::msg::HazardLightsCommand::ConstSharedPtr msg)
+{
   hazard_lights_cmd_ptr_ = msg;
+}
+
+void VehicleInterfaceNode::onControlModeRequest(
+  const std::shared_ptr<
+    autoware_vehicle_msgs::srv::ControlModeCommand::Request>
+  request,
+  std::shared_ptr<autoware_vehicle_msgs::srv::ControlModeCommand::Response>
+  response)
+{
+  const bool manual_request =
+    request->mode ==
+    autoware_vehicle_msgs::srv::ControlModeCommand::Request::MANUAL;
+
+  if (manual_request || software_test_mode_) {
+    current_control_mode_ = request->mode;
+    response->success = true;
+    RCLCPP_INFO(
+      this->get_logger(), "Control mode changed to %u",
+      current_control_mode_);
+    return;
+  }
+
+  response->success = false;
+  RCLCPP_ERROR(
+    this->get_logger(),
+    "Autonomous control-mode request rejected: hardware mode command and "
+    "feedback are not configured. Use software_test_mode only off-vehicle.");
 }
 
 // =============================================================================
@@ -165,7 +248,8 @@ void VehicleInterfaceNode::onHazardLightsCmd(
 // =============================================================================
 
 void VehicleInterfaceNode::onCanFrame(
-    const can_msgs::msg::Frame::ConstSharedPtr msg) {
+  const can_msgs::msg::Frame::ConstSharedPtr msg)
+{
   // Route CAN frames based on ID
   if (msg->id == can_ids_.speed_sensor) {
     // Speed sensor (0x440): big-endian uint16, hm/h
@@ -178,38 +262,42 @@ void VehicleInterfaceNode::onCanFrame(
     // Convert raw sensor value to radians for Autoware
     // Raw range is approximately -800 to 800
     current_steering_angle_rad_ =
-        static_cast<double>(current_steering_sensor_raw_) / 800.0 *
-        max_steering_angle_rad_;
-    RCLCPP_DEBUG(this->get_logger(), "Steering sensor: %d (%.4f rad)",
-                 current_steering_sensor_raw_, current_steering_angle_rad_);
+      static_cast<double>(current_steering_sensor_raw_) / 800.0 *
+      max_steering_angle_rad_;
+    RCLCPP_DEBUG(
+      this->get_logger(), "Steering sensor: %d (%.4f rad)",
+      current_steering_sensor_raw_, current_steering_angle_rad_);
 
   } else if (msg->id == can_ids_.motor_feedback) {
     // Motor ECU feedback (0x730)
-    can_utils::decodeMotorFeedback(*msg, motor_throttle_dac_, motor_is_braking_,
-                                   motor_gear_, motor_is_idle_);
+    can_utils::decodeMotorFeedback(
+      *msg, motor_throttle_dac_, motor_is_braking_,
+      motor_gear_, motor_is_idle_);
     RCLCPP_DEBUG(
-        this->get_logger(), "Motor FB: DAC=%d brake=%d gear=%d idle=%d",
-        motor_throttle_dac_, motor_is_braking_, motor_gear_, motor_is_idle_);
+      this->get_logger(), "Motor FB: DAC=%d brake=%d gear=%d idle=%d",
+      motor_throttle_dac_, motor_is_braking_, motor_gear_, motor_is_idle_);
 
     if (motor_is_idle_) {
       RCLCPP_WARN_THROTTLE(
-          this->get_logger(), *this->get_clock(), 2000,
-          "Motor ECU reports IDLE (no 0x330 messages for 200ms)");
+        this->get_logger(), *this->get_clock(), 2000,
+        "Motor ECU reports IDLE (no 0x330 messages for 200ms)");
     }
 
   } else if (msg->id == can_ids_.steering_ecu_feedback) {
     // Steering ECU feedback (0x720)
-    can_utils::decodeSteeringEcuFeedback(*msg, steer_ecu_current_angle_,
-                                         steer_ecu_target_angle_,
-                                         steer_ecu_has_error_);
-    RCLCPP_DEBUG(this->get_logger(), "Steer ECU: current=%d target=%d error=%d",
-                 steer_ecu_current_angle_, steer_ecu_target_angle_,
-                 steer_ecu_has_error_);
+    can_utils::decodeSteeringEcuFeedback(
+      *msg, steer_ecu_current_angle_,
+      steer_ecu_target_angle_,
+      steer_ecu_has_error_);
+    RCLCPP_DEBUG(
+      this->get_logger(), "Steer ECU: current=%d target=%d error=%d",
+      steer_ecu_current_angle_, steer_ecu_target_angle_,
+      steer_ecu_has_error_);
 
     if (steer_ecu_has_error_) {
       RCLCPP_ERROR_THROTTLE(
-          this->get_logger(), *this->get_clock(), 1000,
-          "Steering ECU FAILSAFE! Check steering sensor or angle range.");
+        this->get_logger(), *this->get_clock(), 1000,
+        "Steering ECU FAILSAFE! Check steering sensor or angle range.");
     }
   }
   // Brake feedback (0x710) - log only for diagnostics
@@ -219,13 +307,14 @@ void VehicleInterfaceNode::onCanFrame(
 // TIMER CALLBACK - Main control loop
 // =============================================================================
 
-void VehicleInterfaceNode::onTimer() {
+void VehicleInterfaceNode::onTimer()
+{
   // Check for command timeout
   double elapsed = (this->now() - last_command_time_).seconds();
   if (elapsed > command_timeout_sec_ && control_cmd_ptr_) {
     RCLCPP_WARN_THROTTLE(
-        this->get_logger(), *this->get_clock(), 1000,
-        "Control command timeout (%.2f sec), sending zero commands", elapsed);
+      this->get_logger(), *this->get_clock(), 1000,
+      "Control command timeout (%.2f sec), sending zero commands", elapsed);
   }
 
   // Send commands to vehicle
@@ -239,24 +328,38 @@ void VehicleInterfaceNode::onTimer() {
 // HELPER METHODS
 // =============================================================================
 
-void VehicleInterfaceNode::sendToVehicle() {
+void VehicleInterfaceNode::sendToVehicle()
+{
+  if (!can_command_output_enabled_ && !software_test_mode_) {
+    RCLCPP_ERROR_THROTTLE(
+      this->get_logger(), *this->get_clock(), 5000,
+      "CAN command output is disabled. Validate the new vehicle protocol and "
+      "set can_command_output_enabled=true before physical actuation.");
+    return;
+  }
+
   // ==========================================================================
   // Determine command values
   // ==========================================================================
   float steer_value = 0.0f;
   uint8_t throttle_percent = 0;
   uint8_t brake_percent = 0;
-  uint8_t gear = current_kart_gear_;
+  uint8_t gear = 0;
 
-  if (control_cmd_ptr_) {
+  const bool autonomous =
+    current_control_mode_ ==
+    autoware_vehicle_msgs::msg::ControlModeReport::AUTONOMOUS;
+
+  if (control_cmd_ptr_ && autonomous) {
     double elapsed = (this->now() - last_command_time_).seconds();
     bool timed_out = (elapsed > command_timeout_sec_);
 
     if (!timed_out) {
+      gear = current_kart_gear_;
       // Steering: convert Autoware radians -> kart float (-1.25 to 1.25)
       double steering_angle = control_cmd_ptr_->lateral.steering_tire_angle;
       steer_value =
-          can_utils::radToKartSteering(steering_angle, max_steering_angle_rad_);
+        can_utils::radToKartSteering(steering_angle, max_steering_angle_rad_);
 
       // Throttle/Brake: convert Autoware acceleration -> kart percentages
       double target_accel = control_cmd_ptr_->longitudinal.acceleration;
@@ -264,13 +367,13 @@ void VehicleInterfaceNode::sendToVehicle() {
       if (target_accel > 0.0) {
         // Positive acceleration -> throttle
         double throttle_frac =
-            std::clamp(target_accel * accel_to_throttle_gain_, 0.0, 1.0);
+          std::clamp(target_accel * accel_to_throttle_gain_, 0.0, 1.0);
         throttle_percent = static_cast<uint8_t>(throttle_frac * 100.0);
         brake_percent = 0;
       } else if (target_accel < 0.0) {
         // Negative acceleration -> brake
         double brake_frac =
-            std::clamp(-target_accel * decel_to_brake_gain_, 0.0, 1.0);
+          std::clamp(-target_accel * decel_to_brake_gain_, 0.0, 1.0);
         throttle_percent = 0;
         brake_percent = static_cast<uint8_t>(brake_frac * 100.0);
       }
@@ -288,7 +391,7 @@ void VehicleInterfaceNode::sendToVehicle() {
 
   // Motor command (0x330): throttle + gear (must send at least every 200ms!)
   auto motor_frame =
-      can_utils::encodeMotorCommand(throttle_percent, gear, can_ids_);
+    can_utils::encodeMotorCommand(throttle_percent, gear, can_ids_);
   can_frame_pub_->publish(motor_frame);
 
   // Brake command (0x110): brake percentage
@@ -296,7 +399,8 @@ void VehicleInterfaceNode::sendToVehicle() {
   can_frame_pub_->publish(brake_frame);
 }
 
-void VehicleInterfaceNode::publishVehicleStatus() {
+void VehicleInterfaceNode::publishVehicleStatus()
+{
   auto stamp = this->now();
 
   // Velocity Report
@@ -323,18 +427,18 @@ void VehicleInterfaceNode::publishVehicleStatus() {
     autoware_vehicle_msgs::msg::GearReport msg;
     msg.stamp = stamp;
     switch (motor_gear_) {
-    case 0:
-      msg.report = autoware_vehicle_msgs::msg::GearReport::NEUTRAL;
-      break;
-    case 1:
-      msg.report = autoware_vehicle_msgs::msg::GearReport::DRIVE;
-      break;
-    case 2:
-      msg.report = autoware_vehicle_msgs::msg::GearReport::REVERSE;
-      break;
-    default:
-      msg.report = autoware_vehicle_msgs::msg::GearReport::DRIVE;
-      break;
+      case 0:
+        msg.report = autoware_vehicle_msgs::msg::GearReport::NEUTRAL;
+        break;
+      case 1:
+        msg.report = autoware_vehicle_msgs::msg::GearReport::DRIVE;
+        break;
+      case 2:
+        msg.report = autoware_vehicle_msgs::msg::GearReport::REVERSE;
+        break;
+      default:
+        msg.report = autoware_vehicle_msgs::msg::GearReport::NEUTRAL;
+        break;
     }
     gear_report_pub_->publish(msg);
   }
@@ -343,7 +447,7 @@ void VehicleInterfaceNode::publishVehicleStatus() {
   {
     autoware_vehicle_msgs::msg::ControlModeReport msg;
     msg.stamp = stamp;
-    msg.mode = autoware_vehicle_msgs::msg::ControlModeReport::AUTONOMOUS;
+    msg.mode = current_control_mode_;
     control_mode_report_pub_->publish(msg);
   }
 
@@ -365,30 +469,31 @@ void VehicleInterfaceNode::publishVehicleStatus() {
 }
 
 uint8_t
-VehicleInterfaceNode::autowareGearToKartGear(uint8_t autoware_gear) const {
+VehicleInterfaceNode::autowareGearToKartGear(uint8_t autoware_gear) const
+{
   // Convert Autoware gear values to kart gear values
   // Autoware: NEUTRAL=1, DRIVE(D)=2, REVERSE=20, PARK=22, etc.
   // Kart: 0=neutral, 1=forward, 2=reverse
   switch (autoware_gear) {
-  case autoware_vehicle_msgs::msg::GearCommand::NEUTRAL:
-    return 0;
-  case autoware_vehicle_msgs::msg::GearCommand::DRIVE:
-  case autoware_vehicle_msgs::msg::GearCommand::DRIVE_2:
-  case autoware_vehicle_msgs::msg::GearCommand::DRIVE_3:
-  case autoware_vehicle_msgs::msg::GearCommand::LOW:
-  case autoware_vehicle_msgs::msg::GearCommand::LOW_2:
-    return 1;
-  case autoware_vehicle_msgs::msg::GearCommand::REVERSE:
-  case autoware_vehicle_msgs::msg::GearCommand::REVERSE_2:
-    return 2;
-  case autoware_vehicle_msgs::msg::GearCommand::PARK:
-    return 0; // Park -> neutral (kart has no park)
-  default:
-    return 1; // Default to forward
+    case autoware_vehicle_msgs::msg::GearCommand::NEUTRAL:
+      return 0;
+    case autoware_vehicle_msgs::msg::GearCommand::DRIVE:
+    case autoware_vehicle_msgs::msg::GearCommand::DRIVE_2:
+    case autoware_vehicle_msgs::msg::GearCommand::DRIVE_3:
+    case autoware_vehicle_msgs::msg::GearCommand::LOW:
+    case autoware_vehicle_msgs::msg::GearCommand::LOW_2:
+      return 1;
+    case autoware_vehicle_msgs::msg::GearCommand::REVERSE:
+    case autoware_vehicle_msgs::msg::GearCommand::REVERSE_2:
+      return 2;
+    case autoware_vehicle_msgs::msg::GearCommand::PARK:
+      return 0;  // Park -> neutral (kart has no park)
+    default:
+      return 0;  // Unknown gear commands must not select drive.
   }
 }
 
-} // namespace my_vehicle_interface
+}  // namespace my_vehicle_interface
 
 // Register as component
 #include "rclcpp_components/register_node_macro.hpp"

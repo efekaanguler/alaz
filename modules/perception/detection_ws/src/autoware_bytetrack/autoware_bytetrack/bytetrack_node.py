@@ -9,6 +9,7 @@ import numpy as np
 import rclpy
 from cv_bridge import CvBridge
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2D, Detection2DArray, ObjectHypothesisWithPose
 
@@ -172,7 +173,9 @@ class ByteTrackNode(Node):
             self._on_detections,
             10,
         )
-        self.sub_img = self.create_subscription(Image, '~/input/image', self._on_image, 10)
+        self.sub_img = self.create_subscription(
+            Image, '~/input/image', self._on_image, qos_profile_sensor_data
+        )
 
         self.pub_debug = None
         if self.enable_visualizer:

@@ -1,13 +1,13 @@
 #!/bin/bash
-# nuc_docker_perception.sh — NUC deployment script for perception + sensor fusion pipeline.
+# nuc_docker_perception.sh — Edge-compute perception + sensor fusion pipeline.
 #
-# Runs INSIDE Docker on the NUC with real LiDAR + real camera.
+# Runs inside the Autoware container on x86 NUC or NVIDIA Jetson.
 # Handles:
 #   1. Auto-detection of /sensing/scan and /points_raw topics (real LiDAR)
 #   2. Auto-detection of camera image topics
 #   3. Fallback camera_info + static TF (only when sensor kit calibration is missing)
 #   4. ROI Cluster Fusion (LiDAR clusters + Camera 2D detection ROIs)
-#   5. Full detection pipeline: YOLOv8 -> ByteTrack -> Autoware Bridge
+#   5. Camera pipeline: YOLOv8 -> ByteTrack (2D outputs only)
 #   6. Traffic light detection + classification
 #   7. Parallel pointcloud -> occupancy grid fallback for planner costmap
 #
@@ -43,6 +43,7 @@ LIDAR_TOPIC="/points_raw"
 SCAN_TOPIC="/sensing/scan"
 PRIMARY_CAMERA_TOPIC="/sensing/image_raw"
 BASE_FRAME="base_link"
+INFERENCE_DEVICE="${ALAZ_INFERENCE_DEVICE:-auto}"
 
 ENABLE_FALLBACK_CAMERA_INFO=true
 ENABLE_FALLBACK_TF=true
@@ -113,7 +114,7 @@ cleanup() {
     if [ "${#CLEANUP_PIDS[@]}" -eq 0 ]; then
         return
     fi
-    echo -e "\n${YELLOW}Stopping NUC perception pipeline...${NC}"
+    echo -e "\n${YELLOW}Stopping perception pipeline...${NC}"
     for pid in "${CLEANUP_PIDS[@]:-}"; do
         if command -v pkill >/dev/null 2>&1; then
             pkill -TERM -P "$pid" 2>/dev/null || true
@@ -203,6 +204,12 @@ verify_topic_active() {
     [ -n "$ttype" ]
 }
 
+verify_topic_message() {
+    local topic="$1"
+    local timeout_s="${2:-10}"
+    timeout "$timeout_s" ros2 topic echo "$topic" --once >/dev/null 2>&1
+}
+
 find_roi_cluster_fusion_params_file() {
     if [ -n "$ROI_FUSION_PARAMS_FILE" ]; then
         if [ -f "$ROI_FUSION_PARAMS_FILE" ]; then
@@ -261,6 +268,7 @@ Options:
   --lidar TOPIC | --lidar=TOPIC      LiDAR PointCloud2 topic (default: /points_raw)
   --scan TOPIC | --scan=TOPIC        LiDAR LaserScan topic (default: /sensing/scan)
   --camera-topic TOPIC               Primary camera image topic (default: /sensing/image_raw)
+  --device auto|cpu|cuda             Inference backend preference (default: auto)
   --base-frame FRAME                 Target/base frame for fallback TF (default: base_link)
   --camera-info-yaml PATH            ROS camera_info YAML for fallback publisher
   --dummy-camera                     Start dummy camera publisher(s) for local/Docker tests
@@ -316,6 +324,14 @@ while [ $# -gt 0 ]; do
             ;;
         --camera-topic=*)
             PRIMARY_CAMERA_TOPIC="${1#--camera-topic=}"
+            shift
+            ;;
+        --device)
+            INFERENCE_DEVICE="${2:-}"
+            shift 2
+            ;;
+        --device=*)
+            INFERENCE_DEVICE="${1#--device=}"
             shift
             ;;
         --base-frame)
@@ -410,10 +426,16 @@ if [[ ! "$DUMMY_CAMERA_FPS" =~ ^[0-9]+([.][0-9]+)?$ ]]; then
     echo -e "${RED}Invalid --dummy-camera-fps value: '$DUMMY_CAMERA_FPS'${NC}"
     exit 1
 fi
+if [[ "$INFERENCE_DEVICE" != "auto" && "$INFERENCE_DEVICE" != "cpu" && "$INFERENCE_DEVICE" != "cuda" ]]; then
+    echo -e "${RED}Invalid --device value: '$INFERENCE_DEVICE' (expected auto, cpu, or cuda)${NC}"
+    exit 1
+fi
+export ALAZ_INFERENCE_DEVICE="$INFERENCE_DEVICE"
 
 echo -e "${CYAN}══════════════════════════════════════════════════════════${NC}"
-echo -e "${CYAN}  SDC 2026 — NUC Perception + Sensor Fusion Pipeline${NC}"
+echo -e "${CYAN}  SDC 2026 — Perception + Sensor Fusion Pipeline${NC}"
 echo -e "${CYAN}  Cameras: $CAMERA_COUNT  |  Fusion: $([ "$SKIP_FUSION" = true ] && echo 'OFF' || echo 'ON')${NC}"
+echo -e "${CYAN}  Inference device: $INFERENCE_DEVICE${NC}"
 echo -e "${CYAN}  Base frame: $BASE_FRAME${NC}"
 echo -e "${CYAN}  Fallbacks: camera_info=$ENABLE_FALLBACK_CAMERA_INFO tf=$ENABLE_FALLBACK_TF occupancy=$ENABLE_FALLBACK_OCCUPANCY${NC}"
 echo -e "${CYAN}  Dummy modes: camera=$FORCE_DUMMY_CAMERA lidar=$FORCE_DUMMY_LIDAR${NC}"
@@ -424,8 +446,15 @@ source_env_safe() {
     local flags="$-"
     set +e
     set +u
-    source /opt/ros/humble/setup.bash >/dev/null 2>&1 || true
-    source /autoware/install/setup.bash >/dev/null 2>&1 || true
+    for setup_file in \
+        /opt/ros/humble/setup.bash \
+        /opt/autoware/setup.bash \
+        /autoware/install/setup.bash \
+        /workspace/install/setup.bash; do
+        if [ -f "$setup_file" ]; then
+            source "$setup_file" >/dev/null 2>&1 || true
+        fi
+    done
     case "$flags" in
         *u*) set -u ;;
     esac
@@ -437,34 +466,25 @@ source_env_safe() {
 # ── Source ROS 2 + Autoware (must be before detection_ws so vision_msgs etc. are available) ──
 source_env_safe
 
-# ── Install vision_msgs if not available (required by YOLO, ByteTrack, Bridge nodes) ──
+# Runtime dependencies must be baked into the deployment image.
 if ! python3 -c "import vision_msgs" 2>/dev/null; then
-    echo -e "${YELLOW}[!] vision_msgs not found — installing ros-humble-vision-msgs...${NC}"
-    apt-get update -qq && apt-get install -y -qq ros-humble-vision-msgs > /dev/null 2>&1
-    # Re-source so the newly installed package is on PYTHONPATH
-    source_env_safe
-    echo -e "${GREEN}[✓] vision_msgs installed${NC}"
+    echo -e "${RED}[✗] vision_msgs is missing. Install ros-humble-vision-msgs in the image before deployment.${NC}"
+    exit 1
 else
     echo -e "${GREEN}[✓] vision_msgs already available${NC}"
 fi
 
-# ── Install onnxruntime if not available (required by YOLO inference) ──
+# ONNX Runtime is optional; OpenCV DNN is the deterministic fallback.
 if ! python3 -c "import onnxruntime" 2>/dev/null; then
-    echo -e "${YELLOW}[!] onnxruntime not found — installing via pip3...${NC}"
-    # Ensure pip is installed first
-    apt-get update -qq && apt-get install -y -qq python3-pip > /dev/null 2>&1
-    # Pin numpy to <2.0.0 to prevent breaking ROS2/OpenCV numpy 1.x compatibility
-    pip3 install -q "numpy<2.0.0" onnxruntime
-    echo -e "${GREEN}[✓] onnxruntime installed (OpenCV fallback will be avoided)${NC}"
+    echo -e "${YELLOW}[!] onnxruntime not found; YOLO will use OpenCV DNN.${NC}"
 else
     echo -e "${GREEN}[✓] onnxruntime already available${NC}"
 fi
 
-# ── Force downgrade numpy if it accidentally got upgraded to 2.x ──
+# Never mutate the running vehicle image; reject incompatible NumPy early.
 if python3 -c "import numpy; import sys; sys.exit(0 if numpy.__version__.startswith('2.') else 1)" 2>/dev/null; then
-    echo -e "${YELLOW}[!] NumPy 2.x detected! Downgrading to NumPy 1.x to fix OpenCV compatibility...${NC}"
-    pip3 install -q "numpy<2.0.0"
-    echo -e "${GREEN}[✓] NumPy downgraded to 1.x${NC}"
+    echo -e "${RED}[✗] NumPy 2.x is incompatible with this ROS/OpenCV image. Rebuild with NumPy 1.x.${NC}"
+    exit 1
 fi
 
 # Explicitly build and export PYTHONPATH so ALL child processes (ros2 launch nodes) inherit it
@@ -584,7 +604,7 @@ if [ "$FORCE_DUMMY_CAMERA" = true ]; then
             cam_frame="camera${i}_link"
         fi
         phase="$(awk -v idx="$i" 'BEGIN { printf "%.3f", idx * 0.7 }')"
-        python3 "$SCRIPT_DIR/../test_scripts/dummy_camera_publisher.py" \
+        python3 "$MODULE_DIR/test_scripts/dummy_camera_publisher.py" \
             --node-name "dummy_camera_publisher_${i}" \
             --topic "$cam_topic" \
             --frame-id "$cam_frame" \
@@ -622,7 +642,19 @@ HAS_REAL_LIDAR=false
 LIDAR_MODE="none"   # none | scan | pointcloud
 LIDAR_INPUT_TOPIC=""
 
-TOPICS="$(timeout 3 ros2 topic list 2>/dev/null || echo "")"
+SENSOR_DISCOVERY_TIMEOUT_SEC="${SENSOR_DISCOVERY_TIMEOUT_SEC:-15}"
+TOPICS=""
+for _ in $(seq 0 "$SENSOR_DISCOVERY_TIMEOUT_SEC"); do
+    TOPICS="$(timeout 3 ros2 topic list 2>/dev/null || echo "")"
+    if [ "$FORCE_DUMMY_CAMERA" = true ] || echo "$TOPICS" | grep -Fxq "$PRIMARY_CAMERA_TOPIC"; then
+        if [ "$FORCE_DUMMY_LIDAR" = true ] || \
+            echo "$TOPICS" | grep -Fxq "$LIDAR_TOPIC" || \
+            echo "$TOPICS" | grep -Fxq "$SCAN_TOPIC"; then
+            break
+        fi
+    fi
+    sleep 1
+done
 
 # Check for LiDAR (prefer explicit pointcloud, then scan)
 if [ "$FORCE_DUMMY_LIDAR" = true ]; then
@@ -656,7 +688,7 @@ else
             echo -e "${GREEN}  ✓ LiDAR pointcloud detected: $AUTO_LIDAR_TOPIC${NC}"
         fi
     else
-        echo -e "${YELLOW}  ⚠ No LiDAR topic found (will use dummy $SCAN_TOPIC for costmap)${NC}"
+        echo -e "${YELLOW}  ⚠ No LiDAR topic found; metric detection and occupancy stay inactive${NC}"
     fi
 fi
 
@@ -778,9 +810,9 @@ echo -e "\n${BLUE}[3/6] LiDAR pipeline (PointCloud2 + OccupancyGrid)...${NC}"
 POINTCLOUD_FOR_FUSION_TOPIC="$LIDAR_POINTCLOUD_TOPIC"
 POINTCLOUD_FOR_COSTMAP_TOPIC="$LIDAR_POINTCLOUD_TOPIC"
 
-if [ "$HAS_REAL_LIDAR" = false ]; then
-    echo -e "${YELLOW}  No real LiDAR — starting dummy LaserScan for costmap/fallback testing...${NC}"
-    python3 "$SCRIPT_DIR/../test_scripts/dummy_lidar_publisher.py" --rate 10 --obstacle --topic "$SCAN_TOPIC" --frame-id "lidar_link" &
+if [ "$FORCE_DUMMY_LIDAR" = true ]; then
+    echo -e "${YELLOW}  Starting explicit dummy LaserScan for costmap/fallback testing...${NC}"
+    python3 "$MODULE_DIR/test_scripts/dummy_lidar_publisher.py" --rate 10 --obstacle --topic "$SCAN_TOPIC" --frame-id "lidar_link" &
     CLEANUP_PIDS+=($!)
     sleep 1
     LIDAR_MODE="scan"
@@ -871,6 +903,7 @@ DETECTION_ARGS=(
     camera_2d_detector/model_path:="$MODEL_DIR/yolov8n.onnx"
     camera_2d_detector/label_path:="$MODEL_DIR/labels.txt"
     camera_2d_detector/color_map_path:="$MODEL_DIR/color_map.json"
+    enable_autoware_bridge:=false
     enable_visualizer:="$ENABLE_VIZ"
 )
 for i in $(seq 0 $((CAMERA_COUNT - 1))); do
@@ -892,7 +925,7 @@ sleep 3
 echo -e "${GREEN}  ✓ Detection pipeline launched:${NC}"
 echo -e "${GREEN}    Camera(s) -> YOLOv8 -> ByteTrack -> tracked rois${NC}"
 echo -e "${GREEN}    Camera -> TL ROI detector -> TL classifier${NC}"
-echo -e "${GREEN}    Tracked rois -> Autoware bridge -> planner topics${NC}"
+echo -e "${GREEN}    Tracked ROIs remain 2D; metric planner objects come from LiDAR tracking${NC}"
 
 if wait_for_topic "/rois0" 8; then
     ROIS0_TYPE="$(topic_type "/rois0" || true)"
@@ -984,7 +1017,7 @@ if [ "$HAS_LIDAR" = true ] && [ "$SKIP_FUSION" = false ]; then
 
         if [ "$FUSION_READY" = false ]; then
             echo -e "${YELLOW}  ⚠ Fusion preflight failed — skipping roi_cluster_fusion launch${NC}"
-            echo -e "${YELLOW}    Planner will continue with bridge outputs + occupancy fallback${NC}"
+            echo -e "${YELLOW}    Planner continues with metric LiDAR tracking + occupancy fallback${NC}"
         else
         echo -e "${GREEN}  Launching roi_cluster_fusion...${NC}"
 
@@ -1057,21 +1090,21 @@ if [ "$HAS_LIDAR" = true ] && [ "$SKIP_FUSION" = false ]; then
             echo -e "${GREEN}  ✓ ROI Cluster Fusion running${NC}"
             echo -e "${GREEN}    Input: $LIDAR_CLUSTER_TOPIC + $FUSION_ROIS_TOPIC + $CAM0_INFO_TOPIC${NC}"
             echo -e "${GREEN}    Output: $FUSED_OBJECTS_TOPIC${NC}"
-            echo -e "${YELLOW}    Note: planner is still fed by Autoware bridge outputs (2D bridge).${NC}"
+            echo -e "${YELLOW}    Note: planner objects remain sourced from metric LiDAR tracking.${NC}"
         else
             wait "$ROI_FUSION_PID" 2>/dev/null || true
             echo -e "${YELLOW}  ⚠ roi_cluster_fusion exited early${NC}"
             echo -e "${YELLOW}    Check parameter compatibility for this Autoware image (e.g. rois_number, input indices).${NC}"
-            echo -e "${YELLOW}    Planner will continue with bridge outputs + occupancy fallback${NC}"
+            echo -e "${YELLOW}    Planner continues with metric LiDAR tracking + occupancy fallback${NC}"
         fi
         fi
     else
         echo -e "${YELLOW}  ⚠ autoware_image_projection_based_fusion not installed${NC}"
-        echo -e "${YELLOW}    Using camera-only detection for planner topics${NC}"
+        echo -e "${YELLOW}    Camera detection remains available as 2D ROIs${NC}"
     fi
 else
     echo -e "${YELLOW}  Skipping ROI fusion (no LiDAR input or --no-fusion)${NC}"
-    echo -e "${YELLOW}  Planner still receives bridge outputs + occupancy fallback${NC}"
+    echo -e "${YELLOW}  Planner still receives metric LiDAR tracking + occupancy fallback${NC}"
 fi
 
 # ══════════════════════════════════════
@@ -1085,12 +1118,8 @@ if [ "$ROI_FUSION_RUNNING" = true ] && [ -n "$ROI_FUSION_PID" ] && ! is_pid_aliv
     echo -e "${YELLOW}  ⚠ ROI Cluster Fusion died after startup; fused_objects topic will not be required${NC}"
 fi
 
-EXPECTED_TOPICS=(
-    "/perception/object_recognition/detection/objects"
-    "/perception/object_recognition/tracking/objects"
-    "/perception/object_recognition/objects"
-    "/perception/traffic_light_recognition/traffic_signals"
-)
+EXPECTED_TOPICS=()
+EXPECTED_MESSAGE_TOPICS=("/rois0")
 
 if [ "$ENABLE_FALLBACK_OCCUPANCY" = true ]; then
     EXPECTED_TOPICS+=("$OCCUPANCY_TOPIC" "$OBSTACLE_POINTCLOUD_TOPIC")
@@ -1104,6 +1133,7 @@ if [ "$SKIP_FUSION" = false ] && [ "$HAS_LIDAR" = true ]; then
 fi
 
 FOUND=0
+MISSING=0
 for topic in "${EXPECTED_TOPICS[@]}"; do
     verify_timeout=3
     if [ "$topic" = "$OCCUPANCY_TOPIC" ] || [ "$topic" = "$OBSTACLE_POINTCLOUD_TOPIC" ]; then
@@ -1114,22 +1144,34 @@ for topic in "${EXPECTED_TOPICS[@]}"; do
         FOUND=$((FOUND + 1))
     else
         echo -e "${YELLOW}  ⚠ $topic (not yet active — may need data or package)${NC}"
+        MISSING=$((MISSING + 1))
+    fi
+done
+
+for topic in "${EXPECTED_MESSAGE_TOPICS[@]}"; do
+    if verify_topic_message "$topic" 12; then
+        echo -e "${GREEN}  ✓ $topic (message received)${NC}"
+        FOUND=$((FOUND + 1))
+    else
+        echo -e "${RED}  ✗ $topic (topic exists but no message was received)${NC}"
+        MISSING=$((MISSING + 1))
     fi
 done
 
 echo -e "\n${CYAN}══════════════════════════════════════════════════════════${NC}"
-echo -e "${CYAN}  NUC Perception Pipeline Running${NC}"
+echo -e "${CYAN}  Perception Pipeline Running${NC}"
 echo -e "${CYAN}══════════════════════════════════════════════════════════${NC}"
 echo ""
 echo -e "  ${BLUE}Pipeline Architecture:${NC}"
 echo "    LiDAR(scan) -> PointCloud2 -> Clustering -> ROI Cluster Fusion (optional)"
 echo "                   |"
 echo "                   +-> OccupancyGrid fallback -> Planner costmap"
-echo "    Camera -> YOLOv8 -> ByteTrack -> Bridge -> Autoware planner topics"
-echo "    Camera -> YOLOv8 TL -> TL Classifier -> TrafficLightGroupArray"
+echo "    Metric LiDAR detections -> Autoware tracker -> map-based prediction"
+echo "    Camera -> YOLOv8 -> ByteTrack -> 2D ROIs"
+echo "    Camera -> YOLOv8 TL -> 2D traffic-light classification"
 echo ""
 echo -e "  ${BLUE}Monitor:${NC}"
-echo "    ros2 topic hz /perception/object_recognition/detection/objects"
+echo "    ros2 topic hz /rois0"
 echo "    ros2 topic hz $OBSTACLE_POINTCLOUD_TOPIC"
 echo "    ros2 topic echo $OCCUPANCY_TOPIC --once"
 echo "    ros2 topic echo /perception/traffic_light_recognition/traffic_signals --once"
@@ -1138,6 +1180,10 @@ echo -e "  ${YELLOW}Press Ctrl+C to stop all nodes.${NC}"
 echo -e "${CYAN}══════════════════════════════════════════════════════════${NC}"
 
 if [ "$EXIT_AFTER_VERIFY" = true ]; then
+    if [ "$MISSING" -ne 0 ]; then
+        echo -e "${RED}Smoke verification failed: $MISSING required output(s) missing.${NC}"
+        exit 1
+    fi
     echo -e "${GREEN}Smoke verification complete; exiting after cleanup.${NC}"
     exit 0
 fi

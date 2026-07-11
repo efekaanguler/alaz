@@ -1,16 +1,17 @@
 #include <mission_control/mode_base.hpp>
 #include <rclcpp/rclcpp.hpp>
 
-class PauseMode : public ModeBase {
+class PauseMode : public ModeBase
+{
 public:
-    double PAUSE_DURATION_SECONDS = 5.0;
-    
-    PauseMode(rclcpp::Node::SharedPtr node);
-    unsigned int execute() override;
+  double PAUSE_DURATION_SECONDS = 5.0;
+
+  PauseMode(rclcpp::Node::SharedPtr node);
+  unsigned int execute() override;
 
 private:
-    rclcpp::Node::SharedPtr node_;
-    bool pause_started_ = false;
-    rclcpp::Time pause_start_time_;
-    rclcpp::Duration pause_duration_ = rclcpp::Duration::from_seconds(5.0);
+  rclcpp::Node::SharedPtr node_;
+  bool pause_started_ = false;
+  rclcpp::Time pause_start_time_;
+  rclcpp::Duration pause_duration_ = rclcpp::Duration::from_seconds(5.0);
 };

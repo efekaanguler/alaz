@@ -248,7 +248,7 @@ def main() -> None:
     ap.add_argument("--roll", type=float, default=0.0)
     ap.add_argument("--pitch", type=float, default=0.0)
     ap.add_argument("--yaw", type=float, default=0.0)
-    args = ap.parse_args()
+    args = ap.parse_args(rclpy.utilities.remove_ros_args()[1:])
 
     rclpy.init()
     node = CameraInfoFallbackPublisher(args)
@@ -259,12 +259,12 @@ def main() -> None:
     finally:
         try:
             node.destroy_node()
-        except Exception:
+        except (Exception, KeyboardInterrupt):
             pass
         if rclpy.ok():
             try:
                 rclpy.shutdown()
-            except Exception:
+            except (Exception, KeyboardInterrupt):
                 pass
 
 

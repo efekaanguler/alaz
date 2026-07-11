@@ -13,8 +13,9 @@
   <depend>geometry_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>autoware_perception_msgs</depend>
+  <exec_depend>autoware_map_based_prediction</exec_depend>
+  <exec_depend>autoware_multi_object_tracker</exec_depend>
   <depend>sensor_msgs</depend>
-  <depend>std_msgs</depend>
   <depend>tier4_perception_msgs</depend>
   <depend>tf2_ros</depend>
   <depend>vision_msgs</depend>

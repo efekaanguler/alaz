@@ -11,15 +11,10 @@ Usage:
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
-from std_msgs.msg import String
 import cv2
 import numpy as np
-import json
-
-try:
-    from vision_msgs.msg import Detection2DArray
-except Exception:  # pragma: no cover - depends on runtime image
-    Detection2DArray = None
+from rclpy.qos import qos_profile_sensor_data
+from vision_msgs.msg import Detection2DArray
 
 
 class DetectionVisualizer(Node):
@@ -33,13 +28,9 @@ class DetectionVisualizer(Node):
         det_topic = self.get_parameter('detection_topic').value
 
         self.image_sub = self.create_subscription(
-            Image, image_topic, self.image_callback, 10)
-        self.det_sub = self.create_subscription(
-            String, det_topic, self.det_callback, 10)
-        self.det2d_sub = None
-        if Detection2DArray is not None:
-            self.det2d_sub = self.create_subscription(
-                Detection2DArray, det_topic, self.det2d_callback, 10)
+            Image, image_topic, self.image_callback, qos_profile_sensor_data)
+        self.det2d_sub = self.create_subscription(
+            Detection2DArray, det_topic, self.det2d_callback, 10)
 
         self.latest_image = None
         self.latest_dets = []
@@ -75,12 +66,6 @@ class DetectionVisualizer(Node):
                 self.get_logger().warn(f'Unsupported encoding: {msg.encoding}')
         except Exception as e:
             self.get_logger().error(f'Image conversion error: {e}')
-
-    def det_callback(self, msg):
-        try:
-            self.latest_dets = json.loads(msg.data)
-        except json.JSONDecodeError:
-            self.latest_dets = []
 
     def det2d_callback(self, msg):
         detections = []

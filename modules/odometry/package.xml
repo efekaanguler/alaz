@@ -17,6 +17,7 @@
   <depend>tf2</depend>
   <depend>tf2_geometry_msgs</depend>
   <depend>tf2_ros</depend>
+  <exec_depend>rdw_vehicle_description</exec_depend>
   <depend>autoware_vehicle_msgs</depend>
 
   <test_depend>ament_lint_auto</test_depend>

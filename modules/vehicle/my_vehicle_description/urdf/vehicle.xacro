@@ -11,7 +11,7 @@
     </visual>
   </link>
 
-  <xacro:include filename="$(find my_sensor_kit_description)/urdf/sensors.xacro"/>
+  <xacro:include filename="$(find rdw_sensor_kit_description)/urdf/sensor_kit.xacro"/>
 
   <xacro:sensor_kit_macro parent="base_link" x="0.0" y="0.0" z="0.0" roll="0.0" pitch="0.0" yaw="0.0"/>
 

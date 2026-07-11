@@ -1,8 +1,10 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Int32, Float32
+from std_msgs.msg import Float32, Int32
+
 
 class VehicleSimulatorNode(Node):
+
     def __init__(self):
         super().__init__('vehicle_simulator_node')
 
@@ -20,12 +22,12 @@ class VehicleSimulatorNode(Node):
         self.cmd_brake = 0
         self.cmd_steering = 0.0
 
-        self.max_accel = 3.0       
-        self.max_decel = 8.0       
-        self.friction_decel = 0.5  
-        self.steer_speed = 2.0     
+        self.max_accel = 3.0
+        self.max_decel = 8.0
+        self.friction_decel = 0.5
+        self.steer_speed = 2.0
 
-        self.dt = 0.05 # 20 Hz
+        self.dt = 0.05  # 20 Hz
         self.create_timer(self.dt, self.timer_callback)
         self.get_logger().info('Araç Simülasyonu Başlatıldı. Geri bildirimler yayınlanıyor...')
 
@@ -67,6 +69,7 @@ class VehicleSimulatorNode(Node):
         steer_msg.data = float(self.current_steering)
         self.steer_pub.publish(steer_msg)
 
+
 def main(args=None):
     rclpy.init(args=args)
     node = VehicleSimulatorNode()
@@ -77,6 +80,7 @@ def main(args=None):
     finally:
         node.destroy_node()
         rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

@@ -29,11 +29,11 @@ topics:
 
   # ========== PERCEPTION ==========
   detected_objects: "/perception/object_recognition/objects"         # perception_module, planning
-  occupancy_grid: "/perception/occupancy_grid_map/map"               # perception_module, planning
-  lidar_clusters: "/perception/object_recognition/detection/clusters" # alaz_lidar_clustering, perception_module
+  occupancy_grid: "/perception/occupancy_grid"                       # perception_module, planning
+  lidar_detections: "/perception/object_recognition/detection/objects" # 2D LiDAR metric detections -> tracker
 
   # ========== PLANNING ==========
-  planned_trajectory: "/planning/scenario_planning/trajectory"       # planning, control
+  planned_trajectory: "/planning/trajectory"                         # planning validator, control
   goal_pose: "/planning/mission_planning/goal"                       # planning, mission_control
   route: "/planning/mission_planning/route"                          # planning, mission_control
 

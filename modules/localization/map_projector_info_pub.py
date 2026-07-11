@@ -43,13 +43,9 @@ class MapProjectorInfoPub(Node):
 
         self.msg = msg
 
-        # publish immediately and keep publishing (safe)
+        # Transient-local durability retains this message for late subscribers.
         self.pub.publish(self.msg)
-        self.timer = self.create_timer(1.0, self._tick)
         self.get_logger().info(f"Publishing {topic} ({projector_type}, {vertical_datum}) TRANSIENT_LOCAL.")
-
-    def _tick(self):
-        self.pub.publish(self.msg)
 
 def main(args=None):
     rclpy.init(args=args)

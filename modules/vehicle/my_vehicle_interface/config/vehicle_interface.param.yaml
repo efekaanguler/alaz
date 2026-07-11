@@ -18,6 +18,27 @@
     # Motor ECU timeout is 200ms, so we use the same for command timeout
     command_timeout_sec: 0.2
 
+    # Off-vehicle integration tests may accept software-only autonomous mode.
+    # Keep false on the physical vehicle until ECU mode command/feedback is wired.
+    software_test_mode: false
+
+    # The IDs and payloads below came from the previous kart. Leave command
+    # output disabled until the electronics team validates every field against
+    # the new vehicle and the control-mode handshake is implemented.
+    can_command_output_enabled: false
+
+    # CAN IDs are parameters so the electronics team's final matrix can be
+    # integrated without changing C++ code.
+    can_ids:
+      steering_command: 544       # 0x220
+      brake_command: 272          # 0x110
+      motor_command: 816          # 0x330
+      speed_sensor: 1088          # 0x440
+      steering_sensor: 485        # 0x1E5
+      steering_ecu_feedback: 1824 # 0x720
+      motor_feedback: 1840        # 0x730
+      brake_feedback: 1808        # 0x710
+
     # -------------------------------------------------------------------------
     # Steering Configuration
     # -------------------------------------------------------------------------

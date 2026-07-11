@@ -1,5 +1,4 @@
 #include <rclcpp/rclcpp.hpp>
-#include <std_msgs/msg/float32.hpp>
 #include <autoware_vehicle_msgs/msg/steering_report.hpp>
 #include <autoware_vehicle_msgs/msg/velocity_report.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
@@ -19,7 +18,7 @@ struct Odometry
   double th;
   rclcpp::Time stamp;
 
-  Odometry(const rclcpp::Time& time)
+  Odometry(const rclcpp::Time & time)
   {
     x = 0.0;
     y = 0.0;
@@ -27,10 +26,9 @@ struct Odometry
     stamp = time;
   }
 
-  void update_odometry(const double vx, const double vth, const rclcpp::Time& cur_time)
+  void update_odometry(const double vx, const double vth, const rclcpp::Time & cur_time)
   {
-    if (stamp.seconds() == 0 && stamp.nanoseconds() == 0)
-    {
+    if (stamp.seconds() == 0 && stamp.nanoseconds() == 0) {
       stamp = cur_time;
     }
     double dt = (cur_time - stamp).seconds();
@@ -45,52 +43,44 @@ struct Odometry
   }
 };
 
-class OdometryNode : public rclcpp::Node {
+class OdometryNode : public rclcpp::Node
+{
 
-    public:
-    OdometryNode();
+public:
+  OdometryNode();
 
-    private:
-    std::string SPEED_TOPIC = "/vehicle_speed";
-    std::string STEERING_TOPIC = "/steering_angle";
-    std::string VEHICLE_VELOCITY_TOPIC = "/vehicle/status/velocity_status";
-    std::string VEHICLE_STEERING_TOPIC = "/vehicle/status/steering_status";
-    std::string ODOM_TOPIC = "/odom";
-    std::string THROTTLE_TOPIC = "/throttle";
+private:
+  std::string VEHICLE_VELOCITY_TOPIC = "/vehicle/status/velocity_status";
+  std::string VEHICLE_STEERING_TOPIC = "/vehicle/status/steering_status";
+  std::string ODOM_TOPIC = "/odom";
+  float TIMEOUT = 1.0;
+  float wheel_base = 1.05;
+  double publish_rate_hz = 30.0;
+  bool publish_tf = false;
 
-    float TIMEOUT=1.0;
-    float wheel_base = 1.05;
-    bool publish_tf = true;
+  float speed = 0.0;
+  float steering = 0.0;
+  rclcpp::Time last_speed;
+  rclcpp::Time last_steering;
+  Odometry odom;
 
-    float speed = 0.0;
-    float steering = 0.0;
-    float throttle=0.0;
-    rclcpp::Time last_speed;
-    rclcpp::Time last_steering;
-    Odometry odom;
+  void publish_odometry();
+  void velocity_report_callback(autoware_vehicle_msgs::msg::VelocityReport msg);
+  void steering_report_callback(autoware_vehicle_msgs::msg::SteeringReport msg);
+  float convert_steering_angle_to_angular_velocity(float cur_vel_mps, float cur_angle_rad)
+  {
 
-    void publish_odometry();
-    void speed_callback(std_msgs::msg::Float32 msg);
-    void steering_callback(std_msgs::msg::Float32 msg);
-    void velocity_report_callback(autoware_vehicle_msgs::msg::VelocityReport msg);
-    void steering_report_callback(autoware_vehicle_msgs::msg::SteeringReport msg);
-    void throttle_callback(std_msgs::msg::Float32 msg);
-    float convert_steering_angle_to_angular_velocity(float cur_vel_mps, float cur_angle_rad) {
+    return tan(cur_angle_rad) * cur_vel_mps / wheel_base;
 
-      return tan(cur_angle_rad) * cur_vel_mps / wheel_base;
+  }
 
-    }
+  rclcpp::Subscription<autoware_vehicle_msgs::msg::VelocityReport>::SharedPtr
+    velocity_report_subscriber;
+  rclcpp::Subscription<autoware_vehicle_msgs::msg::SteeringReport>::SharedPtr
+    steering_report_subscriber;
+  rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_publisher;
+  std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster;
 
-    float simulate_speed();
+  rclcpp::TimerBase::SharedPtr publish_timer;
 
-    rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr speed_subscriber;
-    rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr steering_subscriber;
-    rclcpp::Subscription<autoware_vehicle_msgs::msg::VelocityReport>::SharedPtr velocity_report_subscriber;
-    rclcpp::Subscription<autoware_vehicle_msgs::msg::SteeringReport>::SharedPtr steering_report_subscriber;
-    rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr throttle_subscriber;
-    rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_publisher;
-    std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster;
-
-    rclcpp::TimerBase::SharedPtr publish_timer;
-    
 };

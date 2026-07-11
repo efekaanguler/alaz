@@ -8,7 +8,6 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_ros REQUIRED)
-find_package(autoware_trajectory_follower_node REQUIRED)
 
 install(DIRECTORY
   launch
@@ -18,9 +17,11 @@ install(DIRECTORY
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
+  find_package(launch_testing_ament_cmake REQUIRED)
   set(ament_cmake_copyright_FOUND TRUE)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
+  add_launch_test(test/test_control_pipeline_launch.py TIMEOUT 60)
 endif()
 
 ament_package()

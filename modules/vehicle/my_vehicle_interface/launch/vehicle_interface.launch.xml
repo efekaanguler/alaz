@@ -6,11 +6,13 @@
   <arg name="vehicle_id" default="$(env VEHICLE_ID sdc_kart)"/>
   <arg name="config_file" default="$(find-pkg-share my_vehicle_interface)/config/vehicle_interface.param.yaml"/>
   <arg name="use_sim_time" default="false"/>
+  <arg name="software_test_mode" default="false"/>
   
   <!-- Vehicle Interface Node -->
   <node pkg="my_vehicle_interface" exec="my_vehicle_interface_node" name="vehicle_interface_node" output="screen">
     <param from="$(var config_file)"/>
     <param name="use_sim_time" value="$(var use_sim_time)"/>
+    <param name="software_test_mode" value="$(var software_test_mode)"/>
   </node>
   
   <!--

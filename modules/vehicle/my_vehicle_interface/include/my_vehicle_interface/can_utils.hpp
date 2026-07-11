@@ -19,22 +19,25 @@
 
 #include "can_msgs/msg/frame.hpp"
 
-namespace my_vehicle_interface {
-namespace can_utils {
+namespace my_vehicle_interface
+{
+namespace can_utils
+{
 
 // =============================================================================
 // CAN ID CONFIGURATION - FROM SDC WIKI
 // =============================================================================
-struct CanIds {
+struct CanIds
+{
   // Commands TO kart (Autoware -> Kart)
-  uint32_t steering_command = 0x220; // Steering servo (IEEE 754 float)
+  uint32_t steering_command = 0x220;  // Steering servo (IEEE 754 float)
   uint32_t brake_command = 0x110;    // Brake linear actuator (0-100%)
   uint32_t motor_command = 0x330;    // Motor throttle + gear
 
   // Feedback FROM kart (Kart -> Autoware)
   uint32_t speed_sensor = 0x440;    // Speed sensor (hm/h, big-endian)
-  uint32_t steering_sensor = 0x1E5; // Steering angle sensor (signed int16)
-  uint32_t steering_ecu_feedback = 0x720; // Steering ECU feedback
+  uint32_t steering_sensor = 0x1E5;  // Steering angle sensor (signed int16)
+  uint32_t steering_ecu_feedback = 0x720;  // Steering ECU feedback
   uint32_t motor_feedback = 0x730;        // Motor ECU feedback
   uint32_t brake_feedback = 0x710;        // Brake ECU feedback
 };
@@ -54,8 +57,9 @@ struct CanIds {
  * @param can_ids CAN ID configuration
  * @return CAN frame ready to send
  */
-can_msgs::msg::Frame encodeSteeringCommand(float steering_value,
-                                           const CanIds &can_ids);
+can_msgs::msg::Frame encodeSteeringCommand(
+  float steering_value,
+  const CanIds & can_ids);
 
 /**
  * @brief Encode brake command to CAN frame
@@ -66,8 +70,9 @@ can_msgs::msg::Frame encodeSteeringCommand(float steering_value,
  * @param can_ids CAN ID configuration
  * @return CAN frame ready to send
  */
-can_msgs::msg::Frame encodeBrakeCommand(uint8_t brake_percent,
-                                        const CanIds &can_ids);
+can_msgs::msg::Frame encodeBrakeCommand(
+  uint8_t brake_percent,
+  const CanIds & can_ids);
 
 /**
  * @brief Encode motor command to CAN frame
@@ -81,8 +86,9 @@ can_msgs::msg::Frame encodeBrakeCommand(uint8_t brake_percent,
  * @param can_ids CAN ID configuration
  * @return CAN frame ready to send
  */
-can_msgs::msg::Frame encodeMotorCommand(uint8_t throttle_percent, uint8_t gear,
-                                        const CanIds &can_ids);
+can_msgs::msg::Frame encodeMotorCommand(
+  uint8_t throttle_percent, uint8_t gear,
+  const CanIds & can_ids);
 
 // =============================================================================
 // DECODING FUNCTIONS - Convert CAN frames to Autoware status
@@ -97,7 +103,7 @@ can_msgs::msg::Frame encodeMotorCommand(uint8_t throttle_percent, uint8_t gear,
  * @param frame Received CAN frame
  * @return Speed in m/s
  */
-double decodeSpeedSensor(const can_msgs::msg::Frame &frame);
+double decodeSpeedSensor(const can_msgs::msg::Frame & frame);
 
 /**
  * @brief Decode steering angle sensor CAN frame (0x1E5)
@@ -108,7 +114,7 @@ double decodeSpeedSensor(const can_msgs::msg::Frame &frame);
  * @param frame Received CAN frame
  * @return Steering sensor raw value
  */
-int16_t decodeSteeringSensor(const can_msgs::msg::Frame &frame);
+int16_t decodeSteeringSensor(const can_msgs::msg::Frame & frame);
 
 /**
  * @brief Decode motor feedback CAN frame (0x730)
@@ -124,9 +130,10 @@ int16_t decodeSteeringSensor(const can_msgs::msg::Frame &frame);
  * @param[out] gear current gear
  * @param[out] is_idle true if motor ECU timed out
  */
-void decodeMotorFeedback(const can_msgs::msg::Frame &frame,
-                         uint8_t &throttle_dac, bool &is_braking, uint8_t &gear,
-                         bool &is_idle);
+void decodeMotorFeedback(
+  const can_msgs::msg::Frame & frame,
+  uint8_t & throttle_dac, bool & is_braking, uint8_t & gear,
+  bool & is_idle);
 
 /**
  * @brief Decode steering ECU feedback CAN frame (0x720)
@@ -141,9 +148,10 @@ void decodeMotorFeedback(const can_msgs::msg::Frame &frame,
  * @param[out] target_angle Target steering angle raw value
  * @param[out] has_error true if ECU is in failsafe
  */
-void decodeSteeringEcuFeedback(const can_msgs::msg::Frame &frame,
-                               int16_t &current_angle, int16_t &target_angle,
-                               bool &has_error);
+void decodeSteeringEcuFeedback(
+  const can_msgs::msg::Frame & frame,
+  int16_t & current_angle, int16_t & target_angle,
+  bool & has_error);
 
 // =============================================================================
 // UTILITY FUNCTIONS
@@ -165,14 +173,14 @@ float radToKartSteering(double rad, double max_steering_rad);
 /**
  * @brief Convert hectometer/hour to m/s
  */
-inline double hmhToMs(double hmh) { return hmh * 0.027777777777777776; }
+inline double hmhToMs(double hmh) {return hmh * 0.027777777777777776;}
 
 /**
  * @brief Convert m/s to hectometer/hour
  */
-inline double msToHmh(double ms) { return ms * 36.0; }
+inline double msToHmh(double ms) {return ms * 36.0;}
 
-} // namespace can_utils
-} // namespace my_vehicle_interface
+}  // namespace can_utils
+}  // namespace my_vehicle_interface
 
-#endif // MY_VEHICLE_INTERFACE__CAN_UTILS_HPP_
+#endif  // MY_VEHICLE_INTERFACE__CAN_UTILS_HPP_

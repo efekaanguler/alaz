@@ -113,12 +113,12 @@ def main():
     finally:
         try:
             node.destroy_node()
-        except Exception:
+        except (Exception, KeyboardInterrupt):
             pass
         if rclpy.ok():
             try:
                 rclpy.shutdown()
-            except Exception:
+            except (Exception, KeyboardInterrupt):
                 pass
 
 

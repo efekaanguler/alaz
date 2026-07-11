@@ -15,8 +15,8 @@ setup(
     zip_safe=True,
     maintainer='kekec',
     maintainer_email='kekecmehmet71@gmail.com',
-    description='TODO: Package description',
-    license='TODO: License declaration',
+    description='Synthetic speed and steering data for off-vehicle tests',
+    license='Apache-2.0',
     extras_require={
         'test': [
             'pytest',
@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-		'auto_pseudo = pseudo_vehicle_data.auto_pseudo_node:main'
+            'auto_pseudo = pseudo_vehicle_data.auto_pseudo_node:main',
         ],
     },
 )

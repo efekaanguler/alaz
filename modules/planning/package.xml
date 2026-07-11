@@ -13,8 +13,9 @@
 
   <buildtool_depend>ament_cmake_ros</buildtool_depend>
 
-  <depend>autoware_behavior_path_planner</depend>
-  <depend>autoware_velocity_smoother</depend>
+  <exec_depend>autoware_launch</exec_depend>
+  <exec_depend>tier4_planning_launch</exec_depend>
+  <exec_depend>rdw_vehicle_description</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

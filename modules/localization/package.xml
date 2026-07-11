@@ -20,11 +20,10 @@
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>autoware_map_msgs</exec_depend>
   <exec_depend>geographic_msgs</exec_depend>
-  <exec_depend>topic_tools</exec_depend>
   <exec_depend>autoware_map_loader</exec_depend>
-  <exec_depend>yabloc_common</exec_depend>
-  <exec_depend>yabloc_image_processing</exec_depend>
-  <exec_depend>yabloc_particle_filter</exec_depend>
+  <exec_depend>autoware_launch</exec_depend>
+  <exec_depend>tier4_localization_launch</exec_depend>
+  <exec_depend>rdw_vehicle_description</exec_depend>
 
   <!-- Optional (often already available). Keep commented if you want it minimal. -->
   <!-- <exec_depend>python3-yaml</exec_depend> -->

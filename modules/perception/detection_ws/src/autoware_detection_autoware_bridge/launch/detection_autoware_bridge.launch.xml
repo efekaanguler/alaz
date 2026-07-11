@@ -8,10 +8,12 @@
   <arg name="output/predicted_objects" default="/perception/object_recognition/objects"/>
   <arg name="output/traffic_signals" default="/perception/traffic_light_recognition/traffic_signals"/>
 
-  <arg name="publish_detected_objects" default="true"/>
-  <arg name="publish_tracked_objects" default="true"/>
-  <arg name="publish_predicted_objects" default="true"/>
-  <arg name="publish_traffic_signals" default="true"/>
+  <!-- A 2D pixel box has no metric pose or map traffic-light ID. Keep all
+       Autoware-native outputs off unless a calibrated projection supplies them. -->
+  <arg name="publish_detected_objects" default="false"/>
+  <arg name="publish_tracked_objects" default="false"/>
+  <arg name="publish_predicted_objects" default="false"/>
+  <arg name="publish_traffic_signals" default="false"/>
 
   <node pkg="autoware_detection_autoware_bridge" exec="detection_autoware_bridge_node" name="detection_autoware_bridge" output="screen">
     <param name="publish_detected_objects" value="$(var publish_detected_objects)"/>

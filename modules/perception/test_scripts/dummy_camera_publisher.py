@@ -21,6 +21,7 @@ import numpy as np
 import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import Image
 
 
@@ -36,7 +37,7 @@ class DummyCameraPublisher(Node):
         phase=0.0,
     ):
         super().__init__(node_name)
-        self.pub = self.create_publisher(Image, topic, 10)
+        self.pub = self.create_publisher(Image, topic, qos_profile_sensor_data)
         self.timer = self.create_timer(1.0 / fps, self.publish_image)
         self.width = width
         self.height = height
@@ -142,12 +143,12 @@ def main():
     finally:
         try:
             node.destroy_node()
-        except Exception:
+        except (Exception, KeyboardInterrupt):
             pass
         if rclpy.ok():
             try:
                 rclpy.shutdown()
-            except Exception:
+            except (Exception, KeyboardInterrupt):
                 pass
 
 

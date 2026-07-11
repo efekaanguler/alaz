@@ -1,128 +1,201 @@
 #include <mission_control/mode_emergency.hpp>
 
 
-EmergencyMode::EmergencyMode(rclcpp::Node::SharedPtr node) : node_(node) {
-    
-    if(!LIDAR_TOPIC.empty())
-        lidar_subscriber = node_->create_subscription<sensor_msgs::msg::LaserScan>(LIDAR_TOPIC, 10, std::bind(&EmergencyMode::lidar_callback, this, std::placeholders::_1));
-    
-    if(!GNSS_TOPIC.empty())
-        gnss_subscriber = node_->create_subscription<sensor_msgs::msg::NavSatFix>(GNSS_TOPIC, 10, std::bind(&EmergencyMode::gnss_callback, this, std::placeholders::_1));
-    
-    if(!IMU_TOPIC.empty())
-        imu_subscriber = node_->create_subscription<sensor_msgs::msg::Imu>(IMU_TOPIC, 10, std::bind(&EmergencyMode::imu_callback, this, std::placeholders::_1));
-    
-    if(!CAMERA_TOPIC.empty())
-        camera_subscriber = node_->create_subscription<sensor_msgs::msg::Image>(CAMERA_TOPIC, 10, std::bind(&EmergencyMode::camera_callback, this, std::placeholders::_1));
-    
-    if(!ODOM_TOPIC.empty())
-        odom_subscriber = node_->create_subscription<nav_msgs::msg::Odometry>(ODOM_TOPIC, 10, std::bind(&EmergencyMode::odom_callback, this, std::placeholders::_1));
-    
-    localization_subscriber = node->create_subscription<autoware_adapi_v1_msgs::msg::LocalizationInitializationState>("/localization/initialization_state", 10, std::bind(&EmergencyMode::localization_callback, this, std::placeholders::_1));
+EmergencyMode::EmergencyMode(rclcpp::Node::SharedPtr node)
+: node_(node)
+{
+  node_->get_parameter("sensor_timeout_sec", TIMEOUT);
+  const auto sensor_qos = rclcpp::SensorDataQoS();
+  last_stop_request_ = node_->now() - rclcpp::Duration::from_seconds(10.0);
 
-    emergency_publisher_ = node_->create_publisher<std_msgs::msg::Bool>(EMERGENCY_PUBLISHER_TOPIC, 10);
+  if (!LIDAR_TOPIC.empty()) {
+    lidar_subscriber = node_->create_subscription<sensor_msgs::msg::LaserScan>(
+      LIDAR_TOPIC,
+      sensor_qos, std::bind(
+        &EmergencyMode::lidar_callback, this, std::placeholders::_1));
+  }
+
+  if (!GNSS_TOPIC.empty()) {
+    gnss_subscriber = node_->create_subscription<sensor_msgs::msg::NavSatFix>(
+      GNSS_TOPIC,
+      sensor_qos,
+      std::bind(&EmergencyMode::gnss_callback, this, std::placeholders::_1));
+  }
+
+  if (!IMU_TOPIC.empty()) {
+    imu_subscriber = node_->create_subscription<sensor_msgs::msg::Imu>(
+      IMU_TOPIC, sensor_qos, std::bind(
+        &EmergencyMode::imu_callback, this,
+        std::placeholders::_1));
+  }
+
+  if (!CAMERA_TOPIC.empty()) {
+    camera_subscriber = node_->create_subscription<sensor_msgs::msg::Image>(
+      CAMERA_TOPIC,
+      sensor_qos,
+      std::bind(&EmergencyMode::camera_callback, this, std::placeholders::_1));
+  }
+
+  if (!ODOM_TOPIC.empty()) {
+    odom_subscriber =
+      node_->create_subscription<nav_msgs::msg::Odometry>(
+      ODOM_TOPIC, 10,
+      std::bind(&EmergencyMode::odom_callback, this, std::placeholders::_1));
+  }
+
+  localization_subscriber =
+    node->create_subscription<autoware_adapi_v1_msgs::msg::LocalizationInitializationState>(
+    "/localization/initialization_state", rclcpp::QoS(1).transient_local().reliable(),
+    std::bind(&EmergencyMode::localization_callback, this, std::placeholders::_1));
+
+  emergency_publisher_ =
+    node_->create_publisher<std_msgs::msg::Bool>(EMERGENCY_PUBLISHER_TOPIC, 10);
+  engage_publisher_ = node_->create_publisher<autoware_vehicle_msgs::msg::Engage>(
+    ENGAGE_PUBLISHER_TOPIC, 10);
+  change_operation_mode_client_ =
+    node_->create_client<autoware_system_msgs::srv::ChangeOperationMode>(
+    CHANGE_OPERATION_MODE_SERVICE);
+  change_autoware_control_client_ =
+    node_->create_client<autoware_system_msgs::srv::ChangeAutowareControl>(
+    CHANGE_AUTOWARE_CONTROL_SERVICE);
 }
 
 
-unsigned int EmergencyMode::execute() {
-    auto msg = std_msgs::msg::Bool();
-    
-    if(checkState()) {
-        // Sensors are OK, clear emergency flag and return to PAUSE
-        msg.data = false;
-        emergency_publisher_->publish(msg);
-        //RCLCPP_INFO(node_->get_logger(), "Sensors are back online. Clearing emergency and switching to PAUSE mode.");
-        return MODE_PAUSE;
-    }
+unsigned int EmergencyMode::execute()
+{
+  auto msg = std_msgs::msg::Bool();
 
-    // Still in emergency, publish emergency flag
-    msg.data = true;
+  auto engage_msg = autoware_vehicle_msgs::msg::Engage();
+  engage_msg.stamp = node_->now();
+  engage_msg.engage = false;
+  engage_publisher_->publish(engage_msg);
+
+  const auto now = node_->now();
+  if ((now - last_stop_request_).seconds() >= 1.0) {
+    last_stop_request_ = now;
+    if (change_autoware_control_client_->service_is_ready()) {
+      auto control_request = std::make_shared<
+        autoware_system_msgs::srv::ChangeAutowareControl::Request>();
+      control_request->autoware_control = false;
+      change_autoware_control_client_->async_send_request(control_request);
+    }
+    if (change_operation_mode_client_->service_is_ready()) {
+      auto mode_request = std::make_shared<
+        autoware_system_msgs::srv::ChangeOperationMode::Request>();
+      mode_request->mode =
+        autoware_system_msgs::srv::ChangeOperationMode::Request::STOP;
+      change_operation_mode_client_->async_send_request(mode_request);
+    }
+  }
+
+  if (checkState()) {
+    // Sensors are OK, clear emergency flag and return to PAUSE
+    msg.data = false;
     emergency_publisher_->publish(msg);
-    return MODE_EMERGENCY;
-};
+    //RCLCPP_INFO(node_->get_logger(), "Sensors are back online. Clearing emergency and switching to PAUSE mode.");
+    return MODE_PAUSE;
+  }
 
-bool EmergencyMode::isHealthy() {
-    return checkState();
+  // Still in emergency, publish emergency flag
+  msg.data = true;
+  emergency_publisher_->publish(msg);
+  return MODE_EMERGENCY;
 }
 
-bool EmergencyMode::checkState() {
+bool EmergencyMode::isHealthy()
+{
+  return checkState();
+}
 
-    auto now = node_->now();
-    bool state=true;
+bool EmergencyMode::checkState()
+{
 
-    if(!LIDAR_TOPIC.empty()) {
-        if(last_lidar.nanoseconds()==0 || (now-last_lidar).seconds() > TIMEOUT) {
-            RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: No Lidar Data");
-            state = false;
-        }
+  auto now = node_->now();
+  bool state = true;
+
+  if (!LIDAR_TOPIC.empty()) {
+    if (last_lidar.nanoseconds() == 0 || (now - last_lidar).seconds() > TIMEOUT) {
+      RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: No Lidar Data");
+      state = false;
     }
+  }
 
-    if(!GNSS_TOPIC.empty()) {
-        if(last_gnss.nanoseconds()==0 || (now-last_gnss).seconds() > TIMEOUT) {
-            RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: No GNSS Data");
-            state = false;
-        }
+  if (!GNSS_TOPIC.empty()) {
+    if (last_gnss.nanoseconds() == 0 || (now - last_gnss).seconds() > TIMEOUT) {
+      RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: No GNSS Data");
+      state = false;
     }
+  }
 
-    if(!IMU_TOPIC.empty()) {
-        if(last_imu.nanoseconds()==0 || (now-last_imu).seconds() > TIMEOUT) {
-            RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: No IMU Data");
-            state = false;
-        }
+  if (!IMU_TOPIC.empty()) {
+    if (last_imu.nanoseconds() == 0 || (now - last_imu).seconds() > TIMEOUT) {
+      RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: No IMU Data");
+      state = false;
     }
+  }
 
-    if(!CAMERA_TOPIC.empty()) {
-        if(last_camera.nanoseconds()==0 || (now-last_camera).seconds() > TIMEOUT) {
-            RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: No Camera Data");
-            state = false;
-        }
+  if (!CAMERA_TOPIC.empty()) {
+    if (last_camera.nanoseconds() == 0 || (now - last_camera).seconds() > TIMEOUT) {
+      RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: No Camera Data");
+      state = false;
     }
+  }
 
-    if(!ODOM_TOPIC.empty()) {
-        if(last_odom.nanoseconds()==0 || (now-last_odom).seconds() > TIMEOUT) {
-            RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: No Odometry Data");
-            state = false;
-        }
+  if (!ODOM_TOPIC.empty()) {
+    if (last_odom.nanoseconds() == 0 || (now - last_odom).seconds() > TIMEOUT) {
+      RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: No Odometry Data");
+      state = false;
     }
+  }
 
-    if(localization_seen && !localization_initialized) {
-        RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: Localization Failed");
-        state = false;
-    }
+  if (!localization_seen) {
+    RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: No Localization State");
+    state = false;
+  } else if (!localization_initialized) {
+    RCLCPP_ERROR(node_->get_logger(), "EMERGENCY: Localization Failed");
+    state = false;
+  }
 
-    return state;
+  return state;
 
 }
 
 
-void EmergencyMode::lidar_callback(sensor_msgs::msg::LaserScan::SharedPtr msg) {
-    (void)msg;
-    last_lidar = node_->now();
+void EmergencyMode::lidar_callback(sensor_msgs::msg::LaserScan::SharedPtr msg)
+{
+  (void)msg;
+  last_lidar = node_->now();
 }
 
-void EmergencyMode::gnss_callback(sensor_msgs::msg::NavSatFix::SharedPtr msg) {
-    (void)msg;
-    last_gnss = node_->now();
+void EmergencyMode::gnss_callback(sensor_msgs::msg::NavSatFix::SharedPtr msg)
+{
+  (void)msg;
+  last_gnss = node_->now();
 }
 
-void EmergencyMode::imu_callback(sensor_msgs::msg::Imu::SharedPtr msg) {
-    (void)msg;
-    last_imu = node_->now();
+void EmergencyMode::imu_callback(sensor_msgs::msg::Imu::SharedPtr msg)
+{
+  (void)msg;
+  last_imu = node_->now();
 }
 
-void EmergencyMode::camera_callback(sensor_msgs::msg::Image::SharedPtr msg) {
-    (void)msg;
-    last_camera = node_->now();
+void EmergencyMode::camera_callback(sensor_msgs::msg::Image::SharedPtr msg)
+{
+  (void)msg;
+  last_camera = node_->now();
 }
 
-void EmergencyMode::odom_callback(nav_msgs::msg::Odometry::SharedPtr msg) {
-    (void)msg;
-    last_odom = node_->now();
+void EmergencyMode::odom_callback(nav_msgs::msg::Odometry::SharedPtr msg)
+{
+  (void)msg;
+  last_odom = node_->now();
 }
 
-void EmergencyMode::localization_callback(autoware_adapi_v1_msgs::msg::LocalizationInitializationState::SharedPtr msg) {
-    RCLCPP_DEBUG(node_->get_logger(), "Localization message receieved.");
-    localization_seen = true;
-    localization_initialized =
-        msg->state == autoware_adapi_v1_msgs::msg::LocalizationInitializationState::INITIALIZED;
+void EmergencyMode::localization_callback(
+  autoware_adapi_v1_msgs::msg::LocalizationInitializationState::SharedPtr msg)
+{
+  RCLCPP_DEBUG(node_->get_logger(), "Localization message receieved.");
+  localization_seen = true;
+  localization_initialized =
+    msg->state == autoware_adapi_v1_msgs::msg::LocalizationInitializationState::INITIALIZED;
 }

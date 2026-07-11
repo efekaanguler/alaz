@@ -15,7 +15,13 @@ class CANBridgeNode(Node):
         channel = self.get_parameter("interface").value
         channel_type = self.get_parameter("channel_type").value
 
-        self.bus = can.Bus(interface=channel_type, channel=channel)
+        try:
+            self.bus = can.Bus(interface=channel_type, channel=channel)
+        except Exception as exc:
+            self.get_logger().fatal(
+                f"Cannot open CAN transport {channel_type}:{channel}: {exc}"
+            )
+            raise
 
         self.to_can_sub = self.create_subscription(
             Frame, "/to_can_bus", self.on_to_can_bus, 100
@@ -40,7 +46,7 @@ class CANBridgeNode(Node):
             self.get_logger().error(f"Failed to send CAN frame 0x{msg.id:X}: {exc}")
 
     def poll_can(self):
-        while True:
+        for _ in range(100):
             msg = self.bus.recv(timeout=0.0)
             if msg is None:
                 break
@@ -54,16 +60,32 @@ class CANBridgeNode(Node):
             frame.data = data + [0] * (8 - len(data))
             self.from_can_pub.publish(frame)
 
+    def destroy_node(self):
+        try:
+            self.bus.shutdown()
+        finally:
+            super().destroy_node()
+
 
 def main():
     rclpy.init()
-    node = CANBridgeNode()
+    node = None
     try:
+        node = CANBridgeNode()
         rclpy.spin(node)
     except KeyboardInterrupt:
         pass
-    node.destroy_node()
-    rclpy.shutdown()
+    finally:
+        if node is not None:
+            try:
+                node.destroy_node()
+            except KeyboardInterrupt:
+                pass
+        if rclpy.ok():
+            try:
+                rclpy.shutdown()
+            except KeyboardInterrupt:
+                pass
 
 
 if __name__ == "__main__":

@@ -55,7 +55,17 @@ if [[ -f "/opt/ros/${ROS_DISTRO}/setup.bash" ]]; then
   source "/opt/ros/${ROS_DISTRO}/setup.bash"
   set -u
 else
-  echo "Warning: /opt/ros/${ROS_DISTRO}/setup.bash not found" >&2
+  echo "Error: /opt/ros/${ROS_DISTRO}/setup.bash not found" >&2
+  exit 1
+fi
+if [[ -f "/opt/autoware/setup.bash" ]]; then
+  set +u
+  # shellcheck disable=SC1091
+  source /opt/autoware/setup.bash
+  set -u
+else
+  echo "Error: /opt/autoware/setup.bash not found" >&2
+  exit 1
 fi
 if [[ -f "${WORKSPACE}/install/setup.bash" ]]; then
   set +u

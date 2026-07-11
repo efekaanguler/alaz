@@ -5,7 +5,6 @@ find_package(ament_cmake REQUIRED)
 
 # Install scripts
 install(PROGRAMS
-  test_scripts/webcam_detect_standalone.py
   scripts/mjpeg_to_ros.py
   scripts/visualize_detections.py
   test_scripts/dummy_lidar_publisher.py
@@ -14,12 +13,7 @@ install(PROGRAMS
   scripts/scan_static_tf_fallback.py
   scripts/pointcloud_to_occupancy_grid.py
   scripts/detection2d_to_tier4_rois.py
-  scripts/mac_docker_start.sh
   scripts/nuc_docker_perception.sh
-  test_scripts/test_nuc_perception_runtime.sh
-  test_scripts/test_detection_e2e.sh
-  test_scripts/test_planner_integration.sh
-  test_scripts/test_perception_pipeline.sh
   DESTINATION lib/${PROJECT_NAME}
 )
 

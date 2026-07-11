@@ -14,6 +14,7 @@ The node publishes to /sensing/image_raw at ~30 fps by default.
 
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import Image
 import cv2
 import numpy as np
@@ -60,7 +61,7 @@ class WebcamPublisher(Node):
         self.get_logger().info(f'Camera opened: {actual_w}x{actual_h}')
 
         # Publisher
-        self.pub = self.create_publisher(Image, topic, 10)
+        self.pub = self.create_publisher(Image, topic, qos_profile_sensor_data)
         self.get_logger().info(f'Publishing to {topic} at {fps} fps')
 
         # Timer

@@ -14,6 +14,7 @@
   <exec_depend>autoware_bytetrack</exec_depend>
   <exec_depend>autoware_traffic_light_classifier</exec_depend>
   <exec_depend>autoware_detection_autoware_bridge</exec_depend>
+  <exec_depend>perception</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

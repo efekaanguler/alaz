@@ -2,6 +2,8 @@ packages:
   rdw_vehicle_launch:
     enabled: true
     launch_file: "vehicle.launch.xml"
+    arguments:
+      software_test_mode: "false"
   
   ros2_can_bridge:
     enabled: true
@@ -14,6 +16,8 @@ packages:
   odometry:
     enabled: true
     launch_file: "my_odom.launch.xml"
+    arguments:
+      publish_tf: "false"
 
   alaz_lidar_clustering:
     enabled: true
@@ -25,20 +29,32 @@ packages:
     arguments:
       src_image: "/sensing/image_raw"
       src_info: "/sensing/camera_info"
+      vehicle_model: "rdw_vehicle"
+      pose_source: "yabloc"
+      twist_source: "external"
+      data_path: "/autoware_data"
 
   perception:
     enabled: true
     launch_file: "perception.launch.xml"
     arguments:
       image_topic: "/sensing/image_raw"
+      inference_device: "auto"
+      enable_object_tracking: "true"
 
   planning:
     enabled: true
     launch_file: "planning.launch.py"
+    arguments:
+      vehicle_model: "rdw_vehicle"
+      enable_all_modules_auto_mode: "true"
     
   control:
     enabled: true
     launch_file: "control.launch.py"
+    arguments:
+      vehicle_model: "rdw_vehicle"
+      enable_safety_checks: "true"
     
   mission_control:
     enabled: true

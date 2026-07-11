@@ -1,12 +1,19 @@
+from autoware_perception_msgs.msg import (
+    DetectedObject,
+    DetectedObjects,
+    ObjectClassification,
+    Shape,
+)
+import numpy as np
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import LaserScan
 from visualization_msgs.msg import Marker, MarkerArray
-from autoware_perception_msgs.msg import DetectedObjects, DetectedObject, ObjectClassification, Shape
-import numpy as np
+
 
 class AlazLidar2D(Node):
+
     def __init__(self):
         super().__init__('alaz_lidar_2d')
 
@@ -14,17 +21,27 @@ class AlazLidar2D(Node):
         self.declare_parameter('scan_topic', '/sensing/scan')
         self.declare_parameter('cluster_tolerance', 0.8)
         self.declare_parameter('min_cluster_size', 3)
+        self.declare_parameter(
+            'output_topic',
+            '/perception/object_recognition/detection/objects',
+        )
 
         self.max_range = self.get_parameter('max_range').value
         self.tolerance = self.get_parameter('cluster_tolerance').value
         self.min_size = self.get_parameter('min_cluster_size').value
         scan_topic = self.get_parameter('scan_topic').get_parameter_value().string_value
+        output_topic = self.get_parameter('output_topic').get_parameter_value().string_value
 
-        self.create_subscription(LaserScan, scan_topic, self.scan_callback, qos_profile_sensor_data)
+        self.create_subscription(
+            LaserScan, scan_topic, self.scan_callback, qos_profile_sensor_data
+        )
         self.marker_pub = self.create_publisher(MarkerArray, '/alaz/visual_markers', 10)
-        self.autoware_pub = self.create_publisher(DetectedObjects, '/perception/object_recognition/detection/clusters', 10)
+        self.autoware_pub = self.create_publisher(DetectedObjects, output_topic, 10)
 
-        self.get_logger().info(f'Alaz 2D Lidar Aktif | Topic: {scan_topic} | Tol: {self.tolerance}m')
+        self.get_logger().info(
+            f'Alaz 2D LiDAR active | input={scan_topic} | output={output_topic} '
+            f'| tolerance={self.tolerance}m'
+        )
 
     def scan_callback(self, msg):
         marker_array = MarkerArray()
@@ -76,7 +93,7 @@ class AlazLidar2D(Node):
 
             marker = Marker()
             marker.header = msg.header
-            marker.ns = "obstacles"
+            marker.ns = 'obstacles'
             marker.id = cluster_id
             marker.type = Marker.CUBE
             marker.action = Marker.ADD
@@ -102,6 +119,9 @@ class AlazLidar2D(Node):
             p_obj.kinematics.pose_with_covariance.pose.position.y = float(center_y)
             p_obj.kinematics.pose_with_covariance.pose.position.z = 0.0
             p_obj.kinematics.pose_with_covariance.pose.orientation.w = 1.0
+            p_obj.kinematics.has_position_covariance = False
+            p_obj.kinematics.has_twist = False
+            p_obj.kinematics.has_twist_covariance = False
             p_obj.shape.type = Shape.BOUNDING_BOX
             p_obj.shape.dimensions.x = float(dim_x)
             p_obj.shape.dimensions.y = float(dim_y)
@@ -111,9 +131,10 @@ class AlazLidar2D(Node):
         self.marker_pub.publish(marker_array)
         self.autoware_pub.publish(autoware_msg)
 
+
 def main(args=None):
     rclpy.init(args=args)
-    node = AlazLidar2D()   # kendi node class adın
+    node = AlazLidar2D()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
@@ -122,6 +143,7 @@ def main(args=None):
         node.destroy_node()
         if rclpy.ok():
             rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

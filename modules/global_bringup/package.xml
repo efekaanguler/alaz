@@ -25,6 +25,16 @@
   
   <!-- YAML dosyaları okumak için (Python) -->
   <exec_depend>python3-yaml</exec_depend>
+  <exec_depend>rdw_vehicle_launch</exec_depend>
+  <exec_depend>ros2_can_bridge</exec_depend>
+  <exec_depend>rdw_sensor_kit_launch</exec_depend>
+  <exec_depend>odometry</exec_depend>
+  <exec_depend>alaz_lidar_clustering</exec_depend>
+  <exec_depend>localization</exec_depend>
+  <exec_depend>perception</exec_depend>
+  <exec_depend>planning</exec_depend>
+  <exec_depend>control</exec_depend>
+  <exec_depend>mission_control</exec_depend>
 
   <!-- ============================================ -->
   <!-- YENİ MODÜL/PAKET EKLEDİĞİNİZDE NE YAPMALI?   -->

@@ -1,78 +1,59 @@
-from launch import LaunchDescription
-from launch_ros.actions import Node
-from launch.substitutions import LaunchConfiguration
-from launch.actions import DeclareLaunchArgument, ExecuteProcess
-from launch.conditions import IfCondition
-from ament_index_python.packages import get_package_share_directory
+#!/usr/bin/env python3
+
 import os
+
+from ament_index_python.packages import get_package_share_directory
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.launch_description_sources import AnyLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
-    use_sim_time = LaunchConfiguration("use_sim_time")
-    behavior_param_path = os.path.join(
-        get_package_share_directory("planning"), "config", "behavior_path_planner.param.yaml"
-    )
-    velocity_smoother_param_path = os.path.join(
-        get_package_share_directory("planning"), "config", "default_velocity_smoother.param.yaml"
+    autoware_planning = os.path.join(
+        get_package_share_directory("autoware_launch"),
+        "launch",
+        "components",
+        "tier4_planning_component.launch.xml",
     )
 
     return LaunchDescription(
         [
+            DeclareLaunchArgument("use_sim_time", default_value="false"),
+            DeclareLaunchArgument("vehicle_model", default_value="rdw_vehicle"),
             DeclareLaunchArgument(
-                name="use_sim_time",
-                default_value="false",
-                description="Use simulation clock",
+                "pointcloud_container_name", default_value="/pointcloud_container"
             ),
+            DeclareLaunchArgument("is_simulation", default_value="false"),
             DeclareLaunchArgument(
-                name="behavior_path_planner_params",
-                default_value=behavior_param_path,
-                description="Path to behavior path planner parameters file",
-            ),
-            DeclareLaunchArgument(
-                name="velocity_smoother_params",
-                default_value=velocity_smoother_param_path,
-                description="Path to velocity smoother parameters file",
+                "enable_all_modules_auto_mode",
+                default_value="true",
+                description="Allow planning scene modules to activate without RTC UI",
             ),
             DeclareLaunchArgument(
-                name="use_dummy_scenario",
-                default_value="false",
-                description="Publish a dummy scenario message for standalone planner testing",
+                "input_objects_topic",
+                default_value="/perception/object_recognition/objects",
             ),
-            Node(
-                package="autoware_behavior_path_planner",
-                executable="autoware_behavior_path_planner_node",
-                name="autoware_behavior_path_planner",
-                parameters=[
-                    LaunchConfiguration("behavior_path_planner_params"),
-                    {"use_sim_time": use_sim_time},
-                ],
-                remappings=[],
-                output="screen",
+            DeclareLaunchArgument(
+                "input_pointcloud_topic",
+                default_value="/perception/obstacle/pointcloud",
             ),
-            Node(
-                package="autoware_velocity_smoother",
-                executable="velocity_smoother_node",
-                name="velocity_smoother",
-                parameters=[
-                    LaunchConfiguration("velocity_smoother_params"),
-                    {"use_sim_time": use_sim_time},
-                ],
-                remappings=[],
-                output="screen",
-            ),
-            ExecuteProcess(
-                condition=IfCondition(LaunchConfiguration("use_dummy_scenario")),
-                cmd=[
-                    "ros2",
-                    "topic",
-                    "pub",
-                    "-r",
-                    "1",
-                    "/autoware_behavior_path_planner/input/scenario",
-                    "autoware_internal_planning_msgs/msg/Scenario",
-                    "{}",
-                ],
-                output="screen",
+            IncludeLaunchDescription(
+                AnyLaunchDescriptionSource(autoware_planning),
+                launch_arguments={
+                    "use_sim_time": LaunchConfiguration("use_sim_time"),
+                    "vehicle_model": LaunchConfiguration("vehicle_model"),
+                    "is_simulation": LaunchConfiguration("is_simulation"),
+                    "enable_all_modules_auto_mode": LaunchConfiguration(
+                        "enable_all_modules_auto_mode"
+                    ),
+                    "planning_input_objects_topic_name": LaunchConfiguration(
+                        "input_objects_topic"
+                    ),
+                    "planning_input_pointcloud_topic_name": LaunchConfiguration(
+                        "input_pointcloud_topic"
+                    ),
+                }.items(),
             ),
         ]
     )

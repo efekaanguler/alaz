@@ -20,18 +20,20 @@
       <remap from="tf_static" to="/tf_static"/>
     </node>
 
-    <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/lidar.launch.xml">
-      <arg name="lidar_device" value="$(var lidar_device)"/>
-      <arg name="frame_id" value="lidar_link"/>
-      <arg name="use_sim_time" value="$(var use_sim_time)"/>
-    </include>
+    <group if="$(var launch_driver)">
+      <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/lidar.launch.xml">
+        <arg name="lidar_device" value="$(var lidar_device)"/>
+        <arg name="frame_id" value="lidar_link"/>
+        <arg name="use_sim_time" value="$(var use_sim_time)"/>
+      </include>
 
-    <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/camera.launch.xml">
-      <arg name="camera_device" value="$(var camera_device)"/>
-      <arg name="image_topic" value="/sensing/image_raw"/>
-      <arg name="frame_id" value="camera_center_link"/>
-      <arg name="use_sim_time" value="$(var use_sim_time)"/>
-    </include>
+      <include file="$(find-pkg-share rdw_sensor_kit_launch)/launch/camera.launch.xml">
+        <arg name="camera_device" value="$(var camera_device)"/>
+        <arg name="image_topic" value="/sensing/image_raw"/>
+        <arg name="frame_id" value="camera_center_link"/>
+        <arg name="use_sim_time" value="$(var use_sim_time)"/>
+      </include>
+    </group>
 
     <include file="$(find-pkg-share autoware_vehicle_velocity_converter)/launch/vehicle_velocity_converter.launch.xml">
       <arg name="input_vehicle_velocity_topic" value="/vehicle/status/velocity_status"/>

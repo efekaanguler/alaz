@@ -10,6 +10,7 @@ import rclpy
 from cv_bridge import CvBridge
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import Image
 from vision_msgs.msg import BoundingBox2D, Detection2D, Detection2DArray, ObjectHypothesisWithPose
 
@@ -102,7 +103,8 @@ class YoloV8Node(Node):
         self.input_height = int(self.get_parameter('input_height').get_parameter_value().integer_value)
         self.score_threshold = float(self.get_parameter('score_threshold').get_parameter_value().double_value)
         self.nms_threshold = float(self.get_parameter('nms_threshold').get_parameter_value().double_value)
-        self.device = self.get_parameter('device').get_parameter_value().string_value.lower()
+        requested_device = self.get_parameter('device').get_parameter_value().string_value.lower()
+        self.device = self._resolve_device(requested_device)
         self.class_allowlist_raw = self._class_allowlist_to_text(self.get_parameter('class_allowlist').get_parameter_value())
 
         label_path = self.get_parameter('label_path').get_parameter_value().string_value
@@ -122,7 +124,9 @@ class YoloV8Node(Node):
 
         self.bridge = CvBridge()
         self.pub = self.create_publisher(Detection2DArray, '~/output/objects', 10)
-        self.sub = self.create_subscription(Image, '~/input/image', self._on_image, 10)
+        self.sub = self.create_subscription(
+            Image, '~/input/image', self._on_image, qos_profile_sensor_data
+        )
 
         self.get_logger().info(
             f'Loaded model={self.model_path}, backend={self.inference_backend}, '
@@ -197,6 +201,27 @@ class YoloV8Node(Node):
             self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
             self.get_logger().warning('CUDA backend unavailable, falling back to CPU.')
 
+    def _resolve_device(self, requested: str) -> str:
+        if requested not in {'auto', 'cpu', 'cuda'}:
+            self.get_logger().warning(
+                f'unsupported device "{requested}", falling back to auto selection'
+            )
+            requested = 'auto'
+
+        if requested != 'auto':
+            return requested
+
+        if ort is not None and 'CUDAExecutionProvider' in ort.get_available_providers():
+            return 'cuda'
+
+        try:
+            if hasattr(cv2, 'cuda') and cv2.cuda.getCudaEnabledDeviceCount() > 0:
+                return 'cuda'
+        except cv2.error:
+            pass
+
+        return 'cpu'
+
     def _initialize_inference_backend(self) -> None:
         if ort is not None:
             try:
@@ -206,7 +231,7 @@ class YoloV8Node(Node):
                     if 'CUDAExecutionProvider' in available:
                         providers = ['CUDAExecutionProvider', 'CPUExecutionProvider']
                     else:
-                        self.get_logger().warning('ONNX Runtime CUDA provider unavailable, using CPU provider.')
+                        raise RuntimeError('ONNX Runtime CUDA provider unavailable')
 
                 self.ort_session = ort.InferenceSession(self.model_path, providers=providers)
                 self.ort_input_name = self.ort_session.get_inputs()[0].name
@@ -215,7 +240,9 @@ class YoloV8Node(Node):
                 return
             except Exception as ex:  # pylint: disable=broad-except
                 self.ort_session = None
-                self.get_logger().warning(f'ONNX Runtime init failed, falling back to OpenCV DNN: {ex}')
+                self.get_logger().warning(
+                    f'ONNX Runtime init failed, falling back to OpenCV DNN: {ex}'
+                )
         else:
             self.get_logger().warning('onnxruntime is not installed, using OpenCV DNN backend.')
 

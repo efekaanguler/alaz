@@ -56,10 +56,10 @@ class DetectionAutowareBridge(Node):
     def __init__(self) -> None:
         super().__init__('detection_autoware_bridge')
 
-        self.publish_detected_objects = bool(self.declare_parameter('publish_detected_objects', True).value)
-        self.publish_tracked_objects = bool(self.declare_parameter('publish_tracked_objects', True).value)
-        self.publish_predicted_objects = bool(self.declare_parameter('publish_predicted_objects', True).value)
-        self.publish_traffic_signals = bool(self.declare_parameter('publish_traffic_signals', True).value)
+        self.publish_detected_objects = bool(self.declare_parameter('publish_detected_objects', False).value)
+        self.publish_tracked_objects = bool(self.declare_parameter('publish_tracked_objects', False).value)
+        self.publish_predicted_objects = bool(self.declare_parameter('publish_predicted_objects', False).value)
+        self.publish_traffic_signals = bool(self.declare_parameter('publish_traffic_signals', False).value)
 
         self.sub_objects = self.create_subscription(
             Detection2DArray,

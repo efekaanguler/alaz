@@ -12,7 +12,9 @@ find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(autoware_adapi_v1_msgs REQUIRED)
+find_package(autoware_internal_planning_msgs REQUIRED)
 find_package(autoware_planning_msgs REQUIRED)
+find_package(autoware_system_msgs REQUIRED)
 find_package(autoware_vehicle_msgs REQUIRED)
 
 
@@ -20,7 +22,7 @@ find_package(autoware_vehicle_msgs REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
-add_executable(mission_control_launch 
+add_executable(mission_control_launch
   src/mission_control_launch.cpp
   src/mode_start.cpp
   src/mode_run.cpp
@@ -33,7 +35,11 @@ target_include_directories(mission_control_launch PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
-ament_target_dependencies(mission_control_launch rclcpp std_msgs sensor_msgs nav_msgs autoware_adapi_v1_msgs autoware_planning_msgs autoware_vehicle_msgs)
+ament_target_dependencies(
+  mission_control_launch
+  rclcpp std_msgs sensor_msgs nav_msgs
+  autoware_adapi_v1_msgs autoware_internal_planning_msgs
+  autoware_planning_msgs autoware_system_msgs autoware_vehicle_msgs)
 
 
 if(BUILD_TESTING)
@@ -50,7 +56,7 @@ endif()
 
 install(TARGETS
   mission_control_launch
-  DESTINATION lib/${PROJECT_NAME}  
+  DESTINATION lib/${PROJECT_NAME}
 )
 install(DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}

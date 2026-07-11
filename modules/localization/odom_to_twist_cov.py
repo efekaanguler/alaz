@@ -9,9 +9,11 @@ class OdomToTwistCov(Node):
         super().__init__("odom_to_twist_cov")
         self.declare_parameter("odom_topic", "/odom")
         self.declare_parameter("twist_topic", "/localization/twist_estimator/twist_with_covariance")
+        self.declare_parameter("frame_id", "base_link")
 
         odom_topic = self.get_parameter("odom_topic").value
         twist_topic = self.get_parameter("twist_topic").value
+        self.frame_id = self.get_parameter("frame_id").value
 
         self.pub = self.create_publisher(TwistWithCovarianceStamped, twist_topic, 10)
         self.sub = self.create_subscription(Odometry, odom_topic, self.cb, 10)
@@ -19,6 +21,7 @@ class OdomToTwistCov(Node):
     def cb(self, msg: Odometry):
         out = TwistWithCovarianceStamped()
         out.header = msg.header
+        out.header.frame_id = self.frame_id
         out.twist.twist = msg.twist.twist
         out.twist.covariance = msg.twist.covariance
         self.pub.publish(out)
@@ -31,9 +34,15 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     finally:
-        node.destroy_node()
+        try:
+            node.destroy_node()
+        except (Exception, KeyboardInterrupt):
+            pass
         if rclpy.ok():
-            rclpy.shutdown()
+            try:
+                rclpy.shutdown()
+            except (Exception, KeyboardInterrupt):
+                pass
 
 if __name__ == "__main__":
     main()

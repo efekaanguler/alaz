@@ -18,15 +18,19 @@
 #include <cmath>
 #include <cstring>
 
-namespace my_vehicle_interface {
-namespace can_utils {
+namespace my_vehicle_interface
+{
+namespace can_utils
+{
 
 // =============================================================================
 // ENCODING FUNCTIONS
 // =============================================================================
 
-can_msgs::msg::Frame encodeSteeringCommand(float steering_value,
-                                           const CanIds &can_ids) {
+can_msgs::msg::Frame encodeSteeringCommand(
+  float steering_value,
+  const CanIds & can_ids)
+{
   can_msgs::msg::Frame frame;
   frame.id = can_ids.steering_command;
   frame.is_extended = false;
@@ -49,8 +53,10 @@ can_msgs::msg::Frame encodeSteeringCommand(float steering_value,
   return frame;
 }
 
-can_msgs::msg::Frame encodeBrakeCommand(uint8_t brake_percent,
-                                        const CanIds &can_ids) {
+can_msgs::msg::Frame encodeBrakeCommand(
+  uint8_t brake_percent,
+  const CanIds & can_ids)
+{
   can_msgs::msg::Frame frame;
   frame.id = can_ids.brake_command;
   frame.is_extended = false;
@@ -73,8 +79,10 @@ can_msgs::msg::Frame encodeBrakeCommand(uint8_t brake_percent,
   return frame;
 }
 
-can_msgs::msg::Frame encodeMotorCommand(uint8_t throttle_percent, uint8_t gear,
-                                        const CanIds &can_ids) {
+can_msgs::msg::Frame encodeMotorCommand(
+  uint8_t throttle_percent, uint8_t gear,
+  const CanIds & can_ids)
+{
   can_msgs::msg::Frame frame;
   frame.id = can_ids.motor_command;
   frame.is_extended = false;
@@ -108,32 +116,36 @@ can_msgs::msg::Frame encodeMotorCommand(uint8_t throttle_percent, uint8_t gear,
 // DECODING FUNCTIONS
 // =============================================================================
 
-double decodeSpeedSensor(const can_msgs::msg::Frame &frame) {
+double decodeSpeedSensor(const can_msgs::msg::Frame & frame)
+{
   // Bytes 0-1: BIG-endian uint16, speed in hectometers/hour
   // Example: [0x01, 0x4A] = 330 hm/h = 33.0 km/h = 9.17 m/s
   // NOTE: If speed readings are incorrect (e.g. extremely low/high), check if
   // bytes [1] and [2] should be used instead (like steering sensor 0x1E5).
   uint16_t speed_hmh = (static_cast<uint16_t>(frame.data[0]) << 8) |
-                       static_cast<uint16_t>(frame.data[1]);
+    static_cast<uint16_t>(frame.data[1]);
 
   return hmhToMs(static_cast<double>(speed_hmh));
 }
 
-int16_t decodeSteeringSensor(const can_msgs::msg::Frame &frame) {
+int16_t decodeSteeringSensor(const can_msgs::msg::Frame & frame)
+{
   // Bytes 1-2: BIG-endian signed int16
   // Verified from data_recorder.py: (data[1] << 8 | data[2])
   // Example: [0xFF, 0xFC] = -4
   // Range: -800 to 800
   int16_t raw =
-      static_cast<int16_t>((static_cast<uint16_t>(frame.data[1]) << 8) |
-                           static_cast<uint16_t>(frame.data[2]));
+    static_cast<int16_t>((static_cast<uint16_t>(frame.data[1]) << 8) |
+    static_cast<uint16_t>(frame.data[2]));
 
   return raw;
 }
 
-void decodeMotorFeedback(const can_msgs::msg::Frame &frame,
-                         uint8_t &throttle_dac, bool &is_braking, uint8_t &gear,
-                         bool &is_idle) {
+void decodeMotorFeedback(
+  const can_msgs::msg::Frame & frame,
+  uint8_t & throttle_dac, bool & is_braking, uint8_t & gear,
+  bool & is_idle)
+{
   // Byte 0: internal throttle (DAC voltage 0-255)
   // Byte 1: braking flag (1 = brake applied, cannot throttle or change gear)
   // Byte 2: gear feedback (0=N, 1=F, 2=R)
@@ -144,18 +156,20 @@ void decodeMotorFeedback(const can_msgs::msg::Frame &frame,
   is_idle = (frame.data[3] != 0);
 }
 
-void decodeSteeringEcuFeedback(const can_msgs::msg::Frame &frame,
-                               int16_t &current_angle, int16_t &target_angle,
-                               bool &has_error) {
+void decodeSteeringEcuFeedback(
+  const can_msgs::msg::Frame & frame,
+  int16_t & current_angle, int16_t & target_angle,
+  bool & has_error)
+{
   // Bytes 0-1: last known angle (big-endian int16)
   current_angle =
-      static_cast<int16_t>((static_cast<uint16_t>(frame.data[0]) << 8) |
-                           static_cast<uint16_t>(frame.data[1]));
+    static_cast<int16_t>((static_cast<uint16_t>(frame.data[0]) << 8) |
+    static_cast<uint16_t>(frame.data[1]));
 
   // Bytes 2-3: target angle (big-endian int16)
   target_angle =
-      static_cast<int16_t>((static_cast<uint16_t>(frame.data[2]) << 8) |
-                           static_cast<uint16_t>(frame.data[3]));
+    static_cast<int16_t>((static_cast<uint16_t>(frame.data[2]) << 8) |
+    static_cast<uint16_t>(frame.data[3]));
 
   // Byte 5: error flag (failsafe state)
   // Failsafe triggers when:
@@ -168,7 +182,8 @@ void decodeSteeringEcuFeedback(const can_msgs::msg::Frame &frame,
 // UTILITY FUNCTIONS
 // =============================================================================
 
-float radToKartSteering(double rad, double max_steering_rad) {
+float radToKartSteering(double rad, double max_steering_rad)
+{
   // Convert Autoware steering angle (radians) to kart value (-1.25 to 1.25)
   // max_steering_rad = physical max steering angle of the kart
   // When rad == max_steering_rad, output should be 1.25f (or close to 1.0f)
@@ -182,5 +197,5 @@ float radToKartSteering(double rad, double max_steering_rad) {
   return std::clamp(normalized, -1.25f, 1.25f);
 }
 
-} // namespace can_utils
-} // namespace my_vehicle_interface
+}  // namespace can_utils
+}  // namespace my_vehicle_interface

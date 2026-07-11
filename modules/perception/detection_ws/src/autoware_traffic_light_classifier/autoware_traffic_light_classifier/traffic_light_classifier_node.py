@@ -9,6 +9,7 @@ import rclpy
 from cv_bridge import CvBridge
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import Image
 from vision_msgs.msg import Detection2D, Detection2DArray, ObjectHypothesisWithPose
 
@@ -109,7 +110,9 @@ class TrafficLightClassifierNode(Node):
         self.image_lock = Lock()
         self.latest_image = None
 
-        self.sub_image = self.create_subscription(Image, '~/input/image', self._on_image, 10)
+        self.sub_image = self.create_subscription(
+            Image, '~/input/image', self._on_image, qos_profile_sensor_data
+        )
         self.sub_rois = self.create_subscription(Detection2DArray, '~/input/rois', self._on_rois, 10)
         self.pub_signals = self.create_publisher(Detection2DArray, '~/output/traffic_signals', 10)
 
