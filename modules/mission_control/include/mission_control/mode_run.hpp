@@ -12,6 +12,7 @@
 #include <geometry_msgs/msg/pose_array.hpp>
 #include <std_msgs/msg/bool.hpp>
 #include <std_msgs/msg/float64.hpp>
+#include <std_msgs/msg/u_int8.hpp>
 #include <vector>
 
 class RunMode : public ModeBase {
@@ -26,6 +27,9 @@ public:
     
     std::string CONTROL_CMD_SUBSCRIBER_TOPIC="/control/command/control_cmd";
     std::string ROUTE_STATE_SUBSCRIBER_TOPIC="/api/routing/state";
+
+    // Optional diagnostics topic exposing the raw RouteState value
+    std::string ROUTE_STATE_DEBUG_PUBLISHER_TOPIC="/mission_control/route_state_debug";
     
     RunMode(rclcpp::Node::SharedPtr node);
     unsigned int execute() override;
@@ -38,6 +42,7 @@ private:
     
     rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr goal_publisher_;
     rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr engage_publisher_;
+    rclcpp::Publisher<std_msgs::msg::UInt8>::SharedPtr route_state_debug_publisher_;
     
     rclcpp::Subscription<geometry_msgs::msg::PoseArray>::SharedPtr goal_array_subscriber_;
     rclcpp::Subscription<autoware_planning_msgs::msg::LaneletRoute>::SharedPtr route_subscriber_;
@@ -59,6 +64,10 @@ private:
     bool emergency_flag_ = false;
     bool engaged_ = false;
     bool current_goal_reached_ = false;
+
+    // Full ADAPI route state (UNKNOWN/UNSET/SET/ARRIVED/CHANGING), not just
+    // a reached/not-reached boolean.
+    uint8_t current_route_state_ = autoware_adapi_v1_msgs::msg::RouteState::UNKNOWN;
     
     void goal_array_callback(const geometry_msgs::msg::PoseArray::SharedPtr msg);
     void route_callback(const autoware_planning_msgs::msg::LaneletRoute::SharedPtr msg);

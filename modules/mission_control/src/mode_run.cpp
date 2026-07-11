@@ -7,6 +7,9 @@ RunMode::RunMode(rclcpp::Node::SharedPtr node) : node_(node) {
     
     engage_publisher_ = node_->create_publisher<std_msgs::msg::Bool>(
         ENGAGE_PUBLISHER_TOPIC, 10);
+
+    route_state_debug_publisher_ = node_->create_publisher<std_msgs::msg::UInt8>(
+        ROUTE_STATE_DEBUG_PUBLISHER_TOPIC, 10);
     
     goal_array_subscriber_ = node_->create_subscription<geometry_msgs::msg::PoseArray>(
         GOAL_ARRAY_SUBSCRIBER_TOPIC, 10,
@@ -60,6 +63,13 @@ void RunMode::engage_autoware() {
 }
 
 void RunMode::send_next_goal() {
+    // Don't publish a new goal while Autoware is still processing the
+    // previous route change - avoids overlapping/racing route requests.
+    if (current_route_state_ == autoware_adapi_v1_msgs::msg::RouteState::CHANGING) {
+        RCLCPP_INFO(node_->get_logger(), "Route still changing - waiting before sending next goal");
+        return;
+    }
+
     if (current_goal_index_ < goal_array_.size()) {
         auto goal_msg = geometry_msgs::msg::PoseStamped();
         goal_msg.header.stamp = node_->now();
@@ -97,7 +107,18 @@ void RunMode::emergency_callback(const std_msgs::msg::Bool::SharedPtr msg) {
 }
 
 void RunMode::route_state_callback(const autoware_adapi_v1_msgs::msg::RouteState::SharedPtr msg) {
-    if (msg->state == autoware_adapi_v1_msgs::msg::RouteState::ARRIVED) {
+    current_route_state_ = msg->state;
+
+    // Publish the raw state for diagnostics/testing
+    auto dbg_msg = std_msgs::msg::UInt8();
+    dbg_msg.data = msg->state;
+    route_state_debug_publisher_->publish(dbg_msg);
+
+    // Guarded with goal_sent_current_ so a stale/late-arriving ARRIVED
+    // (e.g. left over from a previous goal, if this topic is ever
+    // republished with transient_local durability) can't prematurely mark
+    // a goal we haven't actually sent yet as reached.
+    if (msg->state == autoware_adapi_v1_msgs::msg::RouteState::ARRIVED && goal_sent_current_) {
         current_goal_reached_ = true;
         RCLCPP_INFO(node_->get_logger(), "Reached goal %zu/%zu", 
                     current_goal_index_ + 1, goal_array_.size());

@@ -73,6 +73,14 @@ MODE_NAMES = {
     4: "EMERGENCY",
 }
 
+ROUTE_STATE_NAMES = {
+    0: "UNKNOWN",
+    1: "UNSET",
+    2: "SET",
+    3: "ARRIVED",
+    4: "CHANGING",
+}
+
 GEAR_NAMES = {
     0: "NONE",
     1: "NEUTRAL",
@@ -122,6 +130,7 @@ class MissionControlHarness(Node):
         self.create_subscription(Bool, '/mission_control/emergency_stop', self.on_emergency_stop, 10)
         self.create_subscription(Bool, '/autoware/engage', self.on_engage, 10)
         self.create_subscription(GearCommand, '/control/command/gear_cmd', self.on_gear, 10)
+        self.create_subscription(UInt8, '/mission_control/route_state_debug', self.on_route_state_debug, 10)
 
         self.last_mode = None
 
@@ -203,6 +212,27 @@ class MissionControlHarness(Node):
         self.route_state_pub.publish(msg)
         self.get_logger().info('Published: /api/routing/state = ARRIVED')
 
+    def send_route_set(self):
+        msg = RouteState()
+        msg.stamp = self.get_clock().now().to_msg()
+        msg.state = RouteState.SET
+        self.route_state_pub.publish(msg)
+        self.get_logger().info('Published: /api/routing/state = SET')
+
+    def send_route_changing(self):
+        msg = RouteState()
+        msg.stamp = self.get_clock().now().to_msg()
+        msg.state = RouteState.CHANGING
+        self.route_state_pub.publish(msg)
+        self.get_logger().info('Published: /api/routing/state = CHANGING')
+
+    def send_route_unset(self):
+        msg = RouteState()
+        msg.stamp = self.get_clock().now().to_msg()
+        msg.state = RouteState.UNSET
+        self.route_state_pub.publish(msg)
+        self.get_logger().info('Published: /api/routing/state = UNSET')
+
     def send_control_cmd(self, velocity=2.0, steering=0.0):
         msg = Control()
         msg.stamp = self.get_clock().now().to_msg()
@@ -253,6 +283,10 @@ class MissionControlHarness(Node):
         name = GEAR_NAMES.get(msg.command, str(msg.command))
         self.get_logger().info(f'    /control/command/gear_cmd = {name}')
 
+    def on_route_state_debug(self, msg: UInt8):
+        name = ROUTE_STATE_NAMES.get(msg.data, f'UNKNOWN({msg.data})')
+        self.get_logger().info(f'    /mission_control/route_state_debug = {name}')
+
 
 MENU = """
 ========== Mission Control Test Harness ==========
@@ -261,6 +295,9 @@ MENU = """
  2) Send goal array (2 goals)                 (needed for PAUSE -> RUN)
  3) Send empty goal array                     (forces RUN -> PAUSE)
  4) Simulate goal reached (route_state ARRIVED)
+ 4s) Simulate route_state SET
+ 4c) Simulate route_state CHANGING             (send_next_goal should refuse while this holds)
+ 4u) Simulate route_state UNSET
  5) Publish control_cmd (v=2.0, steer=0.0)
  6) Toggle lidar heartbeat            (currently {lidar})
  7) Toggle camera heartbeat           (currently {camera})
@@ -298,6 +335,12 @@ def input_loop(node: MissionControlHarness):
             node.send_goal_array(0)
         elif choice == '4':
             node.send_goal_reached()
+        elif choice == '4s':
+            node.send_route_set()
+        elif choice == '4c':
+            node.send_route_changing()
+        elif choice == '4u':
+            node.send_route_unset()
         elif choice == '5':
             node.send_control_cmd()
         elif choice == '6':
