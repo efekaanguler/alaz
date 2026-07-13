@@ -14,7 +14,7 @@
     arm_hold_sec: 1.5
     neutral_on_disarm: true
     neutral_on_deadman_release: true
-    allow_reverse: false
+    allow_reverse: true
 
     # Controller mapping
     steering_axis: "ABS_X"

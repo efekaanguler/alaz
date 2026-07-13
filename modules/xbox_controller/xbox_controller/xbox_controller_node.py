@@ -19,7 +19,7 @@ class ControllerState:
 
 
 class XboxInputReader:
-    MAX_TRIGGER_VALUE = 255.0
+    MAX_TRIGGER_VALUE = 1023.0
     MAX_JOYSTICK_VALUE = 32768.0
 
     def __init__(self, device_index: int, logger):
