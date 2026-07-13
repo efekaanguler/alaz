@@ -1,0 +1,33 @@
+/**:
+  ros__parameters:
+    control_topic: "/control/command/control_cmd"
+    gear_topic: "/control/command/gear_cmd"
+
+    publish_rate_hz: 25.0
+    device_index: 0
+
+    # Safety behavior
+    require_deadman: true
+    deadman_button: "BTN_TR"
+    arm_button: "BTN_SOUTH"
+    disarm_button: "BTN_SELECT"
+    arm_hold_sec: 1.5
+    neutral_on_disarm: true
+    neutral_on_deadman_release: true
+    allow_reverse: false
+
+    # Controller mapping
+    steering_axis: "ABS_X"
+    throttle_axis: "ABS_RZ"
+    brake_axis: "ABS_Z"
+    neutral_button: "BTN_WEST"
+    drive_button: "BTN_EAST"
+    reverse_button: "BTN_NORTH"
+
+    # Custom-car provisional limits. Calibrate before vehicle motion.
+    max_steering_angle_rad: 0.5236
+    max_accel_mps2: 2.0
+    max_decel_mps2: 5.0
+    max_velocity_mps: 3.0
+    steering_deadzone: 0.10
+    trigger_deadzone: 0.02

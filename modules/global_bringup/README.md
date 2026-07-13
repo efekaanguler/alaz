@@ -68,6 +68,14 @@ source install/setup.bash
 ros2 launch global_bringup global.launch.py
 ```
 
+Manual Xbox control mode:
+
+```bash
+ros2 launch global_bringup global.launch.py manual:=true
+```
+
+`manual:=true` launches `xbox_controller` and disables `planning` and `control` so autonomous control publishers do not conflict with controller commands on `/control/command/*`. The vehicle interface and safety/emergency path remain active.
+
 ### 3. Konfigürasyonu Değiştirin
 
 Sistemi başlatmadan önce konfigürasyon dosyalarını ihtiyacınıza göre düzenleyin:

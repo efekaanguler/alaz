@@ -48,3 +48,7 @@ packages:
   mission_control:
     enabled: false
     launch_file: "mission_control.launch.xml"
+
+  xbox_controller:
+    enabled: false
+    launch_file: "xbox_controller.launch.py"

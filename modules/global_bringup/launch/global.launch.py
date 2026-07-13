@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 import os
-import sys
 import yaml
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, LogInfo
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, LogInfo, OpaqueFunction
 from launch.launch_description_sources import AnyLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration
 from ament_index_python.packages import get_package_share_directory, PackageNotFoundError
 
 
@@ -20,21 +20,16 @@ def _load_yaml(path: str) -> dict:
     return data
 
 
-def generate_launch_description():
-    # Package paths
+def _as_bool(value: str) -> bool:
+    return str(value).lower() in ('1', 'true', 'yes', 'on')
+
+
+def _launch_setup(context, *args, **kwargs):
     this_share = get_package_share_directory('global_bringup')
     cfg_dir = os.path.join(this_share, 'config')
-
-    # Load configuration (fail-fast on missing/invalid YAML)
     packages_cfg = _load_yaml(os.path.join(cfg_dir, 'bringup.yaml'))
-
+    manual_mode = _as_bool(LaunchConfiguration('manual').perform(context))
     actions = []
-
-    actions.append(DeclareLaunchArgument(
-        'vehicle_model',
-        default_value='my_vehicle',
-        description='Default vehicle model name',
-    ))
 
     # ========== PACKAGES ==========
     packages = packages_cfg.get('packages', {})
@@ -43,8 +38,22 @@ def generate_launch_description():
             'bringup.yaml contains no packages. Cannot build launch graph.'
         )
 
+    if manual_mode:
+        actions.append(LogInfo(
+            msg='[bringup] manual mode enabled: launching xbox_controller and skipping planning/control'
+        ))
+
     for pkg_name, pkg_cfg in packages.items():
-        if not pkg_cfg.get('enabled', False):
+        enabled = pkg_cfg.get('enabled', False)
+
+        if manual_mode and pkg_name in ('planning', 'control'):
+            actions.append(LogInfo(msg=f'[bringup] {pkg_name}: disabled in manual mode'))
+            continue
+
+        if manual_mode and pkg_name == 'xbox_controller':
+            enabled = True
+
+        if not enabled:
             actions.append(LogInfo(msg=f'[bringup] {pkg_name}: disabled, skipping'))
             continue
 
@@ -79,4 +88,20 @@ def generate_launch_description():
             launch_arguments=pkg_args.items(),
         ))
 
-    return LaunchDescription(actions)
+    return actions
+
+
+def generate_launch_description():
+    return LaunchDescription([
+        DeclareLaunchArgument(
+            'vehicle_model',
+            default_value='my_vehicle',
+            description='Default vehicle model name',
+        ),
+        DeclareLaunchArgument(
+            'manual',
+            default_value='false',
+            description='Enable Xbox manual control and disable autonomous planning/control command publishers',
+        ),
+        OpaqueFunction(function=_launch_setup),
+    ])

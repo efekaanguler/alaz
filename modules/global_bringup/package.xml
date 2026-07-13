@@ -36,6 +36,7 @@
   <exec_depend>planning</exec_depend>
   <exec_depend>control</exec_depend>
   <exec_depend>mission_control</exec_depend>
+  <exec_depend>xbox_controller</exec_depend>
 
   <!-- ============================================ -->
   <!-- YENİ MODÜL/PAKET EKLEDİĞİNİZDE NE YAPMALI?   -->
