@@ -1,0 +1,30 @@
+# ALAZ PROJESI - ESP32-S3 DONANIM PIN HARITASI (Elektronik Takimindan Gelen)
+
+====================================================
+1. DIREKSIYON (STEERING) - STEP MOTOR (CWD860H)
+====================================================
+ENA+ (Enable) : IO 15
+PUL+ (Pulse)  : IO 16
+DIR+ (Dir)    : IO 17
+
+====================================================
+2. GAZ (THROTTLE) - RÖLELER VE I2C DAC (PCF8591)
+====================================================
+Relay_Brake   : IO 0   (Brake Rölesi)
+Relay_Low     : IO 36  (Düşük Hız Rölesi)
+Relay_Reverse : IO 35  (Geri Vites Rölesi)
+
+SDA_i2c       : IO 8   (PCF8591 DAC SDA)
+SCL_i2c       : IO 18  (PCF8591 DAC SCL)
+
+====================================================
+3. FREN (BRAKES) - 12V MOTOR SÜRÜCÜ
+====================================================
+DIR1 (Yön)    : IO 12
+PWM1 (Hız)    : IO 11
+
+====================================================
+4. USB HOST (XBOX KONTROLCÜSÜ ICIN)
+====================================================
+USB D+        : IO 20
+USB D-        : IO 19
